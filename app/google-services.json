@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1049396998264-p8a7hpp63l6ufqok6slg0c3oq66q8n6f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mx.itesm.taxiunico",
+            "certificate_hash": "ba58f5403e43e20afc441e0e61f8f5d8ecb136b0"
+          }
+        },
+        {
           "client_id": "1049396998264-mar131hktluthk6i6tive3jmldc4cirn.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1049396998264-mar131hktluthk6i6tive3jmldc4cirn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
