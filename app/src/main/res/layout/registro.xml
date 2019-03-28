@@ -11,12 +11,17 @@
             android:id="@+id/view"
             android:background="@color/taxiBlue"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
     <TextView
             android:text="TAXI UNICO"
             android:layout_width="wrap_content"
-            android:layout_height="55dp" tools:layout_editor_absoluteY="54dp"
-            tools:layout_editor_absoluteX="179dp" android:id="@+id/textView2" android:textColor="@android:color/white"
+            android:layout_height="55dp"
+            tools:layout_editor_absoluteY="54dp"
+            tools:layout_editor_absoluteX="179dp"
+            android:id="@+id/textView2"
+            android:textColor="@android:color/white"
             android:textSize="36sp"/>
     <TextView
             android:text="Crear una cuenta"
@@ -24,39 +29,36 @@
             android:layout_height="wrap_content" tools:layout_editor_absoluteY="130dp"
             tools:layout_editor_absoluteX="137dp" android:id="@+id/textView3" android:textColor="@android:color/white"
             android:textSize="24sp" android:textStyle="bold"/>
-    <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:ems="10"
-            tools:layout_editor_absoluteY="444dp" tools:layout_editor_absoluteX="98dp" android:id="@+id/editText7"
-            android:text="Contraseña" android:textAlignment="center" tools:text="Contraseña"/>
     <Button
             android:text="Button"
             android:background="@color/taxiYellow"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" tools:layout_editor_absoluteY="513dp"
+            android:layout_height="wrap_content" tools:layout_editor_absoluteY="487dp"
             tools:layout_editor_absoluteX="161dp" android:id="@+id/button" android:textColor="@android:color/white"/>
+
     <TextView
             android:text="TextView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" tools:layout_editor_absoluteY="583dp"
+            android:layout_height="wrap_content" tools:layout_editor_absoluteY="553dp"
             tools:layout_editor_absoluteX="146dp" android:id="@+id/textView4" tools:text="¿Ya tienes cuenta?"/>
+
     <android.support.design.widget.TextInputLayout
             android:layout_width="395dp"
-            android:layout_height="wrap_content" tools:layout_editor_absoluteY="192dp"
-            tools:layout_editor_absoluteX="8dp">
+            android:layout_height="wrap_content" tools:layout_editor_absoluteY="191dp"
+            tools:layout_editor_absoluteX="8dp" android:hint="Ingresa tu nombre de usuario"
+            android:textColorHint="@color/taxiBlue">
 
         <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Ingrese tu nombre de usuario" android:text="Nombre" android:textAlignment="center"
+                android:text="Nombre" android:textAlignment="center"
                 android:singleLine="false" tools:text="Nombre"/>
     </android.support.design.widget.TextInputLayout>
+
     <android.support.design.widget.TextInputLayout
             android:layout_width="395dp"
             android:layout_height="wrap_content" tools:layout_editor_absoluteY="265dp"
-            tools:layout_editor_absoluteX="8dp" android:hint="Ingrese tu correo electronico"
+            tools:layout_editor_absoluteX="8dp" android:hint="Ingresa tu correo electronico"
             android:textColorHint="@color/taxiBlue">
 
         <android.support.design.widget.TextInputEditText
@@ -64,15 +66,35 @@
                 android:layout_height="wrap_content"
                 android:hint="hint" android:text="Correo electronico" android:textAlignment="center"/>
     </android.support.design.widget.TextInputLayout>
+
     <android.support.design.widget.TextInputLayout
             android:layout_width="395dp"
             android:layout_height="wrap_content" tools:layout_editor_absoluteY="337dp"
-            tools:layout_editor_absoluteX="8dp">
+            tools:layout_editor_absoluteX="8dp" android:textColorHint="@color/taxiBlue"
+            android:hint="Ingresa su número telefonico">
 
         <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Ingrese" android:text="Teléfono"/>
+                android:hint="Ingrese" android:text="Teléfono" android:textAlignment="center"/>
     </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+            android:layout_width="395dp"
+            android:layout_height="wrap_content" tools:layout_editor_absoluteY="410dp"
+            tools:layout_editor_absoluteX="8dp" android:hint="Ingresa tu contraseña"
+            android:textColorHint="@color/taxiBlue">
+
+        <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="hint" android:text="Contraseña" android:textAlignment="center"/>
+    </android.support.design.widget.TextInputLayout>
+    <TextView
+            android:text="Inicia sesión"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" tools:layout_editor_absoluteY="587dp"
+            tools:layout_editor_absoluteX="161dp" android:id="@+id/textView5" android:textAlignment="center"
+            android:textSize="14sp"/>
 
 </android.support.constraint.ConstraintLayout>
