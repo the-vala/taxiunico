@@ -5,11 +5,12 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".auth.LoginActivity">
+        tools:context=".auth.LoginActivity"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
     <View
             android:layout_width="wrap_content"
-            android:layout_height="180dp" android:id="@+id/view" tools:background="@color/taxiBlue"
+            android:layout_height="180dp" android:id="@+id/view" android:background="@color/taxiBlue"
             android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" app:layout_constraintStart_toStartOf="parent"
