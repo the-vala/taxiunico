@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1049396998264",
+    "firebase_url": "https://taxi-unico-11f36.firebaseio.com",
+    "project_id": "taxi-unico-11f36",
+    "storage_bucket": "taxi-unico-11f36.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049396998264:android:ceab38ff87e91619",
+        "android_client_info": {
+          "package_name": "mx.itesm.taxiunico"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1049396998264-mar131hktluthk6i6tive3jmldc4cirn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgWzwLILaSwvreOvN9eML0oTgEmhuFW-s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
