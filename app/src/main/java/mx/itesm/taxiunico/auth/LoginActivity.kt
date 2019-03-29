@@ -78,8 +78,8 @@ class LoginActivity : AppCompatActivity() {
             loginInputPass.error = null
         }
 
-        auth = FirebaseAuth.getInstance()
 
+        return valid
     }
 
     companion object {
