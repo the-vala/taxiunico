@@ -1,5 +1,6 @@
 package mx.itesm.taxiunico.auth
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
@@ -24,6 +25,10 @@ class LoginActivity : AppCompatActivity() {
 
         loginBtn.setOnClickListener {
             signIn(loginInputEmail.text.toString(), loginInputPass.text.toString())
+        }
+
+        goToSignupButton.setOnClickListener {
+            //TODO startActivity(Intent(this, SignupActivity::class.java))
         }
     }
 

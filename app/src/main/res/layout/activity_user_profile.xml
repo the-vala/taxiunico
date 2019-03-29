@@ -16,7 +16,7 @@
             android:textColor="#151515"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-            app:layout_constraintVertical_chainStyle="spread_inside"/>
+            app:layout_constraintVertical_chainStyle="spread_inside" android:layout_marginTop="24dp"/>
 
     <ImageButton
             android:layout_width="90dp"
@@ -30,12 +30,14 @@
             android:focusable="true"
             android:foregroundTint="?android:colorControlHighlight"
             android:layout_height="wrap_content"
-            android:id="@+id/button" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            android:id="@+id/button" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="24dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="24dp"
             android:background="@drawable/rounded_button" android:backgroundTint="@color/taxiYellow"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"/>
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" android:layout_marginBottom="24dp"/>
 
     <android.support.design.widget.TextInputLayout
             android:layout_width="0dp"
@@ -49,12 +51,13 @@
         <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-        />
+                android:id="@+id/nameInput"/>
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content" android:id="@+id/expDate"
-            android:hint="Fecha de expiración" app:hintEnabled="true"
+            android:layout_height="wrap_content" android:id="@+id/lastname"
+            android:hint="Apellido"
+            app:hintEnabled="true"
             app:layout_constraintTop_toBottomOf="@+id/name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="32dp" android:layout_marginStart="32dp"
@@ -63,34 +66,38 @@
         <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-        />
+                android:id="@+id/lastnameInput"/>
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content" android:id="@+id/cvc"
-            app:hintEnabled="true" android:hint="CVC" android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/expDate" android:layout_marginEnd="32dp"
+            android:layout_height="wrap_content" android:id="@+id/email"
+            app:hintEnabled="true"
+            android:hint="E-Mail"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/lastname"
+            android:layout_marginEnd="32dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="32dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/country">
+            app:layout_constraintBottom_toTopOf="@+id/phone">
 
         <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-        />
+                android:id="@+id/emailInput"/>
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content" android:id="@+id/country" android:hint="Pais"
+            android:layout_height="wrap_content" android:id="@+id/phone"
+            android:hint="Telefono"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/cvc" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/email" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="32dp" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="32dp">
 
         <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-        />
+                android:layout_height="wrap_content" android:id="@+id/phoneInput"/>
+
     </android.support.design.widget.TextInputLayout>
 
     <Button
@@ -102,5 +109,7 @@
             app:layout_constraintTop_toTopOf="@+id/imageButton"
             app:layout_constraintBottom_toBottomOf="@+id/imageButton" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="32dp" android:background="@drawable/rounded_button"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
             android:backgroundTint="@color/taxiYellow"/>
 </android.support.constraint.ConstraintLayout>
