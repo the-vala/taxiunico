@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.Log
+
 import mx.itesm.taxiunico.R
 import android.widget.Toast
 import com.google.firebase.FirebaseApp
@@ -77,7 +78,8 @@ class LoginActivity : AppCompatActivity() {
             loginInputPass.error = null
         }
 
-        return valid
+        auth = FirebaseAuth.getInstance()
+
     }
 
     companion object {
