@@ -1,5 +1,6 @@
 package mx.itesm.taxiunico.auth
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
@@ -9,6 +10,7 @@ import android.widget.Toast
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
+import mx.itesm.taxiunico.MainActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -24,6 +26,11 @@ class LoginActivity : AppCompatActivity() {
         loginBtn.setOnClickListener {
             signIn(loginInputEmail.text.toString(), loginInputPass.text.toString())
         }
+
+        loginRegistrateBtn.setOnClickListener {
+            val signupIntent = Intent(this, SignupActivity::class.java)
+            startActivity(signupIntent)
+        }
     }
 
     private fun signIn(email: String, password: String) {
@@ -32,7 +39,6 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
-        // [START sign_in_with_email]
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -41,6 +47,9 @@ class LoginActivity : AppCompatActivity() {
                     val user = auth.currentUser
                     Toast.makeText(this,"Successful: ${user?.email}",
                         Toast.LENGTH_SHORT).show()
+                    val mainIntent = Intent(this, MainActivity::class.java)
+                    mainIntent.putExtra(USER, user?.email)
+                    startActivity(mainIntent)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
@@ -55,7 +64,6 @@ class LoginActivity : AppCompatActivity() {
                 }
                 // [END_EXCLUDE]
             }
-        // [END sign_in_with_email]
     }
 
     private fun validateForm(): Boolean {
@@ -82,5 +90,6 @@ class LoginActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "EmailPassword"
+        private const val USER = "currentUser"
     }
 }
