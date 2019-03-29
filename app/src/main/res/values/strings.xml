@@ -3,4 +3,5 @@
     <string name="descLogo">imgLogo</string>
     <string name="logo">TAXI UNICO</string>
     <string name="ingresa">Ingresa a tu cuenta</string>
+    <string name="card_template">•••• •••• •••• %d</string>
 </resources>

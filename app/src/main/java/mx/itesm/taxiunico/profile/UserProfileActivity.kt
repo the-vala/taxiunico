@@ -1,9 +1,10 @@
-package mx.itesm.taxiunico
+package mx.itesm.taxiunico.profile
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import mx.itesm.taxiunico.R
 
-class MainActivity : AppCompatActivity() {
+class UserProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
