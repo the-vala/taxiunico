@@ -13,8 +13,8 @@ import mx.itesm.taxiunico.R
 sealed class PaymentMethod {
     object Cash: PaymentMethod()
     data class Card(
-        val last4Digits: Int,
-        val expDate: String
+        var last4Digits: Int = 0,
+        var expDate: String = ""
     ): PaymentMethod()
 }
 
