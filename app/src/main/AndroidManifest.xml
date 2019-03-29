@@ -9,14 +9,18 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+        <activity android:name=".billing.PaymentFormsActivity">            
         </activity>
         <activity android:name=".auth.LoginActivity">
+        <activity android:name=".profile.UserProfileActivity">
+        </activity>
+        <activity android:name=".billing.AddPaymentActivity">
+        </activity>
+        <activity android:name=".MainActivity">
+        <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
     </application>
 
