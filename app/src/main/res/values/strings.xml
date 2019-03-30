@@ -18,4 +18,5 @@
     <string name="registrarse">Registrarse</string>
     <string name="ya_tienes_cuenta">¿Ya tienes cuenta?</string>
     <string name="inicia_sesion">Inicia sesión</string>
+    <string name="card_template">•••• •••• •••• %d</string>
 </resources>
