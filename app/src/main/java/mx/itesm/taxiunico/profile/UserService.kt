@@ -1,15 +1,8 @@
 package mx.itesm.taxiunico.profile
 
 import com.google.firebase.firestore.FirebaseFirestore
+import mx.itesm.taxiunico.models.UserProfile
 
-
-data class UserProfile(
-    var name: String = "",
-    var lastname: String = "",
-    var country: String = "",
-    var email: String = "",
-    var phone: String = ""
-)
 
 class UserService {
     private val db = FirebaseFirestore.getInstance()
