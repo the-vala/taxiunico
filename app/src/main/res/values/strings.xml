@@ -3,12 +3,20 @@
     <string name="descLogo">imgLogo</string>
     <string name="logo">TAXI UNICO</string>
     <string name="ingresa">Ingresa a tu cuenta</string>
-    <string name="correo_electronico">Correo electronico</string>
-    <string name="login_email_hint">Ingresa tu correo electronico</string>
-    <string name="contrasena">Contraseña</string>
-    <string name="login_pass_hint">Ingresa tu contraseña</string>
+    <string name="name">Nombre</string>
+    <string name="name_hint">Ingresa tu nombre de usuario</string>
+    <string name="email">Correo electronico</string>
+    <string name="email_hint">Ingresa tu correo electronico</string>
+    <string name="phone">Teléfono</string>
+    <string name="phone_hint">Ingresa tu numero telefónico</string>
+    <string name="pass">Contraseña</string>
+    <string name="pass_hint">Ingresa tu contraseña</string>
     <string name="iniciar_sesion">Iniciar Sesión</string>
     <string name="aun_no_tienes_cuenta">¿Aun no tienes cuenta?</string>
     <string name="registrate">Registrate</string>
+    <string name="crea_cuenta">Crea una cuenta</string>
+    <string name="registrarse">Registrarse</string>
+    <string name="ya_tienes_cuenta">¿Ya tienes cuenta?</string>
+    <string name="inicia_sesion">Inicia sesión</string>
     <string name="card_template">•••• •••• •••• %d</string>
 </resources>
