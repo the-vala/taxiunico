@@ -3,4 +3,8 @@
     <string name="descLogo">imgLogo</string>
     <string name="logo">TAXI UNICO</string>
     <string name="ingresa">Ingresa a tu cuenta</string>
+
+    <string name="calificacion">Calificación: %1$d</string>
+    <string name="fecha_encuesta">Fecha: %1$s</string>
+    <string name="id_encuesta">ID: %1$d</string>
 </resources>
