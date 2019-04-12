@@ -5,11 +5,12 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".auth.LoginActivity">
+        tools:context=".auth.LoginActivity"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
     <View
             android:layout_width="wrap_content"
-            android:layout_height="180dp" android:id="@+id/view" tools:background="@color/taxiBlue"
+            android:layout_height="180dp" android:id="@+id/view" android:background="@color/taxiBlue"
             android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" app:layout_constraintStart_toStartOf="parent"
@@ -40,4 +41,76 @@
             app:layout_constraintStart_toStartOf="parent" android:textSize="30sp" android:textStyle="bold"
             android:layout_marginTop="120dp" app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintHorizontal_bias="0.504"/>
+    <TextView
+            android:text="@string/email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/loginTextEmail" android:layout_marginTop="56dp"
+            app:layout_constraintTop_toBottomOf="@+id/view" android:textColor="@android:color/black"
+            android:textSize="24sp" android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="8dp" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"/>
+    <EditText
+            android:layout_width="275dp"
+            android:layout_height="38dp"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/loginInputEmail"
+            app:layout_constraintTop_toBottomOf="@+id/loginTextEmail" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:hint="@string/email_hint"
+            android:textColor="@color/taxiBlue" android:textColorHint="@color/taxiBlue"
+            android:textAlignment="center"
+            android:backgroundTint="@color/taxiBlue"/>
+    <TextView
+            android:text="@string/pass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/loginTextPass"
+            android:textColor="@android:color/black"
+            android:textSize="24sp" android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="8dp" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.498" android:layout_marginTop="56dp"
+            app:layout_constraintTop_toBottomOf="@+id/loginInputEmail"/>
+    <EditText
+            android:layout_width="275dp"
+            android:layout_height="38dp"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/loginInputPass"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:hint="@string/pass_hint"
+            android:textColor="@color/taxiBlue" android:textColorHint="@color/taxiBlue"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@+id/loginTextPass" android:backgroundTint="@color/taxiBlue"/>
+    <Button
+            android:text="@string/iniciar_sesion"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:id="@+id/loginBtn" android:layout_marginTop="40dp"
+            app:layout_constraintTop_toBottomOf="@+id/loginInputPass" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" android:background="@color/taxiYellow"
+            android:textColor="@android:color/white" android:textSize="26sp"
+            android:textAllCaps="false"/>
+    <TextView
+            android:text="@string/aun_no_tienes_cuenta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/textView7"
+            android:textAlignment="center" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            android:layout_marginTop="68dp" app:layout_constraintTop_toBottomOf="@+id/loginBtn"
+            android:textColor="@android:color/black"/>
+    <Button
+            android:text="@string/registrate"
+            android:layout_width="106dp"
+            android:layout_height="32dp"
+            android:id="@+id/loginRegistrateBtn" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView7"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.498" app:layout_constraintVertical_bias="0.0"
+            android:textColor="@color/taxiBlue" android:background="@android:color/transparent"
+            android:textAllCaps="false"/>
 </android.support.constraint.ConstraintLayout>
