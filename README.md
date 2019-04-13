@@ -1,6 +1,12 @@
 # TaxiUnico Android
 Aplicación móvil que permitirá al	usuario	conectar por medio de una	aplicación móvil a los pasajeros de	autobús Transpais	y	a	los conductores de vehículos registrados en nuestro	servicio de Taxi Único quienes desean	ofrecer	un servicio	de autotransporte.
 
+## Equipo
+Diego Ivan Valadez Lozano A00817562
+Carlos Ivan Cardenas Cardenas A00820062
+Salvador Barboza A01187752
+Ariel Méndez A01020690
+
 ## Build Instructions
 
 1. Clone or Download the repository:
