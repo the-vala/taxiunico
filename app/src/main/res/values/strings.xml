@@ -3,4 +3,12 @@
     <string name="descLogo">imgLogo</string>
     <string name="logo">TAXI UNICO</string>
     <string name="ingresa">Ingresa a tu cuenta</string>
+    <string name="correo_electronico">Correo electronico</string>
+    <string name="login_email_hint">Ingresa tu correo electronico</string>
+    <string name="contrasena">Contraseña</string>
+    <string name="login_pass_hint">Ingresa tu contraseña</string>
+    <string name="iniciar_sesion">Iniciar Sesión</string>
+    <string name="aun_no_tienes_cuenta">¿Aun no tienes cuenta?</string>
+    <string name="registrate">Registrate</string>
+    <string name="card_template">•••• •••• •••• %d</string>
 </resources>
