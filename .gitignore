@@ -14,4 +14,5 @@
 /build
 .idea/inspectionProfiles/
 .idea/caches
+.idea/codeStyles
 /.idea/libraries
