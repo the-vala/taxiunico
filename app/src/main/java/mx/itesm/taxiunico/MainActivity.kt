@@ -18,28 +18,39 @@ package mx.itesm.taxiunico
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
+import android.view.MenuItem
+import mx.itesm.taxiunico.auth.AuthService
 import mx.itesm.taxiunico.auth.LoginActivity
 import mx.itesm.taxiunico.billing.PaymentFormsFragment
+import mx.itesm.taxiunico.models.UserType
 import mx.itesm.taxiunico.profile.UserProfileFragment
 
 class MainActivity : AppCompatActivity() {
-
-    private val auth = FirebaseAuth.getInstance()
+    private lateinit var authService: AuthService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        nav.setOnNavigationItemSelectedListener { navigate(it) }
+        authService = AuthService(this)
 
-        if (auth.currentUser == null) {
+
+        if (authService.isUserAuthenticated()) {
+            openDefaultFragment()
+
+        } else {
             startActivity(Intent(this, LoginActivity::class.java))
-         }
+        }
 
-        openDefaultFragment()
+
+        nav.menu.clear()
+        when(authService.getUserType()) {
+            UserType.TRAVELER -> nav.inflateMenu(R.menu.traveler_menu)
+            UserType.DRIVER -> nav.inflateMenu(R.menu.driver_menu)
+        }
+
+        nav.setOnNavigationItemSelectedListener { navigate(it) }
     }
 
 
