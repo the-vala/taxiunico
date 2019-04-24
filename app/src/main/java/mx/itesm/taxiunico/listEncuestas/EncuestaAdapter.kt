@@ -56,9 +56,9 @@ class EncuestaAdapter(
     inner class EncuestaViewHolder(override val containerView: View) : LayoutContainer {
 
         fun bind(encuesta: Encuesta) {
-            text_calificacion.text = "Calificación: " + encuesta.calificacion.toString()
-            text_fecha.text = "Fecha: " + encuesta.fecha
-            text_id_encuesta.text = "ID: " + encuesta.id.toString()
+            //text_calificacion.text = "Calificación: " + encuesta.calificacion.toString()
+            //text_fecha.text = "Fecha: " + encuesta.fecha
+            //text_id_encuesta.text = "ID: " + encuesta.id.toString()
         }
     }
 }

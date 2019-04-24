@@ -46,7 +46,7 @@ class UserProfileFragment : Fragment() {
         render()
 
         button.setOnClickListener {
-            saveProfile()
+            //saveProfile()
         }
 
         logout.setOnClickListener {

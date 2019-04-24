@@ -21,7 +21,7 @@ class EncuestasActivity : AppCompatActivity() {
     private fun updateAdapter(mutableListBooks: MutableList<Encuesta>) {
         val adapter = EncuestaAdapter(this, mutableListBooks)
         adapter.notifyDataSetChanged()
-        list_encuestas.adapter = adapter
+        //list_encuestas.adapter = adapter
     }
 
     companion object {
