@@ -24,4 +24,7 @@
     <string name="ya_tienes_cuenta">¿Ya tienes cuenta?</string>
     <string name="inicia_sesion">Inicia sesión</string>
     <string name="card_template">•••• •••• •••• %d</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
