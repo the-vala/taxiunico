@@ -43,7 +43,7 @@ class UserProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        render()
+        auth.uid?.let { render() }
 
         button.setOnClickListener {
             saveProfile()
