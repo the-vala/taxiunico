@@ -15,10 +15,17 @@
  */
 package mx.itesm.taxiunico.models
 
+
+enum class UserType {
+    TRAVELER,
+    DRIVER
+}
+
 data class UserProfile(
     var name: String = "",
     var lastname: String = "",
     var country: String = "",
     var email: String = "",
-    var phone: String = ""
+    var phone: String = "",
+    val userType: UserType = UserType.TRAVELER
 )
