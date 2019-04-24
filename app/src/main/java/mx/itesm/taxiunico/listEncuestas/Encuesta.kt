@@ -9,9 +9,8 @@ data class Encuesta (
     val id:Int,
     val calificacion:Int,
     val fecha: String
-):Parcelable {
+): Parcelable {
     companion object {
-        @SuppressLint("ResourceType")
         fun loadEncuestas(): MutableList<Encuesta> {
 
             val listEncuestas: MutableList<Encuesta> = mutableListOf()
@@ -19,5 +18,4 @@ data class Encuesta (
             return listEncuestas
         }
     }
-
 }
