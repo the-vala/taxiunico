@@ -11,9 +11,10 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
              tools:ignore="GoogleAppIndexingWarning">
-      
-        <activity android:name=".listEncuestas.EncuestasActivity"/ > 
-        <activity android:name=".billing.PaymentFormsActivity" />            
+
+
+        <activity android:name=".listEncuestas.EncuestasActivity" />
+        <activity android:name=".billing.PaymentFormsActivity" />
         <activity android:name=".auth.LoginActivity" />
         <activity android:name=".profile.UserProfileActivity" />
         <activity android:name=".billing.AddPaymentActivity" />
@@ -23,7 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".auth.SignupActivity">
-        </activity>
+        <activity android:name=".auth.SignupActivity" />
     </application>
 </manifest>
