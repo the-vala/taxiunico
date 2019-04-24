@@ -14,9 +14,7 @@
 
 
         <activity android:name=".listEncuestas.EncuestasActivity" />
-        <activity android:name=".billing.PaymentFormsActivity" />
         <activity android:name=".auth.LoginActivity" />
-        <activity android:name=".profile.UserProfileActivity" />
         <activity android:name=".billing.AddPaymentActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
