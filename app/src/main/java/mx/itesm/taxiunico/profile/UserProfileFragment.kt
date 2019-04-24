@@ -24,16 +24,19 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_user_profile.*
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.MainActivity
 import mx.itesm.taxiunico.R
+import mx.itesm.taxiunico.auth.AuthService
 import mx.itesm.taxiunico.models.UserProfile
 
 class UserProfileFragment : Fragment() {
-
     private val userService = UserService()
-
+    private lateinit var authService: AuthService
     private val auth = FirebaseAuth.getInstance()
 
+    private lateinit var userProfile: UserProfile
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +46,11 @@ class UserProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        auth.uid?.let { render() }
+
+        authService = AuthService(requireContext())
+        userProfile = authService.getUserProfile()
+
+        render(userProfile)
 
         button.setOnClickListener {
             saveProfile()
@@ -54,28 +61,24 @@ class UserProfileFragment : Fragment() {
         }
     }
 
-    private fun render() {
-        userService.getProfile(auth.uid!!) {
-            it?.let {
-                if (it.name != null)  {
-                    nameInput.setText(it.name)
-                    lastnameInput.setText(it.lastname)
-                    emailInput.setText(it.email)
-                    phoneInput.setText(it.phone)
-                }
-            }
-        }
+    private fun render(userProfile: UserProfile) {
+        nameInput.setText(userProfile.name)
+        lastnameInput.setText(userProfile.lastname)
+        emailInput.setText(userProfile.email)
+        phoneInput.setText(userProfile.phone)
     }
 
     private fun saveProfile() {
         Toast.makeText(requireContext(), "Guardando", Toast.LENGTH_SHORT).show()
-        userService.updateProfile(auth.uid!!, UserProfile(
+
+        MainScope().launch {
+            userService.updateProfile(authService.getUserUid()!!, UserProfile(
             name = nameInput.text.toString(),
             lastname = lastnameInput.text.toString(),
             email = emailInput.text.toString(),
             phone = phoneInput.text.toString()
-        )
-        ) {
+        ))
+
             Toast.makeText(requireContext(), "Perfil Guardado", Toast.LENGTH_SHORT).show()
         }
     }

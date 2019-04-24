@@ -25,15 +25,21 @@ import android.widget.Toast
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.coroutines.*
+
 import mx.itesm.taxiunico.MainActivity
+import mx.itesm.taxiunico.prefs.UserPrefs
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var authService: AuthService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        authService = AuthService(this)
 
         FirebaseApp.initializeApp(this)
         auth = FirebaseAuth.getInstance()
@@ -54,31 +60,14 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithEmail:success")
-                    val user = auth.currentUser
-                    Toast.makeText(this,"Successful: ${user?.email}",
-                        Toast.LENGTH_SHORT).show()
-                    val mainIntent = Intent(this, MainActivity::class.java)
-                    mainIntent.putExtra(USER, user?.email)
-                    startActivity(mainIntent)
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithEmail:failure", task.exception)
-                    Toast.makeText(this, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show()
-                }
-
-                // [START_EXCLUDE]
-                if (!task.isSuccessful) {
-                    Toast.makeText(this, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show()
-                }
-                // [END_EXCLUDE]
+        GlobalScope.launch(Dispatchers.Main) {
+            when(authService.authenticate(email, password)) {
+                is Result.Success ->
+                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                is Result.Failure ->
+                    Toast.makeText(this@LoginActivity, "Authentication failed.", Toast.LENGTH_SHORT).show()
             }
+        }
     }
 
     private fun validateForm(): Boolean {
