@@ -65,7 +65,5 @@ class PaymentFormsFragment : Fragment() {
         adapter.setData(list)
     }
 
-
-
     fun getAddPaymentIntent(): Intent = Intent(requireContext(), AddPaymentActivity::class.java)
 }

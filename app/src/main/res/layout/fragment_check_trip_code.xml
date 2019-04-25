@@ -1,14 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
+             xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              tools:context=".trips.CheckTripCodeFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Insertar codigo"/>
+    <android.support.constraint.ConstraintLayout android:layout_width="match_parent"
+                                                 android:layout_height="match_parent">
+
+        <TextView
+                android:id="@+id/titulo"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="Insertar codigo" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <EditText
+                android:id="@+id/insertar_codigo"
+                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:inputType="text"
+                app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="43dp" app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginBottom="43dp" app:layout_constraintBottom_toTopOf="@+id/button2"/>
+        <Button
+                android:text="Buscar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/button2"
+                app:layout_constraintTop_toBottomOf="@+id/insertar_codigo" android:layout_marginBottom="557dp"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.498"/>
+
+    </android.support.constraint.ConstraintLayout>
+
 
 </FrameLayout>

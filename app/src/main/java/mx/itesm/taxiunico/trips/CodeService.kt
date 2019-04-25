@@ -17,6 +17,7 @@ package mx.itesm.taxiunico.trips
 
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
+import mx.itesm.taxiunico.models.Codes
 import mx.itesm.taxiunico.models.UserProfile
 import mx.itesm.taxiunico.models.Viaje
 
@@ -24,15 +25,16 @@ import mx.itesm.taxiunico.models.Viaje
 class CodeService {
     private val db = FirebaseFirestore.getInstance()
 
-    suspend fun getTravelData(reservationCode: String): Viaje? {
-        val res = db.collection(USER_COLLECTION_KEY).document(reservationCode).get().await()
-        val trip = res.toObject(Viaje::class.java)
+    suspend fun getTravelData(reservationCode: String): Codes? {
+        val res = db.collection(CODE_COLLECTION_KEY).document().get().await()
+        val trip = res.toObject(Codes::class.java)
         return trip
     }
 
     companion object {
-        const val USER_COLLECTION_KEY = "code"
+        const val CODE_COLLECTION_KEY = "codes"
     }
+
 }
 
 

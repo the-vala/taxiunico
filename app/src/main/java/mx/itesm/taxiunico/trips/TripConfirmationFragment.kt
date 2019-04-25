@@ -17,7 +17,6 @@ class TripConfirmationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_trip_confirmation, container, false)
 
-
     companion object {
         @JvmStatic
         fun newInstance() = TripConfirmationFragment()

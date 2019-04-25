@@ -25,6 +25,7 @@ import mx.itesm.taxiunico.auth.LoginActivity
 import mx.itesm.taxiunico.billing.PaymentFormsFragment
 import mx.itesm.taxiunico.models.UserType
 import mx.itesm.taxiunico.profile.UserProfileFragment
+import mx.itesm.taxiunico.trips.CheckTripCodeFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var authService: AuthService
@@ -65,6 +66,7 @@ class MainActivity : AppCompatActivity() {
         when(menuItem.itemId) {
             R.id.profileMenu -> UserProfileFragment()
             R.id.paymentMenu -> PaymentFormsFragment()
+            R.id.newTripMenu -> CheckTripCodeFragment()
             else -> throw Error()
         }
 
