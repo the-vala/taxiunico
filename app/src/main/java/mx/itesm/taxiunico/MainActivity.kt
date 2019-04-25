@@ -16,15 +16,17 @@
 package mx.itesm.taxiunico
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import mx.itesm.taxiunico.auth.AuthService
 import mx.itesm.taxiunico.auth.LoginActivity
 import mx.itesm.taxiunico.billing.PaymentFormsFragment
 import mx.itesm.taxiunico.models.UserType
 import mx.itesm.taxiunico.profile.UserProfileFragment
+import mx.itesm.taxiunico.trips.CheckTripCodeFragment
+import mx.itesm.taxiunico.trips.MapsActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var authService: AuthService
@@ -35,7 +37,6 @@ class MainActivity : AppCompatActivity() {
 
         authService = AuthService(this)
 
-
         if (authService.isUserAuthenticated()) {
             openDefaultFragment()
 
@@ -43,8 +44,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
         }
 
-
-        nav.menu.clear()
         when(authService.getUserType()) {
             UserType.TRAVELER -> nav.inflateMenu(R.menu.traveler_menu)
             UserType.DRIVER -> nav.inflateMenu(R.menu.driver_menu)
@@ -65,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         when(menuItem.itemId) {
             R.id.profileMenu -> UserProfileFragment()
             R.id.paymentMenu -> PaymentFormsFragment()
+            R.id.travelerTravelMenu -> CheckTripCodeFragment()
             else -> throw Error()
         }
 

@@ -4,7 +4,7 @@
             android:id="@+id/profileMenu"
         android:title="Mi Perfil" />
     <item
-            android:id="@+id/travelMenu"
+            android:id="@+id/travelerTravelMenu"
             android:title="Viajes" />
     <item
             android:id="@+id/paymentMenu"
