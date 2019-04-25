@@ -23,7 +23,7 @@ class CompletedTripsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-        recyclerView.layoutManager= LinearLayoutManager(view.context, LinearLayout.VERTICAL,false)
+        recyclerView.layoutManager= LinearLayoutManager(view.context, RecyclerView.VERTICAL,false)
 
         val viajes = ArrayList<Viaje>()
         viajes.add(Viaje("LHR2J5","06/10/18 10:15 AM", "Cord", "Cord", "Alfonso",

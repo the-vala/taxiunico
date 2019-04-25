@@ -50,39 +50,23 @@
         <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/nameInput"/>
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" android:id="@+id/lastname"
-            android:hint="Apellido"
-            app:hintEnabled="true"
-            app:layout_constraintTop_toBottomOf="@+id/name"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="32dp" android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/lastnameInput"/>
+                android:id="@+id/nameInput" android:singleLine="true"/>
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content" android:id="@+id/email"
             app:hintEnabled="true"
             android:hint="E-Mail"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/lastname"
             android:layout_marginEnd="32dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="32dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/phone">
+            app:layout_constraintBottom_toTopOf="@+id/phone" android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/name">
 
         <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/emailInput"/>
+                android:id="@+id/emailInput" android:singleLine="true"/>
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
@@ -95,7 +79,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/phoneInput" android:singleLine="true"/>
+                android:layout_height="wrap_content" android:id="@+id/phoneInput" android:singleLine="false"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

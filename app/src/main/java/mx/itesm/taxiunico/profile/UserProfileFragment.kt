@@ -31,6 +31,7 @@ import mx.itesm.taxiunico.MainActivity
 import mx.itesm.taxiunico.R
 import mx.itesm.taxiunico.auth.AuthService
 import mx.itesm.taxiunico.models.UserProfile
+import mx.itesm.taxiunico.prefs.UserPrefs
 
 class UserProfileFragment : Fragment() {
     private val userService = UserService()
@@ -64,7 +65,6 @@ class UserProfileFragment : Fragment() {
 
     private fun render(userProfile: UserProfile) {
         nameInput.setText(userProfile.name)
-        lastnameInput.setText(userProfile.lastname)
         emailInput.setText(userProfile.email)
         phoneInput.setText(userProfile.phone)
     }
@@ -75,7 +75,6 @@ class UserProfileFragment : Fragment() {
         MainScope().launch {
             userService.updateProfile(authService.getUserUid()!!, UserProfile(
             name = nameInput.text.toString(),
-            lastname = lastnameInput.text.toString(),
             email = emailInput.text.toString(),
             phone = phoneInput.text.toString()
         ))
@@ -86,6 +85,7 @@ class UserProfileFragment : Fragment() {
 
     private fun signOut() {
         auth.signOut()
+        UserPrefs(requireContext()).clear()
         val mainIntent = Intent(context, MainActivity::class.java)
         startActivity(mainIntent)
     }
