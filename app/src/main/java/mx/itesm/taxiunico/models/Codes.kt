@@ -4,7 +4,7 @@ package mx.itesm.taxiunico.models
     val destination: String = "",
     val fRegreso: String = "",
     val fSalida: String = "",
-    var isRound: Boolean = true,
+    @JvmField var isRound: Boolean = false,
     val origin: String = ""
     )
 
