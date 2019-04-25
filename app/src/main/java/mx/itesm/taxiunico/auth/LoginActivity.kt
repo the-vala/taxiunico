@@ -46,6 +46,27 @@ class LoginActivity : AppCompatActivity() {
             val signupIntent = Intent(this, SignupActivity::class.java)
             startActivity(signupIntent)
         }
+
+        loginContraseñaBtn.setOnClickListener {
+            var valid = true
+            val email = loginInputEmail.text.toString()
+            if (TextUtils.isEmpty(email)) {
+                loginInputEmail.error = "Required."
+                valid = false
+            } else {
+                loginInputEmail.error = null
+            }
+            if (valid) {
+                auth.sendPasswordResetEmail(email)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.d(TAG, "Email enviado.")
+                        }
+                    }
+                Toast.makeText(this,"Se te ha enviado un correo para restablecer tu contraseña.",
+                    Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun signIn(email: String, password: String) {
@@ -96,7 +117,12 @@ class LoginActivity : AppCompatActivity() {
         if (TextUtils.isEmpty(password)) {
             loginInputPass.error = "Required."
             valid = false
-        } else {
+        }
+        else if (password.length < 6) {
+            loginInputPass.error = "At least 6 characters."
+            valid = false
+        }
+        else {
             loginInputPass.error = null
         }
 

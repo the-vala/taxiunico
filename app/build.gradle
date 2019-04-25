@@ -23,7 +23,7 @@ android {
 }
 
 androidExtensions {
-    experimental true
+    experimental = true
 }
 
 dependencies {

@@ -35,6 +35,18 @@ class UserService {
         }
     }
 
+    fun createProfile(userId: String, userProfile: UserProfile, onSuccess: () -> Unit) {
+        val user: HashMap<String, Any> = hashMapOf()
+        user.put("country", userProfile.country)
+        user.put("email", userProfile.email)
+        user.put("lastname", userProfile.lastname)
+        user.put("name", userProfile.name)
+        user.put("phone", userProfile.phone)
+        db.collection(USER_COLLECTION_KEY).document(userId).set(user).addOnSuccessListener {
+            onSuccess()
+        }
+    }
+
     companion object {
         const val USER_COLLECTION_KEY = "users"
     }

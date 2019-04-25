@@ -46,7 +46,7 @@ class UserProfileFragment : Fragment() {
         auth.uid?.let { render() }
 
         button.setOnClickListener {
-            saveProfile()
+            //saveProfile()
         }
 
         logout.setOnClickListener {

@@ -11,9 +11,9 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
              tools:ignore="GoogleAppIndexingWarning">
-
-
-        <activity android:name=".listEncuestas.EncuestasActivity" />
+      
+        <activity android:name=".listEncuestas.EncuestasActivity"/>
+        <activity android:name=".billing.PaymentFormsActivity" />            
         <activity android:name=".auth.LoginActivity" />
         <activity android:name=".billing.AddPaymentActivity" />
         <activity android:name=".MainActivity">
