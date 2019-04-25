@@ -24,12 +24,18 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_signup.*
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.MainActivity
 import mx.itesm.taxiunico.R
+import mx.itesm.taxiunico.models.UserProfile
+import mx.itesm.taxiunico.models.UserType
+import mx.itesm.taxiunico.profile.UserService
 
 class SignupActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
+    private val userService = UserService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,9 +68,20 @@ class SignupActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
-                    val user = auth.currentUser
+                    Toast.makeText(this, "Registrando", Toast.LENGTH_SHORT).show()
+                    val id = auth.uid
+
+                    val profile = UserProfile(signupInputName.text.toString(),
+                        "MX",
+                        signupInputEmail.text.toString(),
+                        signupInputPhone.text.toString(),
+                        UserType.TRAVELER)
+                    MainScope().launch {
+                        userService.updateProfile(id!!, profile)
+                        Toast.makeText(baseContext, "Usuario creado con exito", Toast.LENGTH_SHORT).show()
+                    }
                     val mainIntent = Intent(this, MainActivity::class.java)
-                    mainIntent.putExtra(USER, user?.email)
+                    mainIntent.putExtra(USER, profile.email)
                     startActivity(mainIntent)
                 } else {
                     // If sign in fails, display a message to the user.
@@ -107,7 +124,12 @@ class SignupActivity : AppCompatActivity() {
         if (TextUtils.isEmpty(password)) {
             signupInputPass.error = "Required."
             valid = false
-        } else {
+        }
+        else if (password.length < 6) {
+            signupInputPass.error = "At least 6 characters."
+            valid = false
+        }
+        else {
             signupInputPass.error = null
         }
 

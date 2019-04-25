@@ -1,12 +1,15 @@
 package mx.itesm.taxiunico.models
 
-import com.google.firebase.firestore.GeoPoint
-
 data class Viaje(
-    val destination: GeoPoint,
-    val origin: GeoPoint,
-    val driverName: String,
-    val distance: Float,
-    val completed: Boolean,
-    val imageUrl: String
+    var codeId: String,
+    var dateTime: String,
+    var origin: String,
+    var destination: String,
+    var driverName: String,
+    var vehicle: String,
+    var distance: Float,
+    var cost: Float,
+    var payment: String,
+    var completed: Boolean,
+    var imageUrl: String
 )
