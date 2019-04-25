@@ -25,7 +25,6 @@ import mx.itesm.taxiunico.auth.LoginActivity
 import mx.itesm.taxiunico.billing.PaymentFormsFragment
 import mx.itesm.taxiunico.models.UserType
 import mx.itesm.taxiunico.profile.UserProfileFragment
-import mx.itesm.taxiunico.travels.TripsPagerActivity
 import mx.itesm.taxiunico.travels.TripsPagerFragment
 import mx.itesm.taxiunico.trips.CheckTripCodeFragment
 

@@ -14,8 +14,6 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".travels.TripsPagerActivity">
-        </activity>
         <activity android:name=".listEncuestas.EncuestasActivity"/>
         <activity android:name=".billing.PaymentFormsActivity"/>
 
