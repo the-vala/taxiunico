@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -111,7 +111,7 @@
                     android:layout_marginStart="8dp" android:background="@drawable/rounded_button"
                     android:textColor="@android:color/white" android:textSize="26sp"
                     android:textAllCaps="false" android:layout_weight="1" android:backgroundTint="@color/taxiYellow"/>
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" android:layout_weight="1">
                 <TextView
@@ -162,7 +162,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView7"
                         app:layout_constraintVertical_bias="0.133"
                         android:textAlignment="center"/>
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

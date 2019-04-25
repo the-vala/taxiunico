@@ -16,23 +16,22 @@
 package mx.itesm.taxiunico.profile
 
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.tasks.await
 import mx.itesm.taxiunico.models.UserProfile
 
 
 class UserService {
     private val db = FirebaseFirestore.getInstance()
 
-    fun getProfile(userId: String, onComplete: (UserProfile?) -> Unit) {
-        db.collection(USER_COLLECTION_KEY).document(userId).get().addOnCompleteListener {
-            val res = it.result.toObject(UserProfile::class.java)
-            onComplete(res)
-        }
+
+    suspend fun getProfile(userId: String): UserProfile? {
+        val res = db.collection(USER_COLLECTION_KEY).document(userId).get().await()
+        val user = res.toObject(UserProfile::class.java)
+        return user
     }
 
-    fun updateProfile(userId: String, userProfile: UserProfile, onSuccess: () -> Unit) {
-        db.collection(USER_COLLECTION_KEY).document(userId).set(userProfile).addOnSuccessListener {
-            onSuccess()
-        }
+    suspend fun updateProfile(userId: String, userProfile: UserProfile) {
+        db.collection(USER_COLLECTION_KEY).document(userId).set(userProfile).await()
     }
 
     fun createProfile(userId: String, userProfile: UserProfile, onSuccess: () -> Unit) {

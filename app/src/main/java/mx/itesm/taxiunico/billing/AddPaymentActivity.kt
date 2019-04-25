@@ -15,10 +15,11 @@
  */
 package mx.itesm.taxiunico.billing
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_add_payment.*
+import kotlinx.android.synthetic.main.row_payment_form_cash.view.*
 import mx.itesm.taxiunico.R
 
 class AddPaymentActivity : AppCompatActivity() {
