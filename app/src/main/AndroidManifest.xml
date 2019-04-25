@@ -14,8 +14,8 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".trips.TaxiDestinations">
-        </activity>
+
+        <activity android:name=".trips.TaxiDestinations"/>
         <activity android:name=".listEncuestas.EncuestasActivity"/>
         <activity android:name=".auth.LoginActivity"/>
         <activity android:name=".billing.AddPaymentActivity"/>
