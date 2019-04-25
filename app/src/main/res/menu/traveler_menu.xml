@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
             android:id="@+id/profileMenu"
-        android:title="Mi Perfil" />
+            android:title="Mi Perfil" />
     <item
             android:id="@+id/newTripMenu"
             android:title="Nuevo Viaje" />
     <item
-            android:id="@+id/travelMenu"
+            android:id="@+id/travelerTravelMenu"
             android:title="Viajes" />
     <item
             android:id="@+id/paymentMenu"

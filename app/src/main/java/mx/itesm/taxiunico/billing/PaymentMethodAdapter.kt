@@ -15,12 +15,12 @@
  */
 package mx.itesm.taxiunico.billing
 
-import android.support.annotation.LayoutRes
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.LayoutRes
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.row_payment_form_card.cardNumText
 import java.nio.channels.IllegalSelectorException
 import mx.itesm.taxiunico.R

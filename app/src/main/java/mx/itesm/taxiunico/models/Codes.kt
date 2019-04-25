@@ -6,5 +6,5 @@ package mx.itesm.taxiunico.models
     val fSalida: String = "",
     @JvmField var isRound: Boolean = false,
     val origin: String = ""
-    )
+ )
 
