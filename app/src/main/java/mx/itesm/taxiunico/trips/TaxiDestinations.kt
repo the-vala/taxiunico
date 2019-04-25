@@ -1,7 +1,7 @@
 package mx.itesm.taxiunico.trips
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import mx.itesm.taxiunico.R
 
 class TaxiDestinations : AppCompatActivity() {
