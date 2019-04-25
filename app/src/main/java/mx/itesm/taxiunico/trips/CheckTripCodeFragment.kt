@@ -2,7 +2,7 @@ package mx.itesm.taxiunico.trips
 
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,19 +29,17 @@ class CheckTripCodeFragment : Fragment() {
     }
 
     private fun verifyCode() {
-        // TODO(ARIEL) verify code
-        /**
-         * if successful
-         * fragmentManager.beginTransaction()
-         * .replace(R.id.mainContent, TripConfigurationFragment.newInstance()
-         * .commitAllowingStateLoss()
-         *
-         * else mostrar pantalla de codigo invalido
-         */
 
         MainScope().launch {
             codeService.getTravelData(insertar_codigo.text.toString());
         }
     }
-    private fun startTripConfiguration(departingCityId: String, destinationCityId: String) {}
+
+    private fun startTripConfiguration(departingCityId: String, destinationCityId: String) {
+        requireFragmentManager().beginTransaction()
+            .replace(
+                android.R.id.content,
+                TripConfigurationFragment.newInstance(departingCityId, destinationCityId))
+            .commitAllowingStateLoss()
+    }
 }

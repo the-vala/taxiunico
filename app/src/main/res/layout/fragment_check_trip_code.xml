@@ -34,6 +34,4 @@
                 android:layout_marginStart="8dp"/>
 
     </android.support.constraint.ConstraintLayout>
-
-
 </FrameLayout>
