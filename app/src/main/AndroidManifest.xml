@@ -21,7 +21,6 @@
                 android:value="@string/google_maps_key"/>
 
         <activity android:name=".trips.TaxiDestinations"/>
-        <activity android:name=".trips.MapsActivity"/>
         <activity android:name=".listEncuestas.EncuestasActivity"/>
         <activity android:name=".auth.LoginActivity"/>
         <activity android:name=".billing.AddPaymentActivity"/>
