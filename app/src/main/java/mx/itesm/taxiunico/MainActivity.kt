@@ -18,6 +18,7 @@ package mx.itesm.taxiunico
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.DialogFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.MenuItem
 import mx.itesm.taxiunico.auth.AuthService
@@ -25,12 +26,14 @@ import mx.itesm.taxiunico.auth.LoginActivity
 import mx.itesm.taxiunico.billing.PaymentFormsFragment
 import mx.itesm.taxiunico.models.UserType
 import mx.itesm.taxiunico.profile.UserProfileFragment
+import mx.itesm.taxiunico.survey.SurveyDialogFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var authService: AuthService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
 
         authService = AuthService(this)
@@ -51,6 +54,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         nav.setOnNavigationItemSelectedListener { navigate(it) }
+        //TODO Eliminar esto de main
+        //Eliminar esto lol
+        val surveyInstance = SurveyDialogFragment()
+        surveyInstance.show(supportFragmentManager, "survey")
+        //hasta aqui
     }
 
 

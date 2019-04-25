@@ -1,14 +1,13 @@
-package mx.itesm.taxiunico.listEncuestas
+package mx.itesm.taxiunico.survey
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_encuestas.*
 import mx.itesm.taxiunico.R
 
-class EncuestasActivity : AppCompatActivity() {
+class SurveysActivity : AppCompatActivity() {
 
-    lateinit var adapter: EncuestaAdapter
-    private var encuestas: MutableList<Encuesta> = mutableListOf()
+    lateinit var adapter: SurveyAdapter
+    private var encuestas: MutableList<Survey> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,7 +17,7 @@ class EncuestasActivity : AppCompatActivity() {
     }
 
     private fun updateData () {
-        encuestas = Encuesta.loadEncuestas()
+        encuestas = Survey.loadEncuestas()
         adapter.updateAdapter(encuestas)
     }
 }
