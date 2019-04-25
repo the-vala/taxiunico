@@ -26,7 +26,7 @@ class CodeService {
     private val db = FirebaseFirestore.getInstance()
 
     suspend fun getTravelData(reservationCode: String): Codes? {
-        val res = db.collection(CODE_COLLECTION_KEY).document().get().await()
+        val res = db.collection(CODE_COLLECTION_KEY).document(reservationCode).get().await()
         val trip = res.toObject(Codes::class.java)
         return trip
     }

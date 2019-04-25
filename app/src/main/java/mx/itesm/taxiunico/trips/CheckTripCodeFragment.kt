@@ -21,6 +21,12 @@ class CheckTripCodeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_check_trip_code, container, false)
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        buscar_button.setOnClickListener {
+            verifyCode()
+        }
+    }
 
     private fun verifyCode() {
         // TODO(ARIEL) verify code
@@ -32,6 +38,7 @@ class CheckTripCodeFragment : Fragment() {
          *
          * else mostrar pantalla de codigo invalido
          */
+
         MainScope().launch {
             codeService.getTravelData(insertar_codigo.text.toString());
         }
