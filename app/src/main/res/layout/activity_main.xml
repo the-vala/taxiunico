@@ -25,4 +25,4 @@
             app:layout_constraintHorizontal_bias="0.6"
             android:background="@color/colorPrimary"
             android:id="@+id/nav" />
-</constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

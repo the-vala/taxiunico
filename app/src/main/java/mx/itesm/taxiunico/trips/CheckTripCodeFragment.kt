@@ -23,15 +23,18 @@ class CheckTripCodeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        insertar_codigo.setText("Jwzc74")
         buscar_button.setOnClickListener {
             verifyCode()
         }
     }
 
     private fun verifyCode() {
-
         MainScope().launch {
-            codeService.getTravelData(insertar_codigo.text.toString());
+            val result = codeService.getTravelData(insertar_codigo.text.toString())
+            when(result) {
+                is Result.Success -> startTripConfiguration(result.result.origin, result.result.destination)
+            }
         }
     }
 
@@ -40,6 +43,8 @@ class CheckTripCodeFragment : Fragment() {
             .replace(
                 android.R.id.content,
                 TripConfigurationFragment.newInstance(departingCityId, destinationCityId))
+            .addToBackStack(null)
             .commitAllowingStateLoss()
+
     }
 }
