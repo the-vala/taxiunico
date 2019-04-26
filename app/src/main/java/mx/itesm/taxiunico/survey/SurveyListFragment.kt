@@ -1,24 +1,33 @@
 package mx.itesm.taxiunico.survey
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_encuestas.*
+import kotlinx.android.synthetic.main.fragment_survey_list.*
 import mx.itesm.taxiunico.R
 
-class SurveysActivity : AppCompatActivity() {
+class SurveyListFragment : Fragment() {
     private val surveyService = SurveyService()
     //TODO implement auth for driver
     private val auth = FirebaseAuth.getInstance()
     val driverID = "%G2TY35RDG5S45"
     //
     private var encuestas: MutableList<Survey> = mutableListOf()
-    private var adapter: SurveyAdapter = SurveyAdapter(this, encuestas)
+    lateinit var adapter: SurveyAdapter
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? = inflater.inflate(R.layout.fragment_survey_list, container, false)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_encuestas)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        adapter = SurveyAdapter(requireContext(), encuestas)
 
         list_encuestas.adapter = adapter
         updateData()

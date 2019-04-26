@@ -1,27 +1,20 @@
 package mx.itesm.taxiunico.survey
 
-import android.app.Dialog
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
-import android.support.v7.app.AlertDialog
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import mx.itesm.taxiunico.R
-import kotlinx.android.synthetic.main.dialog_survey.*
+import kotlinx.android.synthetic.main.fragment_survey.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
-
-class SurveyDialogFragment : DialogFragment() {
+class SurveyFragment : Fragment() {
     private val db = FirebaseFirestore.getInstance()
     val surveyService = SurveyService()
     //val auth = FirebaseAuth.getInstance()
@@ -33,18 +26,41 @@ class SurveyDialogFragment : DialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.dialog_survey, container, false)
+    ): View? = inflater.inflate(R.layout.fragment_survey, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        star1.setOnClickListener {updateScore(1)}
-        star2.setOnClickListener {updateScore(2)}
-        star3.setOnClickListener {updateScore(3)}
-        star4.setOnClickListener {updateScore(4)}
-        star5.setOnClickListener {updateScore(5)}
+        star1.setOnClickListener {
+            restoreButtons()
+            star1.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.selectedScore))
+            updateScore(1)}
+        star2.setOnClickListener {
+            restoreButtons()
+            star2.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.selectedScore))
+            updateScore(2)}
+        star3.setOnClickListener {
+            restoreButtons()
+            star3.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.selectedScore))
+            updateScore(3)}
+        star4.setOnClickListener {
+            restoreButtons()
+            star4.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.selectedScore))
+            updateScore(4)}
+        star5.setOnClickListener {
+            restoreButtons()
+            star5.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.selectedScore))
+            updateScore(5)}
 
         saveSurvey.setOnClickListener {saveSurvey()}
+    }
+
+    private fun restoreButtons() {
+        star1.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.taxiYellow))
+        star2.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.taxiYellow))
+        star3.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.taxiYellow))
+        star4.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.taxiYellow))
+        star5.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.taxiYellow))
     }
 
     private fun updateScore(newScore: Int) {

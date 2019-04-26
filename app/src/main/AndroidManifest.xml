@@ -13,7 +13,7 @@
              tools:ignore="GoogleAppIndexingWarning">
 
 
-        <activity android:name=".survey.SurveysActivity" />
+        <activity android:name=".survey.SurveyListFragment" />
         <activity android:name=".auth.LoginActivity" />
         <activity android:name=".billing.AddPaymentActivity" />
         <activity android:name=".MainActivity">
