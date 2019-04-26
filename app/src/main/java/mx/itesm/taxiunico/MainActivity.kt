@@ -56,8 +56,11 @@ class MainActivity : AppCompatActivity() {
         nav.setOnNavigationItemSelectedListener { navigate(it) }
         //TODO Eliminar esto de main
         //Eliminar esto lol
-        val surveyInstance = SurveyDialogFragment()
-        surveyInstance.show(supportFragmentManager, "survey")
+        //val surveyInstance = SurveyDialogFragment()
+        //surveyInstance.show(supportFragmentManager, "survey")
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.mainContent, SurveyDialogFragment())
+            .commit()
         //hasta aqui
     }
 

@@ -6,4 +6,5 @@
 
     <color name="taxiBlue">#53B4FF</color>
     <color name="taxiYellow">#FFC336</color>
+    <color name="selectedScore">#B18903</color>
 </resources>

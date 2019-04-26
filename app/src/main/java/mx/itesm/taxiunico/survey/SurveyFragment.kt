@@ -3,10 +3,12 @@ package mx.itesm.taxiunico.survey
 import android.app.Dialog
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import mx.itesm.taxiunico.R
@@ -27,18 +29,15 @@ class SurveyDialogFragment : DialogFragment() {
     val idDriver = "%G2TY35RDG5S45"
     private var score: Int = 5
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        super.onCreateDialog(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? = inflater.inflate(R.layout.dialog_survey, container, false)
 
-        val inflater = activity!!.layoutInflater
-        val builder = AlertDialog.Builder(requireContext())
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        builder.setView(inflater.inflate(R.layout.dialog_survey, null))
-
-        return builder.create()
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         star1.setOnClickListener {updateScore(1)}
         star2.setOnClickListener {updateScore(2)}
         star3.setOnClickListener {updateScore(3)}
@@ -46,8 +45,6 @@ class SurveyDialogFragment : DialogFragment() {
         star5.setOnClickListener {updateScore(5)}
 
         saveSurvey.setOnClickListener {saveSurvey()}
-
-        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     private fun updateScore(newScore: Int) {
