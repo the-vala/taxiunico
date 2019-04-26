@@ -13,6 +13,16 @@ class SurveyService {
         private val TAG = SurveyService::class.java.simpleName
     }
 
+    fun getSurveys(userId: String, onComplete: (MutableList<Survey>) -> Unit) {
+        db.collection(SURVEY_COLLECTION_KEY)
+            .document(userId).collection(SURVEY_COLLECTION_KEY).get().addOnSuccessListener {
+                val surveys = it.documents
+                    .filter { it.exists() }
+                    .map { it.toObject(Survey::class.java)!! }.toMutableList()
+                onComplete(surveys)
+            }
+    }
+
     suspend fun addSurvey(driverId: String, survey: Survey): Result<Unit> =
         try {
             coroutineScope{
