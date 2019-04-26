@@ -28,7 +28,7 @@ android {
 }
 
 androidExtensions {
-    experimental true
+    experimental = true
 }
 
 dependencies {
@@ -47,6 +47,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.gms:play-services-base:16.1.0'
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
+    implementation 'androidx.viewpager:viewpager:1.0.0'
 
 }
 

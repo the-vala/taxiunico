@@ -27,7 +27,6 @@ class UserPrefs(
     var userProfile: UserProfile
         get() = UserProfile(
                 name = prefs.getString(USER_NAME_KEY, ""),
-                lastname = prefs.getString(USER_LAST_NAME_KEY, ""),
                 country = prefs.getString(USER_COUNTRY_KEY, ""),
                 email = prefs.getString(USER_EMAIL_KEY, ""),
                 phone = prefs.getString(USER_PHONE_KEY, ""),
@@ -37,7 +36,6 @@ class UserPrefs(
         set(value) {
             prefs.edit().apply {
                 putString(USER_NAME_KEY, value.name)
-                putString(USER_LAST_NAME_KEY, value.lastname)
                 putString(USER_COUNTRY_KEY, value.country)
                 putString(USER_EMAIL_KEY, value.email)
                 putString(USER_PHONE_KEY, value.phone)
@@ -50,7 +48,6 @@ class UserPrefs(
         private const val FILE_KEY = "user.prefs.file.key"
         private const val USER_UUID_KEY = "user.uuid.key"
         private const val USER_NAME_KEY = "user.name.key"
-        private const val USER_LAST_NAME_KEY = "user.last.name.key"
         private const val USER_COUNTRY_KEY = "user.country.key"
         private const val USER_EMAIL_KEY = "user.email.key"
         private const val USER_PHONE_KEY = "user.phone.key"
