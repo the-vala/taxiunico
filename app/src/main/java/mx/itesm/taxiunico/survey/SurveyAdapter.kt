@@ -15,7 +15,7 @@ class SurveyAdapter(
 ): BaseAdapter() {
 
     var viewHolderCount:Int = 0
-    lateinit var adapter: SurveyAdapter
+    //lateinit var adapter: SurveyAdapter
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val surveyHolder: SurveyViewHolder
@@ -32,7 +32,6 @@ class SurveyAdapter(
             viewHolderCount++
 
         } else {
-
             rowView = convertView
             surveyHolder = convertView.tag as SurveyViewHolder
         }
@@ -58,13 +57,9 @@ class SurveyAdapter(
     }
 
     inner class SurveyViewHolder(override val containerView: View) : LayoutContainer {
-        //TODO agregar AuthDriver
-        val idDriver = "%G2TY35RDG5S45"
-
         fun bind(survey: Survey) {
             text_calificacion.text = context.getString(R.string.calificacion, survey.score)
             text_fecha.text = context.getString(R.string.fecha_encuesta, survey.date)
-            text_id_encuesta.text = context.getString(R.string.id_encuesta, idDriver)
         }
     }
 }

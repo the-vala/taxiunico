@@ -6,7 +6,6 @@
 
     <string name="calificacion">Calificación: %1$d</string>
     <string name="fecha_encuesta">Fecha: %1$s</string>
-    <string name="id_encuesta">ID: %1$s</string>
 
     <string name="name">Nombre</string>
     <string name="name_hint">Ingresa tu nombre de usuario</string>
