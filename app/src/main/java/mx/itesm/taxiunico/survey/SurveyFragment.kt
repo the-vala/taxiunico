@@ -30,10 +30,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class SurveyFragment : Fragment() {
-    private val db = FirebaseFirestore.getInstance()
     val surveyService = SurveyService()
-    //val auth = FirebaseAuth.getInstance()
-    //TODO implementar auth de Driver
+
+    //TODO pasar como argumento el id del driver
     val idDriver = "%G2TY35RDG5S45"
     private var score: Int = 5
 
