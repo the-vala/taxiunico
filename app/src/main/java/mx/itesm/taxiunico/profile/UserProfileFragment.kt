@@ -17,19 +17,21 @@ package mx.itesm.taxiunico.profile
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_user_profile.*
+import kotlinx.android.synthetic.main.row_payment_form_cash.view.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.MainActivity
 import mx.itesm.taxiunico.R
 import mx.itesm.taxiunico.auth.AuthService
 import mx.itesm.taxiunico.models.UserProfile
+import mx.itesm.taxiunico.prefs.UserPrefs
 
 class UserProfileFragment : Fragment() {
     private val userService = UserService()
@@ -53,7 +55,7 @@ class UserProfileFragment : Fragment() {
         render(userProfile)
 
         button.setOnClickListener {
-            saveProfile()
+            //saveProfile()
         }
 
         logout.setOnClickListener {
@@ -63,7 +65,6 @@ class UserProfileFragment : Fragment() {
 
     private fun render(userProfile: UserProfile) {
         nameInput.setText(userProfile.name)
-        lastnameInput.setText(userProfile.lastname)
         emailInput.setText(userProfile.email)
         phoneInput.setText(userProfile.phone)
     }
@@ -74,7 +75,6 @@ class UserProfileFragment : Fragment() {
         MainScope().launch {
             userService.updateProfile(authService.getUserUid()!!, UserProfile(
             name = nameInput.text.toString(),
-            lastname = lastnameInput.text.toString(),
             email = emailInput.text.toString(),
             phone = phoneInput.text.toString()
         ))
@@ -85,6 +85,7 @@ class UserProfileFragment : Fragment() {
 
     private fun signOut() {
         auth.signOut()
+        UserPrefs(requireContext()).clear()
         val mainIntent = Intent(context, MainActivity::class.java)
         startActivity(mainIntent)
     }

@@ -1,7 +1,7 @@
 package mx.itesm.taxiunico.listEncuestas
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_encuestas.*
 import mx.itesm.taxiunico.R
 
