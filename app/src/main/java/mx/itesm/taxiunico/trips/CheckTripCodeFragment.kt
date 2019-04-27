@@ -1,6 +1,5 @@
 package mx.itesm.taxiunico.trips
 
-
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -23,7 +22,7 @@ class CheckTripCodeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        insertar_codigo.setText("Jwzc74")
+        buscar_button.setText("Jwzc74")
         buscar_button.setOnClickListener {
             verifyCode()
         }
@@ -31,7 +30,7 @@ class CheckTripCodeFragment : Fragment() {
 
     private fun verifyCode() {
         MainScope().launch {
-            val result = codeService.getTravelData(insertar_codigo.text.toString())
+            val result = codeService.getTravelData(buscar_button.text.toString())
             when(result) {
                 is Result.Success -> startTripConfiguration(result.result.origin, result.result.destination)
             }

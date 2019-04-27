@@ -12,7 +12,7 @@
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
     <TextView
-            android:text="Numero de tarjeta"
+            android:text="@string/card_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/cardNumLabel"
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/expDateLabel"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="Fecha de expiración"
+            android:text="@string/exp_date"
             app:layout_constraintTop_toBottomOf="@+id/cardNumText"
             app:layout_constraintBottom_toTopOf="@+id/expDateText"/>
     <TextView
