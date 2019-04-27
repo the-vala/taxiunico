@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2019 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package mx.itesm.taxiunico.trips
 
 import android.os.Bundle
@@ -22,7 +37,6 @@ class CheckTripCodeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        buscar_button.setText("Jwzc74")
         buscar_button.setOnClickListener {
             verifyCode()
         }
@@ -32,16 +46,17 @@ class CheckTripCodeFragment : Fragment() {
         MainScope().launch {
             val result = codeService.getTravelData(buscar_button.text.toString())
             when(result) {
-                is Result.Success -> startTripConfiguration(result.result.origin, result.result.destination)
+                is Result.Success ->
+                    startTripConfiguration(result.result.origin, result.result.destination, result.result.isRound)
             }
         }
     }
 
-    private fun startTripConfiguration(departingCityId: String, destinationCityId: String) {
+    private fun startTripConfiguration(departingCityId: String, destinationCityId: String, isRoundTrip: Boolean) {
         requireFragmentManager().beginTransaction()
             .replace(
                 android.R.id.content,
-                TripConfigurationFragment.newInstance(departingCityId, destinationCityId))
+                TripConfigurationFragment.newInstance(departingCityId, destinationCityId, isRoundTrip))
             .addToBackStack(null)
             .commitAllowingStateLoss()
 

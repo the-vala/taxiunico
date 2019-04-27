@@ -27,12 +27,15 @@ import mx.itesm.taxiunico.models.UserType
 import mx.itesm.taxiunico.profile.UserProfileFragment
 import mx.itesm.taxiunico.travels.TripsPagerFragment
 import mx.itesm.taxiunico.trips.CheckTripCodeFragment
+import mx.itesm.taxiunico.survey.SurveyFragment
+import mx.itesm.taxiunico.survey.SurveyListFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var authService: AuthService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
 
         authService = AuthService(this)

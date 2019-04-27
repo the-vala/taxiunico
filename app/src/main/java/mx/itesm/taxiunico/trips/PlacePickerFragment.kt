@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2019 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package mx.itesm.taxiunico.trips
 
 
@@ -11,12 +26,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.android.synthetic.main.fragment_place_picker.*
 
 import mx.itesm.taxiunico.R
 
@@ -44,17 +62,32 @@ class PlacePickerFragment : Fragment(), OnMapReadyCallback {
         val mapFragment = childFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+
+        confirmButton.setOnClickListener {
+            //TODO pass value to configuration fragment
+            requireFragmentManager().popBackStack()
+        }
     }
 
 
-
     private fun initializeMap() {
-        val sydney = LatLng(25.687988, -100.321879)
+        val stationCoordinates = LatLng(arguments!!.getDouble(LAT_ARG_KEY), arguments!!.getDouble(LONG_ARG_KEY))
+        val userCoordinates = LatLng(arguments!!.getDouble(LAT_ARG_KEY) + .1, arguments!!.getDouble(LONG_ARG_KEY))
 
         mMap.apply {
-            addMarker(MarkerOptions().position(sydney).title("Marker in Sydney")).apply { isDraggable = true }
+            moveCamera(CameraUpdateFactory.newLatLng(stationCoordinates))
             setMinZoomPreference(10F)
-            moveCamera(CameraUpdateFactory.newLatLng(sydney))
+
+            addMarker(
+                MarkerOptions()
+                    .position(stationCoordinates)
+                    .title("Estacion Transpais ${arguments!!.getString(CITYNAME_ARG_KEY).toLowerCase().capitalize()}")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+            ).showInfoWindow()
+
+
+            addMarker(MarkerOptions().position(userCoordinates)).apply { isDraggable = true }
         }
     }
 
@@ -84,5 +117,17 @@ class PlacePickerFragment : Fragment(), OnMapReadyCallback {
 
     companion object {
         private const val LOCATION_REQUEST_CODE = 1
+        private const val CITYNAME_ARG_KEY = "cityname.arg.key"
+        private const val LAT_ARG_KEY = "lat.arg.key"
+        private const val LONG_ARG_KEY = "long.arg.key"
+
+        @JvmStatic
+        fun newInstance(cityName: String, lat: Double, long: Double) = PlacePickerFragment().apply {
+            arguments = bundleOf(
+                CITYNAME_ARG_KEY to cityName,
+                LAT_ARG_KEY to lat,
+                LONG_ARG_KEY to long
+            )
+        }
     }
 }
