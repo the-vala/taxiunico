@@ -69,7 +69,10 @@ class MainActivity : AppCompatActivity() {
             R.id.paymentMenu -> PaymentFormsFragment()
             R.id.newTripMenu -> CheckTripCodeFragment()
             R.id.travelerTravelMenu -> TripsPagerFragment()
-            else -> throw Error()
+            R.id.travelMenu -> TripsPagerFragment() //TODO replace with params for driver
+            R.id.testSurvey -> SurveyFragment()
+            R.id.encuestaList -> SurveyListFragment()
+            else -> throw Throwable("Invalid menu option selected")
         }
 
         supportFragmentManager.beginTransaction()
