@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2019 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package mx.itesm.taxiunico.prefs
 
 import android.content.Context
@@ -27,7 +42,6 @@ class UserPrefs(
     var userProfile: UserProfile
         get() = UserProfile(
                 name = prefs.getString(USER_NAME_KEY, ""),
-                lastname = prefs.getString(USER_LAST_NAME_KEY, ""),
                 country = prefs.getString(USER_COUNTRY_KEY, ""),
                 email = prefs.getString(USER_EMAIL_KEY, ""),
                 phone = prefs.getString(USER_PHONE_KEY, ""),
@@ -37,7 +51,6 @@ class UserPrefs(
         set(value) {
             prefs.edit().apply {
                 putString(USER_NAME_KEY, value.name)
-                putString(USER_LAST_NAME_KEY, value.lastname)
                 putString(USER_COUNTRY_KEY, value.country)
                 putString(USER_EMAIL_KEY, value.email)
                 putString(USER_PHONE_KEY, value.phone)
@@ -50,7 +63,6 @@ class UserPrefs(
         private const val FILE_KEY = "user.prefs.file.key"
         private const val USER_UUID_KEY = "user.uuid.key"
         private const val USER_NAME_KEY = "user.name.key"
-        private const val USER_LAST_NAME_KEY = "user.last.name.key"
         private const val USER_COUNTRY_KEY = "user.country.key"
         private const val USER_EMAIL_KEY = "user.email.key"
         private const val USER_PHONE_KEY = "user.phone.key"

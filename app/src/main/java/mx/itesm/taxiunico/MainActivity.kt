@@ -25,13 +25,17 @@ import mx.itesm.taxiunico.auth.LoginActivity
 import mx.itesm.taxiunico.billing.PaymentFormsFragment
 import mx.itesm.taxiunico.models.UserType
 import mx.itesm.taxiunico.profile.UserProfileFragment
+import mx.itesm.taxiunico.travels.TripsPagerFragment
 import mx.itesm.taxiunico.trips.CheckTripCodeFragment
+import mx.itesm.taxiunico.survey.SurveyFragment
+import mx.itesm.taxiunico.survey.SurveyListFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var authService: AuthService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
 
         authService = AuthService(this)
@@ -64,7 +68,11 @@ class MainActivity : AppCompatActivity() {
             R.id.profileMenu -> UserProfileFragment()
             R.id.paymentMenu -> PaymentFormsFragment()
             R.id.newTripMenu -> CheckTripCodeFragment()
-            else -> throw Error()
+            R.id.travelerTravelMenu -> TripsPagerFragment()
+            R.id.travelMenu -> TripsPagerFragment() //TODO replace with params for driver
+            R.id.testSurvey -> SurveyFragment()
+            R.id.encuestaList -> SurveyListFragment()
+            else -> throw Throwable("Invalid menu option selected")
         }
 
         supportFragmentManager.beginTransaction()

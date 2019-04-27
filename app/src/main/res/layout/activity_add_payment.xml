@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         tools:context=".billing.AddPaymentActivity">
     <TextView
-            android:text="Detalles de la tarjeta"
+            android:text="@string/card_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/title" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
@@ -25,48 +25,48 @@
             app:layout_constraintBottom_toTopOf="@+id/button"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="26dp" android:layout_marginEnd="26dp">
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" android:id="@+id/cardNumber" android:layout_marginBottom="16dp"
-                android:hint="Numero de tarjeta" app:hintEnabled="true">
+                android:hint="@string/card_number" app:hintEnabled="true">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/cardNum"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
             />
-        </android.support.design.widget.TextInputLayout>
-        <android.support.design.widget.TextInputLayout
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" android:id="@+id/expDate" android:layout_marginBottom="16dp"
-                android:hint="Fecha de expiración" app:hintEnabled="true">
+                android:hint="@string/exp_date" app:hintEnabled="true">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/expDateText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-        </android.support.design.widget.TextInputLayout>
-        <android.support.design.widget.TextInputLayout
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" android:id="@+id/cvc" android:layout_marginBottom="16dp"
-                app:hintEnabled="true" android:hint="CVC">
+                app:hintEnabled="true" android:hint="@string/cvc">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-        </android.support.design.widget.TextInputLayout>
-        <android.support.design.widget.TextInputLayout
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" android:id="@+id/phone" android:hint="Pais">
+                android:layout_height="match_parent" android:id="@+id/phone" android:hint="@string/country">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <Button
-            android:text="añadir tarjeta "
+            android:text="@string/add_card"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/button" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="32dp"

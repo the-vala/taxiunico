@@ -24,9 +24,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_signup.*
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.MainActivity
 import mx.itesm.taxiunico.R
 import mx.itesm.taxiunico.models.UserProfile
+import mx.itesm.taxiunico.models.UserType
 import mx.itesm.taxiunico.profile.UserService
 
 class SignupActivity : AppCompatActivity() {
@@ -69,12 +72,13 @@ class SignupActivity : AppCompatActivity() {
                     val id = auth.uid
 
                     val profile = UserProfile(signupInputName.text.toString(),
-                        "",
                         "MX",
                         signupInputEmail.text.toString(),
-                        signupInputPhone.text.toString())
-                    userService.createProfile(id!!, profile){
-                        Toast.makeText(this, "Usuario creado con exito", Toast.LENGTH_SHORT).show()
+                        signupInputPhone.text.toString(),
+                        UserType.TRAVELER)
+                    MainScope().launch {
+                        userService.updateProfile(id!!, profile)
+                        Toast.makeText(baseContext, "Usuario creado con exito", Toast.LENGTH_SHORT).show()
                     }
                     val mainIntent = Intent(this, MainActivity::class.java)
                     mainIntent.putExtra(USER, profile.email)

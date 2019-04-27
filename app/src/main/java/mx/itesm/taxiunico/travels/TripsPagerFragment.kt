@@ -13,27 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package mx.itesm.taxiunico.trips
-
+package mx.itesm.taxiunico.travels
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.fragment_trips_pager.*
 
 import mx.itesm.taxiunico.R
 
-class TripConfirmationFragment : Fragment() {
+class TripsPagerFragment : Fragment() {
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_trip_confirmation, container, false)
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_trips_pager, container, false)
+    }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = TripConfirmationFragment()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val adapter = TripsPagerAdapter(fragmentManager!!)
+        adapter.addFragment(CompletedTripsFragment() , "Viajes Completados")
+        adapter.addFragment(PendingTripsFragment() , "Viajes Pendientes")
+        viewPager.adapter = adapter
+        tabs.setupWithViewPager(viewPager)
     }
 }

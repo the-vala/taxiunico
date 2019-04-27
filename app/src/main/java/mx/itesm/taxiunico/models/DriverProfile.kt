@@ -13,27 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package mx.itesm.taxiunico.trips
+package mx.itesm.taxiunico.models
 
-
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-
-import mx.itesm.taxiunico.R
-
-class TripConfirmationFragment : Fragment() {
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_trip_confirmation, container, false)
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = TripConfirmationFragment()
-    }
-}
+data class DriverProfile(
+    var name: String = "",
+    var lastname: String = "",
+    var country: String = "",
+    var email: String = "",
+    var phone: String = "",
+    val userType: UserType = UserType.DRIVER
+)
