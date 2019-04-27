@@ -44,7 +44,7 @@ class CheckTripCodeFragment : Fragment() {
 
     private fun verifyCode() {
         MainScope().launch {
-            val result = codeService.getTravelData(buscar_button.text.toString())
+            val result = codeService.getTravelData(editText.text.toString())
             when(result) {
                 is Result.Success ->
                     startTripConfiguration(result.result.origin, result.result.destination, result.result.isRound)
