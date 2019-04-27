@@ -23,7 +23,7 @@
     <string name="ya_tienes_cuenta">¿Ya tienes cuenta?</string>
     <string name="inicia_sesion">Inicia sesión</string>
     <string name="card_template">•••• •••• •••• %d</string>
-
+  
     <string name="card_details">Detalle de la tarjeta</string>
     <string name="add_card">AÑADIR TARJETA</string>
     <string name="cvc">CVC</string>
@@ -45,9 +45,6 @@
     <string name="cash">Pago en efectivo</string>
     <string name="textview">Textview</string>
 
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="viaje_terminado">¡Ha llegado a su destino!</string>
     <string name="total">Total:</string>
     <string name="hora_llegada">Hora de llegada:</string>
