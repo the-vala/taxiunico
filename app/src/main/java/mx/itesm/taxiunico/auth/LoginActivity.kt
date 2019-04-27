@@ -17,23 +17,29 @@ package mx.itesm.taxiunico.auth
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.Log
 import mx.itesm.taxiunico.R
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.coroutines.*
+
 import mx.itesm.taxiunico.MainActivity
+import mx.itesm.taxiunico.prefs.UserPrefs
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var authService: AuthService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        authService = AuthService(this)
 
         FirebaseApp.initializeApp(this)
         auth = FirebaseAuth.getInstance()
@@ -46,6 +52,27 @@ class LoginActivity : AppCompatActivity() {
             val signupIntent = Intent(this, SignupActivity::class.java)
             startActivity(signupIntent)
         }
+
+        loginContraseñaBtn.setOnClickListener {
+            var valid = true
+            val email = loginInputEmail.text.toString()
+            if (TextUtils.isEmpty(email)) {
+                loginInputEmail.error = "Required."
+                valid = false
+            } else {
+                loginInputEmail.error = null
+            }
+            if (valid) {
+                auth.sendPasswordResetEmail(email)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.d(TAG, "Email enviado.")
+                        }
+                    }
+                Toast.makeText(this,"Se te ha enviado un correo para restablecer tu contraseña.",
+                    Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun signIn(email: String, password: String) {
@@ -54,31 +81,14 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithEmail:success")
-                    val user = auth.currentUser
-                    Toast.makeText(this,"Successful: ${user?.email}",
-                        Toast.LENGTH_SHORT).show()
-                    val mainIntent = Intent(this, MainActivity::class.java)
-                    mainIntent.putExtra(USER, user?.email)
-                    startActivity(mainIntent)
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithEmail:failure", task.exception)
-                    Toast.makeText(this, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show()
-                }
-
-                // [START_EXCLUDE]
-                if (!task.isSuccessful) {
-                    Toast.makeText(this, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show()
-                }
-                // [END_EXCLUDE]
+        GlobalScope.launch(Dispatchers.Main) {
+            when(authService.authenticate(email, password)) {
+                is Result.Success ->
+                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                is Result.Failure ->
+                    Toast.makeText(this@LoginActivity, "Authentication failed.", Toast.LENGTH_SHORT).show()
             }
+        }
     }
 
     private fun validateForm(): Boolean {
@@ -96,7 +106,12 @@ class LoginActivity : AppCompatActivity() {
         if (TextUtils.isEmpty(password)) {
             loginInputPass.error = "Required."
             valid = false
-        } else {
+        }
+        else if (password.length < 6) {
+            loginInputPass.error = "At least 6 characters."
+            valid = false
+        }
+        else {
             loginInputPass.error = null
         }
 

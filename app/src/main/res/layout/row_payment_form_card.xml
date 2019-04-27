@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                             xmlns:app="http://schemas.android.com/apk/res-auto"
-                                             xmlns:tools="http://schemas.android.com/tools"
-                                             android:layout_width="match_parent"
-                                             android:layout_height="wrap_content" android:padding="16dp">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                                            xmlns:tools="http://schemas.android.com/tools"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content" android:padding="16dp">
 
     <ImageView
             android:layout_width="50dp"
-            android:layout_height="wrap_content" app:srcCompat="@drawable/mastercard_2x"
+            android:layout_height="wrap_content" android:contentDescription="TODO" app:srcCompat="@drawable/mastercard_2x"
             android:id="@+id/imageView"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
     <TextView
-            android:text="Numero de tarjeta"
+            android:text="@string/card_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/cardNumLabel"
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/expDateLabel"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="Fecha de expiración"
+            android:text="@string/exp_date"
             app:layout_constraintTop_toBottomOf="@+id/cardNumText"
             app:layout_constraintBottom_toTopOf="@+id/expDateText"/>
     <TextView
@@ -41,4 +41,4 @@
             app:layout_constraintEnd_toEndOf="@+id/cardNumText"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toBottomOf="@+id/expDateLabel"
     />
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
