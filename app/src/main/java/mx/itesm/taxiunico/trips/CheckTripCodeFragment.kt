@@ -15,7 +15,6 @@
  */
 package mx.itesm.taxiunico.trips
 
-
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater

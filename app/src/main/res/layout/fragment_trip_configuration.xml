@@ -7,7 +7,7 @@
                                                    android:background="@android:color/white" android:padding="16dp">
 
     <TextView
-            android:text="Ordenar Viaje"
+            android:text="@string/order_trip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textView" android:layout_marginTop="24dp"
@@ -23,7 +23,7 @@
             android:id="@+id/linearLayout" tools:layout_editor_absoluteX="16dp"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout2">
         <TextView
-                android:text="Tu Viaje en Monterrey"
+                android:text="@string/monterrey_trip"
                 android:layout_height="wrap_content"
                 android:id="@+id/originCityName" android:textSize="20sp" app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="8dp" android:layout_marginTop="8dp"
@@ -31,7 +31,7 @@
                 app:layout_constraintEnd_toEndOf="parent" android:textAlignment="viewStart"
                 android:layout_width="match_parent"/>
         <CheckBox
-                android:text="Hacia la terminal"
+                android:text="@string/to_terminal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/firstLegToTrerminal" android:layout_marginTop="8dp"
@@ -39,7 +39,7 @@
                 android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="8dp" android:textColorLink="@color/taxiYellow"/>
         <CheckBox
-                android:text="Hacia domicilio"
+                android:text="@string/to_house"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/firstLegFromTerminal"
@@ -47,9 +47,9 @@
                 android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="8dp"
                 app:layout_constraintHorizontal_bias="0.281" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/firstLegToTrerminal" />
+                app:layout_constraintTop_toBottomOf="@+id/firstLegToTrerminal"/>
         <Button
-                android:text="Elegir domicilio"
+                android:text="@string/pick_house"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:id="@+id/firstLegAddress"
@@ -67,7 +67,7 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"
             app:layout_constraintBottom_toTopOf="@+id/notice">
         <TextView
-                android:text="Tu Viaje en Monterrey"
+                android:text="@string/monterrey_trip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/destinationCityName" android:textSize="20sp"
@@ -76,7 +76,7 @@
                 android:textAlignment="viewStart"
                 app:layout_constraintHorizontal_bias="0.0"/>
         <CheckBox
-                android:text="Hacia domicilio"
+                android:text="@string/to_house"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/secondLegFromTerminal" android:layout_marginTop="8dp"
@@ -84,14 +84,14 @@
                 android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.0"
                 android:textColorLink="@color/taxiYellow"/>
         <CheckBox
-                android:text="Hacia terminal"
+                android:text="@string/to_terminal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/secondLegtoTerminal" android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.0"/>
         <Button
-                android:text="Elegir domicilio"
+                android:text="@string/pick_house"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:id="@+id/secondLegAddress" app:layout_constraintEnd_toEndOf="parent"
@@ -102,7 +102,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/secondLegtoTerminal" android:layout_marginTop="32dp"/>
     </LinearLayout>
     <Button
-            android:text="Continuar"
+            android:text="@string/continuar"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:id="@+id/confirmButton" app:layout_constraintEnd_toEndOf="parent"
@@ -114,7 +114,7 @@
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toBottomOf="@+id/notice"
             app:layout_constraintHorizontal_bias="0.5"/>
     <TextView
-            android:text="*Para evitar retrasos en tu viaje, nuestro socio conductor pasara por ti 1 hora antes del viaje. Considera esto para planear tus actividades."
+            android:text="@string/aviso_retraso"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/notice" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
