@@ -2,13 +2,11 @@ package mx.itesm.taxiunico.trips
 
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import com.google.firebase.firestore.GeoPoint
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_trip_configuration.*
 import kotlinx.coroutines.MainScope
@@ -66,6 +64,10 @@ class TripConfigurationFragment : Fragment() {
             tripForm = tripForm.copy(destinationToTerminalTrip = isChecked)
         }
 
+        if (!arguments!!.getBoolean(ROUND_TRIP)) {
+            firstLegFromTerminal.visibility =.GONE
+        }
+
         firstLegAddress.setOnClickListener {
             openLocationPickerFragment(
                 departureStation.city,
@@ -83,7 +85,7 @@ class TripConfigurationFragment : Fragment() {
 
     private fun openLocationPickerFragment(cityName: String, lat: Double, long: Double) {
         requireFragmentManager().beginTransaction()
-            .replace(android.R.id.content, PlacePickerFragment())
+            .replace(android.R.id.content, PlacePickerFragment.newInstance(cityName, lat, long))
             .addToBackStack(null)
             .commitAllowingStateLoss()
     }
@@ -110,14 +112,17 @@ class TripConfigurationFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(departingCityId: String, destinationCityId: String) = TripConfigurationFragment().apply {
-            arguments = bundleOf(
-                DEPARTING_CITY_ID to departingCityId,
-                DESTINATION_CITY_ID to destinationCityId
-            )
-        }
+        fun newInstance(departingCityId: String, destinationCityId: String, isRoundTrip: Boolean) =
+            TripConfigurationFragment().apply {
+                arguments = bundleOf(
+                    DEPARTING_CITY_ID to departingCityId,
+                    DESTINATION_CITY_ID to destinationCityId,
+                    ROUND_TRIP to isRoundTrip
+                )
+            }
 
         private const val DEPARTING_CITY_ID = "departing.city.id"
         private const val DESTINATION_CITY_ID = "destination.city.id"
+        private const val ROUND_TRIP = "router.id"
     }
 }
