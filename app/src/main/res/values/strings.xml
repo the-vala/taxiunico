@@ -6,7 +6,6 @@
 
     <string name="calificacion">Calificación: %1$d</string>
     <string name="fecha_encuesta">Fecha: %1$s</string>
-    <string name="id_encuesta">ID: %1$d</string>
 
     <string name="name">Nombre</string>
     <string name="name_hint">Ingresa tu nombre de usuario</string>
@@ -24,7 +23,15 @@
     <string name="ya_tienes_cuenta">¿Ya tienes cuenta?</string>
     <string name="inicia_sesion">Inicia sesión</string>
     <string name="card_template">•••• •••• •••• %d</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="viaje_terminado">¡Ha llegado a su destino!</string>
+    <string name="total">Total:</string>
+    <string name="hora_llegada">Hora de llegada:</string>
+    <string name="califique">¡Califique el servicio!</string>
+    <string name="nombre_chofer">Nombre de chofer</string>
+    <string name="enviar">Enviar respuesta</string>
+    <string name="estrella_1">1</string>
+    <string name="estrella_2">2</string>
+    <string name="estrella_3">3</string>
+    <string name="estrella_4">4</string>
+    <string name="estrella_5">5</string>
 </resources>

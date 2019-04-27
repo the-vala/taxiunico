@@ -23,7 +23,6 @@ class CheckTripCodeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        insertar_codigo.setText("Jwzc74")
         buscar_button.setOnClickListener {
             verifyCode()
         }
@@ -31,18 +30,19 @@ class CheckTripCodeFragment : Fragment() {
 
     private fun verifyCode() {
         MainScope().launch {
-            val result = codeService.getTravelData(insertar_codigo.text.toString())
+            val result = codeService.getTravelData(buscar_button.text.toString())
             when(result) {
-                is Result.Success -> startTripConfiguration(result.result.origin, result.result.destination)
+                is Result.Success ->
+                    startTripConfiguration(result.result.origin, result.result.destination, result.result.isRound)
             }
         }
     }
 
-    private fun startTripConfiguration(departingCityId: String, destinationCityId: String) {
+    private fun startTripConfiguration(departingCityId: String, destinationCityId: String, isRoundTrip: Boolean) {
         requireFragmentManager().beginTransaction()
             .replace(
                 android.R.id.content,
-                TripConfigurationFragment.newInstance(departingCityId, destinationCityId))
+                TripConfigurationFragment.newInstance(departingCityId, destinationCityId, isRoundTrip))
             .addToBackStack(null)
             .commitAllowingStateLoss()
 

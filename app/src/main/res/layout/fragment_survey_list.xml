@@ -5,7 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".listEncuestas.EncuestasActivity">
+        tools:context=".survey.SurveyListFragment">
 
     <ListView
             android:layout_width="395dp"
