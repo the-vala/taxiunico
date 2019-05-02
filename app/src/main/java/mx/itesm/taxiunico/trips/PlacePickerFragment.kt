@@ -15,7 +15,6 @@
  */
 package mx.itesm.taxiunico.trips
 
-
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
@@ -54,7 +53,6 @@ class PlacePickerFragment : Fragment(), OnMapReadyCallback {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_place_picker, container, false)
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

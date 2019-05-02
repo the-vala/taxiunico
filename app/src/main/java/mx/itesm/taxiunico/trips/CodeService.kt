@@ -21,6 +21,7 @@ import kotlinx.coroutines.tasks.await
 import mx.itesm.taxiunico.models.Codes
 import mx.itesm.taxiunico.models.UserProfile
 import mx.itesm.taxiunico.models.Viaje
+import mx.itesm.taxiunico.util.Validator
 
 
 class CodeService {
@@ -32,7 +33,6 @@ class CodeService {
         if (!res.exists()) {
             return Result.Failure(Resources.NotFoundException("reservation code $reservationCode not found"))
         }
-
 
         val trip = res.toObject(Codes::class.java)!!
         return Result.Success(trip)

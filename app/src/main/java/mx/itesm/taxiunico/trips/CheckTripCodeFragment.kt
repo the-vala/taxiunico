@@ -16,15 +16,17 @@
 package mx.itesm.taxiunico.trips
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_check_trip_code.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-
 import mx.itesm.taxiunico.R
+import mx.itesm.taxiunico.util.Validator
+
 class CheckTripCodeFragment : Fragment() {
 
     private val codeService = CodeService()
@@ -44,11 +46,18 @@ class CheckTripCodeFragment : Fragment() {
 
     private fun verifyCode() {
         MainScope().launch {
-            val result = codeService.getTravelData(editText.text.toString())
-            when(result) {
-                is Result.Success ->
-                    startTripConfiguration(result.result.origin, result.result.destination, result.result.isRound)
-            }
+
+            // TODO validate
+            val reserveCode = editText.text.toString()
+           if ( Validator.valReservationCode(reserveCode) ) {
+               val result = codeService.getTravelData(editText.text.toString())
+               when(result) {
+                   is Result.Success ->
+                       startTripConfiguration(result.result.origin, result.result.destination, result.result.isRound)
+               }
+           } else {
+                Toast.makeText(context,"Código invalido", Toast.LENGTH_SHORT).show()
+           }
         }
     }
 
@@ -59,6 +68,5 @@ class CheckTripCodeFragment : Fragment() {
                 TripConfigurationFragment.newInstance(departingCityId, destinationCityId, isRoundTrip))
             .addToBackStack(null)
             .commitAllowingStateLoss()
-
     }
 }
