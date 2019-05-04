@@ -15,6 +15,8 @@
  */
 package mx.itesm.taxiunico
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
@@ -29,15 +31,27 @@ import mx.itesm.taxiunico.travels.TripsPagerFragment
 import mx.itesm.taxiunico.trips.CheckTripCodeFragment
 import android.os.PersistableBundle
 import mx.itesm.taxiunico.survey.SurveyListFragment
+import android.net.NetworkInfo
+import android.content.Context.CONNECTIVITY_SERVICE
+import android.content.IntentFilter
+import android.net.ConnectivityManager
+import android.widget.Toast
+import androidx.core.content.getSystemService
+import com.google.android.material.snackbar.Snackbar
+import mx.itesm.taxiunico.util.ConnectivityReceiver
+import java.net.ConnectException
 
-class MainActivity : AppCompatActivity() {
+@SuppressLint("Registered")
+class MainActivity : AppCompatActivity(),
+    ConnectivityReceiver.ConnectivityListener {
 
     private lateinit var authService: AuthService
     private var saveState: Int = 0
+    private var mSnackBar: Snackbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        registerReceiver(ConnectivityReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
         setContentView(R.layout.activity_main)
 
         authService = AuthService(this)
@@ -58,6 +72,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         nav.setOnNavigationItemSelectedListener { navigate(it) }
+//        checkNetworkConnection()
     }
 
 
@@ -86,8 +101,38 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+//    @SuppressLint("WrongConstant")
+    @SuppressLint("WrongConstant")
+    private fun showConnectionMessage(isConnected: Boolean) {
+        if (!isConnected) {
+            val message = "No hay conexion."
+            mSnackBar = Snackbar.make(findViewById(R.id.mainContent), message, Snackbar.LENGTH_LONG)
+            mSnackBar?.duration = Snackbar.LENGTH_INDEFINITE
+            mSnackBar?.show()
+        } else {
+            mSnackBar?.dismiss()
+        }
+    }
+
+    override fun onNetworkChanged(isConnected: Boolean) {
+        showConnectionMessage(isConnected)
+    }
+
+//    private fun checkNetworkConnection() {
+//        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+//        val netInfo = cm.activeNetworkInfo
+//        if (!(netInfo != null && netInfo.isConnectedOrConnecting)) {
+//            val toast1 = Toast.makeText(
+//                applicationContext,
+//                "No hay conexion a internet.", Toast.LENGTH_SHORT
+//            )
+//            toast1.show()
+//        }
+//    }
+
     override fun onResume() {
         super.onResume()
+        ConnectivityReceiver.connectivityListener = this
         nav.setSelectedItemId(saveState)
     }
 
@@ -95,4 +140,5 @@ class MainActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState, outPersistentState)
         saveState = nav.getSelectedItemId()
     }
+
 }
