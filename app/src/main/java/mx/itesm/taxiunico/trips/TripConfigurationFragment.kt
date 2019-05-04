@@ -88,6 +88,7 @@ class TripConfigurationFragment : Fragment() {
 
         if (!arguments!!.getBoolean(ROUND_TRIP)) {
             firstLegFromTerminal.visibility = View.GONE
+            secondLegtoTerminal.visibility = View.GONE
         }
 
         firstLegAddress.setOnClickListener {
