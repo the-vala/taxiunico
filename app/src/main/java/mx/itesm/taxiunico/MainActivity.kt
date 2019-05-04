@@ -72,7 +72,6 @@ class MainActivity : AppCompatActivity(),
         }
 
         nav.setOnNavigationItemSelectedListener { navigate(it) }
-//        checkNetworkConnection()
     }
 
 
@@ -101,7 +100,6 @@ class MainActivity : AppCompatActivity(),
         return true
     }
 
-//    @SuppressLint("WrongConstant")
     @SuppressLint("WrongConstant")
     private fun showConnectionMessage(isConnected: Boolean) {
         if (!isConnected) {
@@ -117,18 +115,6 @@ class MainActivity : AppCompatActivity(),
     override fun onNetworkChanged(isConnected: Boolean) {
         showConnectionMessage(isConnected)
     }
-
-//    private fun checkNetworkConnection() {
-//        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-//        val netInfo = cm.activeNetworkInfo
-//        if (!(netInfo != null && netInfo.isConnectedOrConnecting)) {
-//            val toast1 = Toast.makeText(
-//                applicationContext,
-//                "No hay conexion a internet.", Toast.LENGTH_SHORT
-//            )
-//            toast1.show()
-//        }
-//    }
 
     override fun onResume() {
         super.onResume()
