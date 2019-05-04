@@ -27,9 +27,12 @@ import mx.itesm.taxiunico.models.UserType
 import mx.itesm.taxiunico.profile.UserProfileFragment
 import mx.itesm.taxiunico.travels.TripsPagerFragment
 import mx.itesm.taxiunico.trips.CheckTripCodeFragment
+import android.os.PersistableBundle
 
 class MainActivity : AppCompatActivity() {
+
     private lateinit var authService: AuthService
+    private var saveState: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,8 +41,11 @@ class MainActivity : AppCompatActivity() {
         authService = AuthService(this)
 
         if (authService.isUserAuthenticated()) {
-            openDefaultFragment()
-
+            if (savedInstanceState != null) {
+                nav.setSelectedItemId(saveState)
+            } else {
+                openDefaultFragment()
+            }
         } else {
             startActivity(Intent(this, LoginActivity::class.java))
         }
@@ -74,5 +80,15 @@ class MainActivity : AppCompatActivity() {
             .commit()
 
         return true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        nav.setSelectedItemId(saveState)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        saveState = nav.getSelectedItemId()
     }
 }

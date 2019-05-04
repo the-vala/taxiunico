@@ -24,7 +24,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_user_profile.*
-import kotlinx.android.synthetic.main.row_payment_form_cash.view.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.MainActivity
@@ -55,7 +54,7 @@ class UserProfileFragment : Fragment() {
         render(userProfile)
 
         button.setOnClickListener {
-            //saveProfile()
+            saveProfile()
         }
 
         logout.setOnClickListener {

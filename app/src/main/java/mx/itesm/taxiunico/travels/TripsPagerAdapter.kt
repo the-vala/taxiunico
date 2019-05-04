@@ -2,10 +2,10 @@ package mx.itesm.taxiunico.travels
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
 
 
-class TripsPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager){
+class TripsPagerAdapter(manager: FragmentManager) : FragmentStatePagerAdapter(manager){
 
     private val fragmentList : MutableList<Fragment> = ArrayList()
     private val titleList : MutableList<String> = ArrayList()

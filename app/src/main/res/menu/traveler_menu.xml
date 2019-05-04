@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
             android:id="@+id/profileMenu"
-            android:title="Mi Perfil" />
+            android:title="Mi Perfil" android:icon="@drawable/ic_person_white_24dp"/>
     <item
             android:id="@+id/newTripMenu"
-            android:title="Nuevo Viaje" />
+            android:title="Nuevo Viaje" android:icon="@drawable/ic_local_taxi_white_24dp"/>
     <item
             android:id="@+id/travelerTravelMenu"
-            android:title="Viajes" />
+            android:title="Viajes" android:icon="@drawable/ic_history_white_24dp"/>
     <item
             android:id="@+id/paymentMenu"
-            android:title="Pagos" />
+            android:title="Pagos" android:icon="@drawable/ic_payment_white_24dp"/>
 </menu>
