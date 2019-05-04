@@ -42,16 +42,16 @@
                 android:orientation="horizontal" app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/ori" android:layout_marginStart="8dp" android:maxLines="2"/>
         <TextView
-                android:text="TextView"
                 android:layout_width="0dp"
+                android:text="@string/textview"
                 android:layout_height="wrap_content" android:id="@+id/fecha"
                 android:textAlignment="textStart" app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintVertical_bias="0.823" android:layout_marginStart="16dp" android:maxLines="1"
                 app:layout_constraintEnd_toStartOf="@+id/costo" android:layout_marginEnd="8dp"/>
         <TextView
-                android:text="TextView"
                 android:layout_width="0dp"
+                android:text="@string/textview"
                 android:layout_height="wrap_content" android:id="@+id/costo"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -60,8 +60,8 @@
                 app:layout_constraintStart_toEndOf="@+id/fecha" android:layout_marginStart="8dp"
                 app:layout_constraintHorizontal_bias="0.857"/>
         <TextView
-                android:text="TextView"
                 android:layout_width="0dp"
+                android:text="@string/textview"
                 android:layout_height="wrap_content" android:id="@+id/formaPago"
                 android:textAlignment="textEnd" app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -70,8 +70,8 @@
                 android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.846"
                 app:layout_constrainedWidth="true"/>
         <TextView
-                android:text="TextView"
                 android:layout_width="0dp"
+                android:text="@string/textview"
                 android:layout_height="wrap_content" android:id="@+id/vehiculo" android:textAlignment="textStart"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"

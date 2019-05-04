@@ -7,6 +7,6 @@
             android:id="@+id/travelMenu"
             android:title="Viajes" />
     <item
-            android:id="@+id/paymentMenu"
+            android:id="@+id/encuestaList"
             android:title="Encuestas" />
 </menu>

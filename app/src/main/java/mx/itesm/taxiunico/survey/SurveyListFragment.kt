@@ -13,48 +13,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package mx.itesm.taxiunico.travels
+package mx.itesm.taxiunico.survey
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
+import kotlinx.android.synthetic.main.fragment_survey_list.*
 import mx.itesm.taxiunico.R
 
-class CompletedTripsFragment : Fragment() {
-
+class SurveyListFragment : Fragment() {
+    private val surveyService = SurveyService()
+    //TODO implement auth for driver
     private val auth = FirebaseAuth.getInstance()
-    private lateinit var adapter: ViajeAdapter
-    private lateinit var recyclerView: RecyclerView
+    val driverID = "%G2TY35RDG5S45"
+    //
+    private var encuestas: MutableList<Survey> = mutableListOf()
+    lateinit var adapter: SurveyAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_completed_trips, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.fragment_survey_list, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        recyclerView = view.findViewById(R.id.recyclerView)
-        recyclerView.layoutManager= LinearLayoutManager(view.context, RecyclerView.VERTICAL,false)
-        adapter = ViajeAdapter(mutableListOf())
-        recyclerView.adapter = adapter
+        super.onViewCreated(view, savedInstanceState)
+
+        adapter = SurveyAdapter(requireContext(), encuestas)
+
+        list_encuestas.adapter = adapter
+        updateData()
     }
 
-    override fun onResume() {
-        super.onResume()
-        MainScope().launch {
-            var viajes = ViajeService().getTravelHistory(auth.uid!!)
-            viajes = viajes.filter{it.completed}.toMutableList()
-            adapter.setData(viajes)
-        }
+    private fun updateData () {
+        surveyService.getSurveys(
+            driverID,
+            onComplete = ::updateSurveys
+        )
     }
 
+    private fun updateSurveys(newList: MutableList<Survey>) {
+        adapter.updateAdapter(newList)
+
+    }
 }
