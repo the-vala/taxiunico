@@ -15,18 +15,25 @@
  */
 package mx.itesm.taxiunico.trips
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_trip_configuration.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.R
+
+
+
+
+
 
 @Parcelize
 data class Coordinate(
@@ -96,6 +103,12 @@ class TripConfigurationFragment : Fragment() {
                 destinationStation.cord!!.latitude,
                 destinationStation.cord!!.longitude)
         }
+
+//        confirmButton.setOnClickListener {
+//            fragmentManager!!.beginTransaction()
+//                .replace(R.id.mainContent, TripConfirmationFragment())
+//                .commit()
+//        }
     }
 
     private fun openLocationPickerFragment(cityName: String, lat: Double, long: Double) {
