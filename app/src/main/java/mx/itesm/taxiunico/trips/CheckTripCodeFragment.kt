@@ -46,8 +46,6 @@ class CheckTripCodeFragment : Fragment() {
 
     private fun verifyCode() {
         MainScope().launch {
-
-            // TODO validate
             val reserveCode = editText.text.toString()
            if ( Validator.valReservationCode(reserveCode) ) {
                val result = codeService.getTravelData(editText.text.toString())
