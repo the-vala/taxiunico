@@ -28,6 +28,7 @@ import mx.itesm.taxiunico.profile.UserProfileFragment
 import mx.itesm.taxiunico.travels.TripsPagerFragment
 import mx.itesm.taxiunico.trips.CheckTripCodeFragment
 import android.os.PersistableBundle
+import mx.itesm.taxiunico.survey.SurveyListFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -73,8 +74,7 @@ class MainActivity : AppCompatActivity() {
             R.id.paymentMenu -> PaymentFormsFragment()
             R.id.newTripMenu -> CheckTripCodeFragment()
             R.id.travelerTravelMenu -> TripsPagerFragment()
-            R.id.travelMenu -> TripsPagerFragment() //TODO replace with params for driver
-            R.id.testSurvey -> SurveyFragment()
+            R.id.travelMenu -> TripsPagerFragment()
             R.id.encuestaList -> SurveyListFragment()
             else -> throw Throwable("Invalid menu option selected")
         }
