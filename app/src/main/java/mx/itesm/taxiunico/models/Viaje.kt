@@ -20,15 +20,18 @@ import com.google.firebase.firestore.GeoPoint
 
 data class Viaje(
     var userId: String = "",
+    var userName: String = "",
+    var userRating: Int = 5,
     var codeId: String = "",
     var dateTime: Timestamp = Timestamp.now(),
     var origin: GeoPoint = GeoPoint(0.0,0.0),
     var destination: GeoPoint = GeoPoint(0.0,0.0),
     var driverName: String = "",
+    var driverRating: Int = 5,
     var vehicle: String = "",
     var distance: Double = 0.0,
     var cost: Double = 0.0,
     var payment: String = "",
     var completed: Boolean = false,
-    var imageUrl: String = ""
+    var imageURL: String = ""
 )

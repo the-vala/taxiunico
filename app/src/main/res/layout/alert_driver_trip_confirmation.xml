@@ -6,7 +6,7 @@
                                                    android:layout_height="wrap_content"
                                                    android:background="@drawable/dialog_bg">
     <TextView
-            android:text="¡Ha llegado a su destino!"
+            android:text="Viaje pendiente:"
             android:layout_width="288dp"
             android:layout_height="36dp"
             android:id="@+id/mensaje1" android:textStyle="bold"
@@ -17,54 +17,63 @@
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintHorizontal_bias="0.495"/>
 
     <TextView
-            android:text="Total:"
-            android:layout_width="wrap_content"
+            android:text="Origen:"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/mensaje2" android:textStyle="bold"
-            android:textAlignment="center" android:textSize="20sp"
+            android:textAlignment="textStart" android:textSize="20sp"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@+id/mensaje1"
-            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:layout_marginStart="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/mensaje3" android:layout_marginEnd="8dp"/>
     <TextView
-            android:text="total"
-            android:layout_width="wrap_content"
+            android:text="origen"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/total"
-            android:textAlignment="center" android:textSize="20sp"
+            android:id="@+id/confirmationOri"
+            android:textAlignment="textStart" android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@+id/mensaje2"
-            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:layout_marginStart="24dp"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toStartOf="@+id/confirmationDateTime"
+            android:layout_marginEnd="8dp" android:maxLines="2"/>
 
     <TextView
-            android:text="Hora de llegada:"
-            android:layout_width="wrap_content"
+            android:text="Destino:"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/mensaje3" android:textStyle="bold"
-            android:textAlignment="center" android:textSize="20sp" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/total"
-            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:textAlignment="textEnd" android:textSize="20sp"
+            android:layout_marginEnd="24dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/mensaje1"
+            app:layout_constraintStart_toEndOf="@+id/mensaje2" android:layout_marginStart="8dp"/>
     <TextView
-            android:text="hora"
-            android:layout_width="wrap_content"
+            android:text="destino"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/hora_llegada"
-            android:textAlignment="center" android:textSize="20sp"
-            app:layout_constraintTop_toBottomOf="@+id/mensaje3" android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:id="@+id/confirmationDes"
+            android:textAlignment="textEnd" android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@+id/mensaje3" android:layout_marginEnd="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/confirmationOri" android:layout_marginStart="8dp" android:maxLines="2"/>
 
+    <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/confirmationDateTime"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/confirmationDes" android:textSize="20sp" android:maxLines="1"/>
     <View
             android:layout_width="312dp"
             android:layout_height="2dp"
             android:id="@+id/separator" android:background="@android:color/darker_gray"
-            app:layout_constraintTop_toBottomOf="@+id/hora_llegada"
-            android:layout_marginTop="16dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"/>
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/confirmationDateTime" android:layout_marginTop="8dp"/>
 
     <TextView
-            android:text="¡Califique el servicio!"
+            android:text="Cliente:"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/mensaje4" android:textStyle="bold"
@@ -76,7 +85,7 @@
     <ImageView
             android:layout_width="103dp"
             android:layout_height="96dp" tools:srcCompat="@tools:sample/avatars"
-            android:id="@+id/foto_chofer"
+            android:id="@+id/photo"
             android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/mensaje4"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
@@ -86,35 +95,26 @@
             android:text="nombre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/nombre_chofer"
+            android:id="@+id/name"
             android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/foto_chofer"
+            app:layout_constraintTop_toBottomOf="@+id/photo"
             android:textAlignment="center" android:textSize="20sp" android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="parent"/>
 
-    <RatingBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/ratingBar"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/nombre_chofer" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" android:stepSize="1" android:numStars="5"
-            android:rating="5" android:backgroundTint="@color/taxiYellow" android:progressTint="@color/taxiYellow"
-            android:secondaryProgressTint="@color/taxiYellow"/>
-
     <Button
-            android:text="Terminar"
+            android:text="Iniciar viaje"
             android:layout_width="315.52dp"
             android:layout_height="37dp"
-            android:id="@+id/califica" android:backgroundTint="@color/taxiYellow"
+            android:id="@+id/confirm" android:backgroundTint="@color/taxiYellow"
             android:textColor="@android:color/white"
-            app:layout_constraintTop_toBottomOf="@+id/ratingBar" android:layout_marginEnd="8dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="12dp"
-            android:layout_marginBottom="16dp" app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.015"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:background="@drawable/rounded_button"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false" app:layout_constraintHorizontal_bias="0.525" android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/name"
+            app:layout_constraintVertical_bias="1.0"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

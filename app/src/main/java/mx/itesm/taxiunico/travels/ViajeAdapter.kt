@@ -20,18 +20,27 @@ import android.location.Geocoder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.google.firebase.storage.FirebaseStorage
 import mx.itesm.taxiunico.R
+import mx.itesm.taxiunico.auth.AuthService
+import mx.itesm.taxiunico.models.UserType
 import mx.itesm.taxiunico.models.Viaje
 import java.io.IOException
 
-class ViajeAdapter(private val list:MutableList<Viaje>): RecyclerView.Adapter<ViajeAdapter.ViewHolder>() {
+
+class ViajeAdapter(private val list:MutableList<Viaje>, private val authService: AuthService): RecyclerView.Adapter<ViajeAdapter.ViewHolder>() {
 
     var onItemClick: ((Viaje) -> Unit)? = null
+    private lateinit var storage:FirebaseStorage
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.trip_item,parent,false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.row_trip_item,parent,false)
+        storage = FirebaseStorage.getInstance()
         return ViewHolder(v)
     }
 
@@ -50,7 +59,7 @@ class ViajeAdapter(private val list:MutableList<Viaje>): RecyclerView.Adapter<Vi
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(view:View):RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(val view:View):RecyclerView.ViewHolder(view) {
         init {
             itemView.setOnClickListener {
                 onItemClick?.invoke(list[adapterPosition])
@@ -59,12 +68,13 @@ class ViajeAdapter(private val list:MutableList<Viaje>): RecyclerView.Adapter<Vi
 
         fun bindItems(data:Viaje) {
 
-            val ori:TextView = itemView.findViewById(R.id.ori)
-            val des:TextView = itemView.findViewById(R.id.des)
+            val ori:TextView = itemView.findViewById(R.id.confirmationOri)
+            val des:TextView = itemView.findViewById(R.id.confirmationDateTime)
             val fecha:TextView = itemView.findViewById(R.id.fecha)
             val vehiculo: TextView = itemView.findViewById(R.id.vehiculo)
             val costo:TextView = itemView.findViewById(R.id.costo)
             val formaPago:TextView = itemView.findViewById(R.id.formaPago)
+            val rating:RatingBar = itemView.findViewById(R.id.tripRatingIndicator)
 
             var geocodeMatchesOri: List<Address>? = null
             var geocodeMatchesDes: List<Address>? = null
@@ -98,6 +108,27 @@ class ViajeAdapter(private val list:MutableList<Viaje>): RecyclerView.Adapter<Vi
             vehiculo.text = data.vehicle
             costo.text = "MX $ ${data.cost.toString()}"
             formaPago.text = data.payment
+
+            if(data.completed) {
+                if (authService.getUserType() == UserType.DRIVER)
+                    rating.rating = data.userRating.toFloat()
+                else
+                    rating.rating = data.driverRating.toFloat()
+            }
+            else {
+                rating.visibility = View.GONE
+            }
+
+            if(data.imageURL.isNotEmpty()) {
+                storage.reference.child(data.imageURL).downloadUrl.addOnSuccessListener {
+                    val imageView = itemView.findViewById<ImageView>(R.id.mapa)
+
+                    Glide.with(view)
+                        .load(it.toString())
+                        .into(imageView)
+                }
+
+            }
         }
     }
 }

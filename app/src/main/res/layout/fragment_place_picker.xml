@@ -10,10 +10,11 @@
             android:layout_width="0dp"
             android:layout_height="60dp" android:id="@+id/confirmButton"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="16dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="16dp" android:layout_marginBottom="16dp"
+            android:layout_marginEnd="24dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="24dp" android:layout_marginBottom="24dp"
             app:layout_constraintBottom_toBottomOf="parent" android:textSize="18sp"
-            android:background="@color/taxiBlue" android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white"
+            android:background="@drawable/rounded_button" android:backgroundTint="@color/taxiYellow"/>
     <fragment
             android:layout_width="match_parent"
             android:layout_height="match_parent"
