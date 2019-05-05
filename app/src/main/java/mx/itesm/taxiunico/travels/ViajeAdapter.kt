@@ -33,9 +33,9 @@ import mx.itesm.taxiunico.models.Viaje
 import java.io.IOException
 
 
-class ViajeAdapter(private val list:MutableList<Viaje>, private val authService: AuthService): RecyclerView.Adapter<ViajeAdapter.ViewHolder>() {
+class ViajeAdapter(private val list:MutableList<Pair<String, Viaje>>, private val authService: AuthService): RecyclerView.Adapter<ViajeAdapter.ViewHolder>() {
 
-    var onItemClick: ((Viaje) -> Unit)? = null
+    var onItemClick: ((Pair<String,Viaje>) -> Unit)? = null
     private lateinit var storage:FirebaseStorage
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolder {
@@ -49,10 +49,10 @@ class ViajeAdapter(private val list:MutableList<Viaje>, private val authService:
     }
 
     override fun onBindViewHolder(holder: ViajeAdapter.ViewHolder, pos: Int) {
-        holder.bindItems(list[pos])
+        holder.bindItems(list[pos].second)
     }
 
-    fun setData(mutableList: MutableList<Viaje>) {
+    fun setData(mutableList: MutableList<Pair<String,Viaje>>) {
         list.clear()
         list.addAll(mutableList)
 
@@ -106,7 +106,7 @@ class ViajeAdapter(private val list:MutableList<Viaje>, private val authService:
 
             fecha.text = data.dateTime.toDate().toString()
             vehiculo.text = data.vehicle
-            costo.text = "MX $ ${data.cost.toString()}"
+            costo.text = view.context.getString(R.string.cost,data.cost)
             formaPago.text = data.payment
 
             if(data.completed) {

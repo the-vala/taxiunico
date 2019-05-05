@@ -40,6 +40,7 @@ import java.io.IOException
 import android.content.Intent
 import android.net.Uri
 import android.widget.RatingBar
+import androidx.fragment.app.FragmentTransaction
 
 
 class PendingTripsFragment : Fragment() {
@@ -66,7 +67,8 @@ class PendingTripsFragment : Fragment() {
 
         //If user is driver make item clickable
         if (authService.getUserType() == UserType.DRIVER) {
-            adapter.onItemClick = { viaje ->
+            adapter.onItemClick = { data ->
+                val viaje = data.second
                 //Open alertDialog to start trip
                 var dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.alert_driver_trip_confirmation, null)
                 var builder = AlertDialog.Builder(requireContext()).setView(dialogView)
@@ -117,9 +119,16 @@ class PendingTripsFragment : Fragment() {
                     dialog.dismiss()
                     Toast.makeText(requireContext(), "Iniciando viaje", Toast.LENGTH_SHORT).show()
 
+                    viaje.cost = (viaje.duration/60) * (viaje.distance/1000) * 0.5
+
                     //Create trip finished dialog
                     dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.alert_trip_survey, null)
                     builder = AlertDialog.Builder(requireContext()).setView(dialogView)
+                    builder.setOnDismissListener {
+                        fragmentManager!!.beginTransaction()
+                            .replace(R.id.mainContent, TripsPagerFragment())
+                            .commit()
+                    }
                     dialog = builder.show()
                     dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
@@ -130,10 +139,11 @@ class PendingTripsFragment : Fragment() {
                     cliente = dialogView.findViewById(R.id.name)
                     cliente.text = viaje.userName
 
-                    confirm = dialogView.findViewById<Button>(R.id.surveyConfirm)
+                    confirm = dialogView.findViewById(R.id.surveyConfirm)
                     confirm.setOnClickListener {
                         val ratingBar = dialogView.findViewById<RatingBar>(R.id.ratingBar)
                         dialog.dismiss()
+                        ViajeService().updateCompletedTrip(data.first, ratingBar.rating, viaje)
                         Toast.makeText(requireContext(), "Rating: ${ratingBar.rating}", Toast.LENGTH_SHORT).show()
                     }
 
@@ -154,7 +164,7 @@ class PendingTripsFragment : Fragment() {
         super.onResume()
         MainScope().launch {
             var viajes = ViajeService().getTravelHistory(auth.uid!!)
-            viajes = viajes.filter{!it.completed}.toMutableList()
+            viajes = viajes.filter{!it.second.completed}.toMutableList()
             adapter.setData(viajes)
         }
     }

@@ -55,7 +55,7 @@ class CompletedTripsFragment : Fragment() {
         super.onResume()
         MainScope().launch {
             var viajes = ViajeService().getTravelHistory(auth.uid!!)
-            viajes = viajes.filter{it.completed}.toMutableList()
+            viajes = viajes.filter{it.second.completed}.toMutableList()
             adapter.setData(viajes)
         }
     }

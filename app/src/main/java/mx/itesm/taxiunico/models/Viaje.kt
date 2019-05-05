@@ -30,6 +30,7 @@ data class Viaje(
     var driverRating: Int = 5,
     var vehicle: String = "",
     var distance: Double = 0.0,
+    var duration: Double = 0.0,
     var cost: Double = 0.0,
     var payment: String = "",
     var completed: Boolean = false,
