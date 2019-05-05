@@ -45,7 +45,7 @@ class TripsPagerFragment : Fragment() {
         adapter = TripsPagerAdapter(fragmentManager!!)
         adapter.addFragment(CompletedTripsFragment(), "Viajes Completados")
         adapter.addFragment(PendingTripsFragment(), "Viajes Pendientes")
-        adapter.addFragment(TripConfirmationFragment(), "TEST")
+        //adapter.addFragment(TripConfirmationFragment(), "TEST")
         viewPager.adapter = adapter
         tabs.setupWithViewPager(viewPager)
     }

@@ -75,7 +75,6 @@ class MainActivity : AppCompatActivity() {
             R.id.newTripMenu -> CheckTripCodeFragment()
             R.id.travelerTravelMenu -> TripsPagerFragment()
             R.id.travelMenu -> TripsPagerFragment()
-            R.id.encuestaList -> SurveyListFragment()
             else -> throw Throwable("Invalid menu option selected")
         }
 
