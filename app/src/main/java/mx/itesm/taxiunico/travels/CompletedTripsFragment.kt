@@ -26,12 +26,14 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.R
+import mx.itesm.taxiunico.auth.AuthService
 
 class CompletedTripsFragment : Fragment() {
 
     private val auth = FirebaseAuth.getInstance()
     private lateinit var adapter: ViajeAdapter
     private lateinit var recyclerView: RecyclerView
+    private lateinit var authService: AuthService
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,9 +44,10 @@ class CompletedTripsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        authService = AuthService(requireContext())
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager= LinearLayoutManager(view.context, RecyclerView.VERTICAL,false)
-        adapter = ViajeAdapter(mutableListOf())
+        adapter = ViajeAdapter(mutableListOf(), authService)
         recyclerView.adapter = adapter
     }
 
@@ -52,7 +55,7 @@ class CompletedTripsFragment : Fragment() {
         super.onResume()
         MainScope().launch {
             var viajes = ViajeService().getTravelHistory(auth.uid!!)
-            viajes = viajes.filter{it.completed}.toMutableList()
+            viajes = viajes.filter{it.second.completed}.toMutableList()
             adapter.setData(viajes)
         }
     }

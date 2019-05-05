@@ -14,18 +14,13 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            tools:ignore="GoogleAppIndexingWarning">        
-
+            tools:ignore="GoogleAppIndexingWarning">
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
                 android:value="@string/api_key"/>
 
         <activity android:name=".auth.LoginActivity"/>
         <activity android:name=".billing.AddPaymentActivity"/>
-        <activity android:name=".survey.SurveyListFragment" />
-        <activity android:name=".auth.LoginActivity" />
-        <activity android:name=".billing.AddPaymentActivity" />
-        <activity android:name=".billing.PaymentFormsActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
