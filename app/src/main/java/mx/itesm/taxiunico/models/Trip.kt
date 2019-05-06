@@ -17,16 +17,26 @@ package mx.itesm.taxiunico.models
 
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.GeoPoint
+import java.util.*
+
+data class FreshTrip(
+    val userId: String,
+    var dateTime: Date,
+    var origin: GeoPoint,
+    var destination: GeoPoint,
+    var completed: Boolean = false
+)
 
 data class Viaje(
     var userId: String = "",
     var userName: String = "",
+    var driverId: String = "",
+    var driverName: String = "",
     var userRating: Int = 5,
     var codeId: String = "",
-    var dateTime: Timestamp = Timestamp.now(),
+    var dateTime: String = "",
     var origin: GeoPoint = GeoPoint(0.0,0.0),
     var destination: GeoPoint = GeoPoint(0.0,0.0),
-    var driverName: String = "",
     var driverRating: Int = 5,
     var vehicle: String = "",
     var distance: Double = 0.0,
