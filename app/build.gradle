@@ -15,15 +15,9 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
-        debug {
-            buildConfigField 'String', "ApiKey", Google_ApiKey
-            resValue 'string', "api_key", Google_ApiKey
-        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField 'String', "ApiKey", Google_ApiKey
-            resValue 'string', "api_key", Google_ApiKey
         }
     }
 
@@ -38,8 +32,6 @@ androidExtensions {
 }
 
 dependencies {
-    def lifecycle_version = "2.0.0"
-
     implementation 'androidx.core:core-ktx:1.0.1'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -51,17 +43,12 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.2.0'
     implementation 'com.google.firebase:firebase-core:16.0.8'
     implementation 'com.google.firebase:firebase-firestore:18.2.0'
-    implementation 'com.google.firebase:firebase-storage:16.1.0'
-    implementation 'com.firebaseui:firebase-ui-storage:4.3.1'
     implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha04'
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.gms:play-services-base:16.1.0'
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation 'androidx.viewpager:viewpager:1.0.0'
-    implementation 'com.android.support:design:28.0.0-alpha3'
-    implementation 'com.github.bumptech.glide:glide:4.9.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -2,8 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
             android:id="@+id/profileMenu"
-            android:title="Mi Perfil" android:icon="@drawable/ic_person_white_24dp"/>
+            android:title="Mi Perfil" />
     <item
             android:id="@+id/travelMenu"
-            android:title="Viajes" android:icon="@drawable/ic_history_white_24dp"/>
+            android:title="Viajes" />
+    <item
+            android:id="@+id/encuestaList"
+            android:title="Encuestas" />
 </menu>

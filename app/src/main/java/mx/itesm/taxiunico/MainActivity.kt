@@ -15,9 +15,6 @@
  */
 package mx.itesm.taxiunico
 
-import android.annotation.SuppressLint
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
@@ -30,51 +27,22 @@ import mx.itesm.taxiunico.models.UserType
 import mx.itesm.taxiunico.profile.UserProfileFragment
 import mx.itesm.taxiunico.travels.TripsPagerFragment
 import mx.itesm.taxiunico.trips.CheckTripCodeFragment
-import android.os.PersistableBundle
-import android.content.IntentFilter
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.net.ConnectivityManager
-import android.view.LayoutInflater
-import android.widget.Button
-import android.widget.RatingBar
-import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
-import mx.itesm.taxiunico.models.Viaje
-import mx.itesm.taxiunico.services.TripService
-import mx.itesm.taxiunico.travels.ViajeService
-import mx.itesm.taxiunico.util.ConnectivityReceiver
+import mx.itesm.taxiunico.survey.SurveyFragment
+import mx.itesm.taxiunico.survey.SurveyListFragment
 
-@SuppressLint("Registered")
-class MainActivity : AppCompatActivity(),
-    ConnectivityReceiver.ConnectivityListener {
-
+class MainActivity : AppCompatActivity() {
     private lateinit var authService: AuthService
-    private var saveState: Int = 0
-    private var mSnackBar: Snackbar? = null
-    private var receiver: BroadcastReceiver? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        receiver = ConnectivityReceiver()
-        registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
         setContentView(R.layout.activity_main)
 
         authService = AuthService(this)
 
         if (authService.isUserAuthenticated()) {
-            if (savedInstanceState != null) {
-                nav.setSelectedItemId(saveState)
-            } else {
-                openDefaultFragment()
-            }
+            openDefaultFragment()
 
-            checkPendingSurveys()
         } else {
             startActivity(Intent(this, LoginActivity::class.java))
         }
@@ -86,41 +54,6 @@ class MainActivity : AppCompatActivity(),
 
         nav.setOnNavigationItemSelectedListener { navigate(it) }
     }
-
-    private fun checkPendingSurveys() = MainScope().launch {
-        val pendingSurveyTrip = TripService().getPendingSurveyTrip(this@MainActivity)
-
-        pendingSurveyTrip?.let {
-            showUserSurvey(it.first, it.second)
-        }
-    }
-
-    private fun showUserSurvey(tripId: String, viaje: Viaje) {
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.alert_trip_survey, null)
-        val builder = AlertDialog.Builder(this).setView(dialogView)
-        builder.setOnDismissListener {
-
-        }
-        val dialog = builder.show()
-        dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        val total = dialogView.findViewById<TextView>(R.id.surveyTotal)
-        total.text = viaje.cost.toString()
-
-        // TODO(terminar de poner info de este layout)
-        dialogView.findViewById<Button>(R.id.surveyConfirm).setOnClickListener {
-            val ratingBar = dialogView.findViewById<RatingBar>(R.id.ratingBar)
-            dialog.dismiss()
-            ViajeService().addUserSurveyAnswer(
-                userId = authService.getUserUid()!!,
-                tripId = tripId,
-                rating = ratingBar.rating)
-
-            Toast.makeText(this, "Rating: ${ratingBar.rating}", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-
 
 
     private fun openDefaultFragment() {
@@ -136,7 +69,9 @@ class MainActivity : AppCompatActivity(),
             R.id.paymentMenu -> PaymentFormsFragment()
             R.id.newTripMenu -> CheckTripCodeFragment()
             R.id.travelerTravelMenu -> TripsPagerFragment()
-            R.id.travelMenu -> TripsPagerFragment()
+            R.id.travelMenu -> TripsPagerFragment() //TODO replace with params for driver
+            R.id.testSurvey -> SurveyFragment()
+            R.id.encuestaList -> SurveyListFragment()
             else -> throw Throwable("Invalid menu option selected")
         }
 
@@ -146,37 +81,4 @@ class MainActivity : AppCompatActivity(),
 
         return true
     }
-
-    @SuppressLint("WrongConstant")
-    private fun showConnectionMessage(isConnected: Boolean) {
-        if (!isConnected) {
-            val message = "No hay conexion."
-            mSnackBar = Snackbar.make(findViewById(R.id.mainContent), message, Snackbar.LENGTH_LONG)
-            mSnackBar?.duration = Snackbar.LENGTH_INDEFINITE
-            mSnackBar?.show()
-        } else {
-            mSnackBar?.dismiss()
-        }
-    }
-
-    override fun onNetworkChanged(isConnected: Boolean) {
-        showConnectionMessage(isConnected)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        ConnectivityReceiver.connectivityListener = this
-        nav.setSelectedItemId(saveState)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        unregisterReceiver(receiver)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
-        super.onSaveInstanceState(outState, outPersistentState)
-        saveState = nav.getSelectedItemId()
-    }
-
 }

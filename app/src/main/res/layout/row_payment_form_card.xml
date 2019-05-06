@@ -17,8 +17,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/cardNumLabel"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/cardNumText" app:layout_constraintTop_toBottomOf="@+id/view3"
-            android:layout_marginTop="8dp"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/cardNumText"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,9 +41,4 @@
             app:layout_constraintEnd_toEndOf="@+id/cardNumText"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toBottomOf="@+id/expDateLabel"
     />
-    <View
-            android:layout_height="1dp" android:id="@+id/view3"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            android:layout_width="0dp" android:background="@android:color/background_dark"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
