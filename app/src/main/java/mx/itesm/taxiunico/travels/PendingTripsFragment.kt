@@ -40,7 +40,7 @@ import java.io.IOException
 import android.content.Intent
 import android.net.Uri
 import android.widget.RatingBar
-import androidx.fragment.app.FragmentTransaction
+import mx.itesm.taxiunico.models.TripStatus
 
 
 class PendingTripsFragment : Fragment() {
@@ -164,7 +164,7 @@ class PendingTripsFragment : Fragment() {
         super.onResume()
         MainScope().launch {
             var viajes = ViajeService().getTravelHistory(auth.uid!!)
-            viajes = viajes.filter{!it.second.completed}.toMutableList()
+            viajes = viajes.filter{ it.second.status != TripStatus.COMPLETED }.toMutableList()
             adapter.setData(viajes)
         }
     }

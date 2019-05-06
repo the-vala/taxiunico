@@ -28,6 +28,7 @@ import com.bumptech.glide.Glide
 import com.google.firebase.storage.FirebaseStorage
 import mx.itesm.taxiunico.R
 import mx.itesm.taxiunico.auth.AuthService
+import mx.itesm.taxiunico.models.TripStatus
 import mx.itesm.taxiunico.models.UserType
 import mx.itesm.taxiunico.models.Viaje
 import java.io.IOException
@@ -109,7 +110,7 @@ class ViajeAdapter(private val list:MutableList<Pair<String, Viaje>>, private va
             costo.text = view.context.getString(R.string.cost,data.cost)
             formaPago.text = data.payment
 
-            if(data.completed) {
+            if(data.status == TripStatus.COMPLETED) {
                 if (authService.getUserType() == UserType.DRIVER)
                     rating.rating = data.userRating.toFloat()
                 else

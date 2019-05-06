@@ -60,6 +60,6 @@
     <string name="estrella_4">4</string>
     <string name="estrella_5">5</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="from_to">De %1$s a %2$s</string>
+    <string name="central">TransPais %1$s</string>
 </resources>

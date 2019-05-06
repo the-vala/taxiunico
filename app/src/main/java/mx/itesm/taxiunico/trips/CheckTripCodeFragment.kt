@@ -22,6 +22,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_check_trip_code.*
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.R
@@ -32,6 +33,7 @@ import mx.itesm.taxiunico.util.Validator
 class CheckTripCodeFragment : Fragment() {
 
     private val codeService = CodeService()
+    private var currentJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +49,7 @@ class CheckTripCodeFragment : Fragment() {
     }
 
     private fun verifyCode() {
-        MainScope().launch {
+        currentJob = MainScope().launch {
             val reserveCode = editText.text.toString()
            if ( Validator.valReservationCode(reserveCode) ) {
                val result = codeService.getTravelData(editText.text.toString())
@@ -85,5 +87,10 @@ class CheckTripCodeFragment : Fragment() {
             )
             .addToBackStack(null)
             .commitAllowingStateLoss()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        currentJob?.cancel()
     }
 }

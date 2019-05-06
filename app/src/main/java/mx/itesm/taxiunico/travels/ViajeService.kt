@@ -13,6 +13,15 @@ class ViajeService {
         return res.documents.map { Pair(it.id, it.toObject(Viaje::class.java)!!) }.toMutableList()
     }
 
+    fun addUserSurveyAnswer(userId: String, tripId: String, rating: Float) {
+        db.collection("trips").document(tripId)
+            .update(
+                "userRating", rating,
+                "pendingSurvey", false
+
+            ).addOnCompleteListener{}
+    }
+
     fun updateCompletedTrip(id: String, rating: Float, viaje: Viaje) {
         db.collection("trips").document(id)
             .update(
