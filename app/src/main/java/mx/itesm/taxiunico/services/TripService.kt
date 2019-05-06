@@ -25,7 +25,7 @@ class TripService {
             .whereEqualTo("pendingSurvey", true)
             .get().await()
 
-        return res.map { Pair(it.id, it.toObject(Viaje::class.java)) }.first()
+        return res.map { Pair(it.id, it.toObject(Viaje::class.java)) }.firstOrNull()
     }
 
     companion object {
