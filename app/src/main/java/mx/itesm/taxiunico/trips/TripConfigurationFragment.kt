@@ -25,9 +25,9 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.model.LatLng
-import com.google.firebase.firestore.GeoPoint
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_trip_configuration.*
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.R
@@ -38,13 +38,7 @@ import mx.itesm.taxiunico.services.Station
 import mx.itesm.taxiunico.services.TripService
 import mx.itesm.taxiunico.util.Event
 import java.text.SimpleDateFormat
-import java.util.*
 
-@Parcelize
-data class Coordinate(
-    val long: String,
-    val lat: String
-) : Parcelable
 
 @Parcelize
 data class TripForm(
@@ -70,6 +64,9 @@ class TripConfigurationFragment : Fragment() {
     private lateinit var vm: TripConfigurationViewModel
     private var placePickerChangedObserver: Observer<Event<LatLng>>? = null
 
+    private var currentJob: Job? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         vm = ViewModelProviders.of(requireActivity()).get(TripConfigurationViewModel::class.java)
@@ -84,7 +81,7 @@ class TripConfigurationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fetchLocationDataAndRender()
+        currentJob = fetchLocationDataAndRender()
 
         firstLegToTerminal.setOnCheckedChangeListener { _, isChecked ->
             tripForm = tripForm.copy(needsFirstLegToTerminalTaxi = isChecked)
@@ -128,8 +125,7 @@ class TripConfigurationFragment : Fragment() {
                     userId = userId,
                     dateTime = SimpleDateFormat("yyyy-MM-dd").parse("2019-03-01"),
                     origin = tripForm.firstLegPickupLocation!!.toGeoPoint(),
-                    destination = homeBusStation.cord!!,
-                    completed = false
+                    destination = homeBusStation.cord!!
                 ))
             }
 
@@ -138,8 +134,7 @@ class TripConfigurationFragment : Fragment() {
                     userId = userId,
                     dateTime = SimpleDateFormat("yyyy-MM-dd").parse("2019-03-01"),
                     origin = destinationBusStation.cord!!,
-                    destination = tripForm.firstLegDropoffLocation!!.toGeoPoint(),
-                    completed = false
+                    destination = tripForm.firstLegDropoffLocation!!.toGeoPoint()
                 ))
             }
 
@@ -149,8 +144,7 @@ class TripConfigurationFragment : Fragment() {
                     userId = userId,
                     dateTime = SimpleDateFormat("yyyy-MM-dd").parse("2019-03-01"),
                     origin = tripForm.secondLegPickupLocation!!.toGeoPoint(),
-                    destination = destinationBusStation.cord!!,
-                    completed = false
+                    destination = destinationBusStation.cord!!
                 ))
             }
 
@@ -160,8 +154,7 @@ class TripConfigurationFragment : Fragment() {
                     userId = userId,
                     dateTime = SimpleDateFormat("yyyy-MM-dd").parse("2019-03-01"),
                     origin = homeBusStation.cord!!,
-                    destination = tripForm.secondLegDropoffLocation!!.toGeoPoint(),
-                    completed = false
+                    destination = tripForm.secondLegDropoffLocation!!.toGeoPoint()
                 ))
             }
 
@@ -173,7 +166,7 @@ class TripConfigurationFragment : Fragment() {
     private fun openFirstLegPickupAddress() {
         requireFragmentManager().beginTransaction()
             .replace(android.R.id.content, PlacePickerFragment.newInstance(
-                referencePointLabel = "cityName".toLowerCase().capitalize(),
+                referencePointLabel = getString(R.string.central, homeBusStation.city.toSentenceCase()),
                 referencePointLocation = LatLng(homeBusStation.cord!!.latitude, homeBusStation.cord!!.longitude),
                 selectedPointLocation = tripForm.firstLegPickupLocation
             ))
@@ -194,8 +187,8 @@ class TripConfigurationFragment : Fragment() {
     private fun openFirstLegDropoffAddress() {
         requireFragmentManager().beginTransaction()
             .replace(android.R.id.content, PlacePickerFragment.newInstance(
-                referencePointLabel = "cityName".toLowerCase().capitalize(),
-                referencePointLocation = LatLng(homeBusStation.cord!!.latitude, homeBusStation.cord!!.longitude),
+                referencePointLabel = getString(R.string.central, destinationBusStation.city.toSentenceCase()),
+                referencePointLocation = destinationBusStation.cord!!.toLatLng(),
                 selectedPointLocation = tripForm.firstLegDropoffLocation
             ))
             .addToBackStack(null)
@@ -215,11 +208,8 @@ class TripConfigurationFragment : Fragment() {
     private fun openSecondLegPickupAddress() {
         requireFragmentManager().beginTransaction()
             .replace(android.R.id.content, PlacePickerFragment.newInstance(
-                referencePointLabel = "cityName".toLowerCase().capitalize(),
-                referencePointLocation = LatLng(
-                    destinationBusStation.cord!!.latitude,
-                    destinationBusStation.cord!!.longitude
-                ),
+                referencePointLabel = getString(R.string.central, destinationBusStation.city.toSentenceCase()),
+                referencePointLocation = destinationBusStation.cord!!.toLatLng(),
                 selectedPointLocation = tripForm.secondLegPickupLocation
             ))
             .addToBackStack(null)
@@ -239,11 +229,8 @@ class TripConfigurationFragment : Fragment() {
     private fun openSecondLegDropoffAddress() {
         requireFragmentManager().beginTransaction()
             .replace(android.R.id.content, PlacePickerFragment.newInstance(
-                referencePointLabel = "cityName".toLowerCase().capitalize(),
-                referencePointLocation = LatLng(
-                    destinationBusStation.cord!!.latitude,
-                    destinationBusStation.cord!!.longitude
-                ),
+                referencePointLabel = getString(R.string.central, homeBusStation.city.toSentenceCase()),
+                referencePointLocation = homeBusStation.cord!!.toLatLng(),
                 selectedPointLocation = tripForm.secondLegDropoffLocation
             ))
             .addToBackStack(null)
@@ -281,13 +268,24 @@ class TripConfigurationFragment : Fragment() {
         placePickerChangedObserver?.let { vm.getLocation().observe(this, it) }
     }
 
+    override fun onPause() {
+        super.onPause()
+        currentJob?.cancel()
+    }
 
     /**
      * Renders the content
      */
     private fun render() {
-        firstLegTitle.text = "De ${homeBusStation.city.toLowerCase().capitalize()} a ${destinationBusStation.city.toLowerCase().capitalize()}"
-        secondLegTitle.text = "De ${destinationBusStation.city.toLowerCase().capitalize()} a ${homeBusStation.city.toLowerCase().capitalize()}"
+        firstLegTitle.text = getString(
+            R.string.from_to,
+            homeBusStation.city.toSentenceCase(),
+            destinationBusStation.city.toSentenceCase())
+
+        secondLegTitle.text = getString(
+            R.string.from_to,
+            destinationBusStation.city.toSentenceCase(),
+            homeBusStation.city.toSentenceCase())
     }
 
     companion object {
@@ -330,12 +328,4 @@ class TripConfigurationFragment : Fragment() {
         private const val FIRST_LEG_DEPARTURE_DATE= "first.leg.departure.date.id"
         private const val SECOND_LEG_DEPARTURE_DATE= "second.leg.departure.date.id"
     }
-}
-
-
-fun LatLng.toGeoPoint(): GeoPoint {
-    return GeoPoint(this.latitude, this.longitude)
-}
-fun String.toLocalDate(): Date {
-    return SimpleDateFormat("yyyy-MM-dd").parse(this)
 }
