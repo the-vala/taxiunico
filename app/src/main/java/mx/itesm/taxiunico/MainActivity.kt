@@ -83,6 +83,12 @@ class MainActivity : AppCompatActivity(),
         nav.setOnNavigationItemSelectedListener { navigate(it) }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(ConnectivityReceiver())
+    }
+
+
     private fun checkPendingSurveys() = MainScope().launch {
         val pendingSurveyTrip = TripService().getPendingSurveyTrip(this@MainActivity)
 
