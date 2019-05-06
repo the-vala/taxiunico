@@ -109,7 +109,7 @@ class PendingTripsFragment : Fragment() {
 
                 //Get trip start time and client info
                 var dateTime = dialogView.findViewById<TextView>(R.id.confirmationDateTime)
-                dateTime.text = viaje.dateTime.toDate().toString()
+                dateTime.text = viaje.dateTime
                 var cliente = dialogView.findViewById<TextView>(R.id.name)
                 cliente.text = viaje.userName
 
@@ -135,7 +135,7 @@ class PendingTripsFragment : Fragment() {
                     val total = dialogView.findViewById<TextView>(R.id.surveyTotal)
                     total.text = viaje.cost.toString()
                     dateTime = dialogView.findViewById(R.id.surveyDateTime)
-                    dateTime.text = viaje.dateTime.toDate().toString()
+                    dateTime.text = viaje.dateTime
                     cliente = dialogView.findViewById(R.id.name)
                     cliente.text = viaje.userName
 

@@ -15,25 +15,30 @@
  */
 package mx.itesm.taxiunico.trips
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.firestore.GeoPoint
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_trip_configuration.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.R
-
-
-
-
-
+import mx.itesm.taxiunico.auth.AuthService
+import mx.itesm.taxiunico.models.FreshTrip
+import mx.itesm.taxiunico.services.BusStationService
+import mx.itesm.taxiunico.services.Station
+import mx.itesm.taxiunico.services.TripService
+import mx.itesm.taxiunico.util.Event
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Parcelize
 data class Coordinate(
@@ -43,21 +48,32 @@ data class Coordinate(
 
 @Parcelize
 data class TripForm(
-    val originPickupDropoffLocation: Coordinate = Coordinate("0", "0"),
-    val destinationPickupDropoffLocation: Coordinate = Coordinate("0", "0"),
-    val originToTerminalTrip: Boolean = false,
-    val originFromTerminalTrip: Boolean = false,
-    val destinationFromTerminalTrip: Boolean = false,
-    val destinationToTerminalTrip: Boolean = false
+    val firstLegPickupLocation: LatLng?= null,
+    val firstLegDropoffLocation: LatLng? = null,
+    val secondLegPickupLocation: LatLng? = null,
+    val secondLegDropoffLocation: LatLng? = null,
+
+    val needsFirstLegToTerminalTaxi: Boolean = false,
+    val needsFirstLegToDestinationTaxi: Boolean = false,
+    val needsSecondLegToTerminalTaxi: Boolean = false,
+    val needsSecondLegToHomeTaxi: Boolean = false
 ) : Parcelable
 
 class TripConfigurationFragment : Fragment() {
     private val busStationStation = BusStationService()
 
-    private lateinit var departureStation: Station
-    private lateinit var destinationStation: Station
+    private lateinit var homeBusStation: Station
+    private lateinit var destinationBusStation: Station
 
     private var tripForm = TripForm()
+
+    private lateinit var vm: TripConfigurationViewModel
+    private var placePickerChangedObserver: Observer<Event<LatLng>>? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        vm = ViewModelProviders.of(requireActivity()).get(TripConfigurationViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,88 +86,256 @@ class TripConfigurationFragment : Fragment() {
 
         fetchLocationDataAndRender()
 
-        firstLegToTrerminal.setOnCheckedChangeListener { _, isChecked ->
-            tripForm = tripForm.copy(originToTerminalTrip = isChecked)
+        firstLegToTerminal.setOnCheckedChangeListener { _, isChecked ->
+            tripForm = tripForm.copy(needsFirstLegToTerminalTaxi = isChecked)
         }
 
-        firstLegFromTerminal.setOnCheckedChangeListener { _, isChecked ->
-            tripForm = tripForm.copy(originFromTerminalTrip = isChecked)
+        firstLegToDestination.setOnCheckedChangeListener { _, isChecked ->
+            tripForm = tripForm.copy(needsFirstLegToDestinationTaxi = isChecked)
         }
 
-        secondLegFromTerminal.setOnCheckedChangeListener { _, isChecked ->
-            tripForm = tripForm.copy(destinationFromTerminalTrip = isChecked)
-        }
 
         secondLegtoTerminal.setOnCheckedChangeListener { _, isChecked ->
-            tripForm = tripForm.copy(destinationToTerminalTrip = isChecked)
+            tripForm = tripForm.copy(needsSecondLegToTerminalTaxi = isChecked)
         }
+
+        secondLegToHome.setOnCheckedChangeListener { _, isChecked ->
+            tripForm = tripForm.copy(needsSecondLegToHomeTaxi = isChecked)
+        }
+
 
         if (!arguments!!.getBoolean(ROUND_TRIP)) {
-            firstLegFromTerminal.visibility = View.GONE
-            secondLegtoTerminal.visibility = View.GONE
+            linearLayout2.visibility = View.GONE
         }
 
-        firstLegAddress.setOnClickListener {
-            openLocationPickerFragment(
-                departureStation.city,
-                departureStation.cord!!.latitude,
-                departureStation.cord!!.longitude)
-        }
-
-        secondLegAddress.setOnClickListener {
-            openLocationPickerFragment(
-                destinationStation.city,
-                destinationStation.cord!!.latitude,
-                destinationStation.cord!!.longitude)
-        }
-
-//        confirmButton.setOnClickListener {
-//            fragmentManager!!.beginTransaction()
-//                .replace(R.id.mainContent, TripConfirmationFragment())
-//                .commit()
-//        }
+        firstLegPickupAddress.setOnClickListener { openFirstLegPickupAddress() }
+        firstLegDropoffAddress.setOnClickListener { openFirstLegDropoffAddress() }
+        secondLegPickupAddress.setOnClickListener { openSecondLegPickupAddress() }
+        secondLegDropoffAddress.setOnClickListener { openSecondLegDropoffAddress() }
+        confirmButton.setOnClickListener { saveTrips() }
     }
 
-    private fun openLocationPickerFragment(cityName: String, lat: Double, long: Double) {
+    private fun saveTrips() {
+        MainScope().launch {
+            val trips = mutableListOf<FreshTrip>()
+            val userId = AuthService(requireContext()).getUserUid()!!
+
+            val firstLegDepartureDate = arguments!!.getString(FIRST_LEG_DEPARTURE_DATE)
+            val secondLegDepartureDate = arguments!!.getString(SECOND_LEG_DEPARTURE_DATE, null)
+
+            if (tripForm.needsFirstLegToTerminalTaxi) {
+                trips.add(FreshTrip(
+                    userId = userId,
+                    dateTime = SimpleDateFormat("yyyy-MM-dd").parse("2019-03-01"),
+                    origin = tripForm.firstLegPickupLocation!!.toGeoPoint(),
+                    destination = homeBusStation.cord!!,
+                    completed = false
+                ))
+            }
+
+            if (tripForm.needsFirstLegToDestinationTaxi) {
+                trips.add(FreshTrip(
+                    userId = userId,
+                    dateTime = SimpleDateFormat("yyyy-MM-dd").parse("2019-03-01"),
+                    origin = destinationBusStation.cord!!,
+                    destination = tripForm.firstLegDropoffLocation!!.toGeoPoint(),
+                    completed = false
+                ))
+            }
+
+
+            if (tripForm.needsSecondLegToTerminalTaxi) {
+                trips.add(FreshTrip(
+                    userId = userId,
+                    dateTime = SimpleDateFormat("yyyy-MM-dd").parse("2019-03-01"),
+                    origin = tripForm.secondLegPickupLocation!!.toGeoPoint(),
+                    destination = destinationBusStation.cord!!,
+                    completed = false
+                ))
+            }
+
+
+            if (tripForm.needsSecondLegToHomeTaxi) {
+                trips.add(FreshTrip(
+                    userId = userId,
+                    dateTime = SimpleDateFormat("yyyy-MM-dd").parse("2019-03-01"),
+                    origin = homeBusStation.cord!!,
+                    destination = tripForm.secondLegDropoffLocation!!.toGeoPoint(),
+                    completed = false
+                ))
+            }
+
+            TripService().addTrips(trips)
+        }
+    }
+
+
+    private fun openFirstLegPickupAddress() {
         requireFragmentManager().beginTransaction()
-            .replace(android.R.id.content, PlacePickerFragment.newInstance(cityName, lat, long))
+            .replace(android.R.id.content, PlacePickerFragment.newInstance(
+                referencePointLabel = "cityName".toLowerCase().capitalize(),
+                referencePointLocation = LatLng(homeBusStation.cord!!.latitude, homeBusStation.cord!!.longitude),
+                selectedPointLocation = tripForm.firstLegPickupLocation
+            ))
             .addToBackStack(null)
             .commitAllowingStateLoss()
+
+        placePickerChangedObserver = Observer { event ->
+            event.getContentIfNotHandled()?.let {
+                tripForm = tripForm.copy(firstLegPickupLocation = it)
+                vm.getLocation().removeObserver(placePickerChangedObserver!!)
+                placePickerChangedObserver = null
+            }
+        }
+
+        vm.getLocation().observe(this, placePickerChangedObserver!!)
+    }
+
+    private fun openFirstLegDropoffAddress() {
+        requireFragmentManager().beginTransaction()
+            .replace(android.R.id.content, PlacePickerFragment.newInstance(
+                referencePointLabel = "cityName".toLowerCase().capitalize(),
+                referencePointLocation = LatLng(homeBusStation.cord!!.latitude, homeBusStation.cord!!.longitude),
+                selectedPointLocation = tripForm.firstLegDropoffLocation
+            ))
+            .addToBackStack(null)
+            .commitAllowingStateLoss()
+
+        placePickerChangedObserver = Observer { event ->
+            event.getContentIfNotHandled()?.let {
+                tripForm = tripForm.copy(firstLegDropoffLocation = it)
+                vm.getLocation().removeObserver(placePickerChangedObserver!!)
+                placePickerChangedObserver = null
+            }
+        }
+
+        vm.getLocation().observe(this, placePickerChangedObserver!!)
+    }
+
+    private fun openSecondLegPickupAddress() {
+        requireFragmentManager().beginTransaction()
+            .replace(android.R.id.content, PlacePickerFragment.newInstance(
+                referencePointLabel = "cityName".toLowerCase().capitalize(),
+                referencePointLocation = LatLng(
+                    destinationBusStation.cord!!.latitude,
+                    destinationBusStation.cord!!.longitude
+                ),
+                selectedPointLocation = tripForm.secondLegPickupLocation
+            ))
+            .addToBackStack(null)
+            .commitAllowingStateLoss()
+
+        placePickerChangedObserver = Observer { event ->
+            event.getContentIfNotHandled()?.let {
+                tripForm = tripForm.copy(secondLegPickupLocation = it)
+                vm.getLocation().removeObserver(placePickerChangedObserver!!)
+                placePickerChangedObserver = null
+            }
+        }
+
+        vm.getLocation().observe(this, placePickerChangedObserver!!)
+    }
+
+    private fun openSecondLegDropoffAddress() {
+        requireFragmentManager().beginTransaction()
+            .replace(android.R.id.content, PlacePickerFragment.newInstance(
+                referencePointLabel = "cityName".toLowerCase().capitalize(),
+                referencePointLocation = LatLng(
+                    destinationBusStation.cord!!.latitude,
+                    destinationBusStation.cord!!.longitude
+                ),
+                selectedPointLocation = tripForm.secondLegDropoffLocation
+            ))
+            .addToBackStack(null)
+            .commitAllowingStateLoss()
+
+        placePickerChangedObserver = Observer { event ->
+            event.getContentIfNotHandled()?.let {
+                tripForm = tripForm.copy(secondLegDropoffLocation = it)
+                vm.getLocation().removeObserver(placePickerChangedObserver!!)
+                placePickerChangedObserver = null
+            }
+        }
+
+        vm.getLocation().observe(this, placePickerChangedObserver!!)
     }
 
     private fun fetchLocationDataAndRender() = MainScope().launch {
         val stations = busStationStation.getStations()
 
-        destinationStation = stations.find {
+        destinationBusStation = stations.find {
             it.cityId == arguments!!.getString(DESTINATION_CITY_ID)
         } ?: throw IllegalArgumentException()
 
-        departureStation = stations.find {
-            it.cityId == arguments!!.getString(DEPARTING_CITY_ID)
+        homeBusStation = stations.find {
+            it.cityId == arguments!!.getString(HOME_CITY_ID)
         } ?: throw IllegalArgumentException()
 
         render()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        // Re-attach the place picker observer, if any.
+        placePickerChangedObserver?.let { vm.getLocation().observe(this, it) }
+    }
 
 
+    /**
+     * Renders the content
+     */
     private fun render() {
-        originCityName.text = "Tu viaje desde ${departureStation.city.toLowerCase().capitalize()}"
-        destinationCityName.text = "Tu viaje hacia ${destinationStation.city.toLowerCase().capitalize()}"
+        firstLegTitle.text = "De ${homeBusStation.city.toLowerCase().capitalize()} a ${destinationBusStation.city.toLowerCase().capitalize()}"
+        secondLegTitle.text = "De ${destinationBusStation.city.toLowerCase().capitalize()} a ${homeBusStation.city.toLowerCase().capitalize()}"
     }
 
     companion object {
-        fun newInstance(departingCityId: String, destinationCityId: String, isRoundTrip: Boolean) =
+        fun newInstance(
+            /**
+             * The ID of the city where the bus takes off.
+             */
+            homeCityId: String,
+            /**
+             * The ID of the city where the bus is arriving.
+             */
+            destinationCityId: String,
+            /**
+             * Specifies if the user needs a bus to return home.
+             */
+            isRoundTrip: Boolean,
+            /**
+             * The date when the first bus leaves.
+             */
+            firstLegDepartureDate: String,
+            /**
+             * The date when the second bus leaves. Is null when the [isRoundTrip] is false.
+             */
+            secondLegDepartureDate: String?
+        ) =
             TripConfigurationFragment().apply {
                 arguments = bundleOf(
-                    DEPARTING_CITY_ID to departingCityId,
+                    HOME_CITY_ID to homeCityId,
                     DESTINATION_CITY_ID to destinationCityId,
-                    ROUND_TRIP to isRoundTrip
+                    ROUND_TRIP to isRoundTrip,
+                    FIRST_LEG_DEPARTURE_DATE to firstLegDepartureDate,
+                    SECOND_LEG_DEPARTURE_DATE to secondLegDepartureDate
+
                 )
             }
 
-        private const val DEPARTING_CITY_ID = "departing.city.id"
+        private const val HOME_CITY_ID = "home.city.id"
         private const val DESTINATION_CITY_ID = "destination.city.id"
-        private const val ROUND_TRIP = "router.id"
+        private const val ROUND_TRIP = "is.round.trip.id"
+        private const val FIRST_LEG_DEPARTURE_DATE= "first.leg.departure.date.id"
+        private const val SECOND_LEG_DEPARTURE_DATE= "second.leg.departure.date.id"
     }
+}
+
+
+fun LatLng.toGeoPoint(): GeoPoint {
+    return GeoPoint(this.latitude, this.longitude)
+}
+fun String.toLocalDate(): Date {
+    return SimpleDateFormat("yyyy-MM-dd").parse(this)
 }
