@@ -34,6 +34,7 @@ import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.RatingBar
@@ -41,12 +42,17 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.models.Viaje
 import mx.itesm.taxiunico.services.TripService
 import mx.itesm.taxiunico.travels.ViajeService
 import mx.itesm.taxiunico.util.ConnectivityReceiver
+import android.R.attr.gravity
+import android.widget.FrameLayout
+
+
 
 @SuppressLint("Registered")
 class MainActivity : AppCompatActivity(),
@@ -117,8 +123,6 @@ class MainActivity : AppCompatActivity(),
     }
 
 
-
-
     private fun openDefaultFragment() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.mainContent, UserProfileFragment())
@@ -145,10 +149,15 @@ class MainActivity : AppCompatActivity(),
 
     @SuppressLint("WrongConstant")
     private fun showConnectionMessage(isConnected: Boolean) {
+
         if (!isConnected) {
             val message = "No hay conexion."
             mSnackBar = Snackbar.make(findViewById(R.id.mainContent), message, Snackbar.LENGTH_LONG)
             mSnackBar?.duration = Snackbar.LENGTH_INDEFINITE
+            val view = mSnackBar!!.view
+            val params = view.layoutParams as FrameLayout.LayoutParams
+            params.gravity = Gravity.TOP
+            view.layoutParams = params
             mSnackBar?.show()
         } else {
             mSnackBar?.dismiss()
