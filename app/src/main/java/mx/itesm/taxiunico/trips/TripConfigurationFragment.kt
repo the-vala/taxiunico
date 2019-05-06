@@ -37,6 +37,9 @@ import mx.itesm.taxiunico.services.BusStationService
 import mx.itesm.taxiunico.services.Station
 import mx.itesm.taxiunico.services.TripService
 import mx.itesm.taxiunico.util.Event
+import mx.itesm.taxiunico.util.toGeoPoint
+import mx.itesm.taxiunico.util.toLatLng
+import mx.itesm.taxiunico.util.toSentenceCase
 import java.text.SimpleDateFormat
 
 
