@@ -21,11 +21,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.google.firebase.firestore.FirebaseFirestore
 import mx.itesm.taxiunico.R
 import kotlinx.android.synthetic.main.fragment_survey.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import mx.itesm.taxiunico.services.SurveyService
 import java.text.SimpleDateFormat
 import java.util.*
 

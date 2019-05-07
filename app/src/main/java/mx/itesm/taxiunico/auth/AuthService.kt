@@ -1,19 +1,14 @@
 package mx.itesm.taxiunico.auth
 
 import android.content.Context
-import android.content.Intent
 import android.util.Log
-import android.widget.Toast
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
-import mx.itesm.taxiunico.MainActivity
 import mx.itesm.taxiunico.models.UserProfile
 import mx.itesm.taxiunico.models.UserType
 import mx.itesm.taxiunico.prefs.UserPrefs
-import mx.itesm.taxiunico.profile.UserService
-import kotlin.coroutines.CoroutineContext
+import mx.itesm.taxiunico.services.UserService
 
 class AuthService constructor(context: Context) {
     private val userService = UserService()

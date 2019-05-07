@@ -19,8 +19,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_add_payment.*
-import kotlinx.android.synthetic.main.row_payment_form_cash.view.*
 import mx.itesm.taxiunico.R
+import mx.itesm.taxiunico.services.PaymentService
 
 class AddPaymentActivity : AppCompatActivity() {
 

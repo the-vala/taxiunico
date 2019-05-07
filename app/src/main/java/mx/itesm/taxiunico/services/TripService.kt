@@ -5,14 +5,16 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import mx.itesm.taxiunico.auth.AuthService
 import mx.itesm.taxiunico.models.FreshTrip
+import mx.itesm.taxiunico.models.TripStatus
 import mx.itesm.taxiunico.models.Viaje
 
 class TripService {
     private val db = FirebaseFirestore.getInstance()
+    private val collection = db.collection(TRIP_COLLECTION_KEY)
 
     suspend fun addTrips(trips: List<FreshTrip>): Result<Unit> {
         trips.forEach {
-            trip -> db.collection(CODE_COLLECTION_KEY).add(trip).await()
+            trip -> collection.add(trip).await()
         }
 
         return Result.Success(Unit)
@@ -20,7 +22,7 @@ class TripService {
 
     suspend fun getPendingSurveyTrip(context: Context): Pair<String, Viaje>? {
         val uid = AuthService(context).getUserUid()
-        val res = db.collection(CODE_COLLECTION_KEY)
+        val res = collection
             .whereEqualTo("userId", uid)
             .whereEqualTo("pendingSurvey", true)
             .get().await()
@@ -28,7 +30,37 @@ class TripService {
         return res.map { Pair(it.id, it.toObject(Viaje::class.java)) }.firstOrNull()
     }
 
+    suspend fun getTravelHistory(id: String): MutableList<Pair<String, Viaje>> {
+        val res = collection.whereEqualTo("userId", id).get().await()
+
+        return res.documents.map { Pair(it.id, it.toObject(Viaje::class.java)!!) }.toMutableList()
+    }
+
+    fun addUserSurveyAnswer(userId: String, tripId: String, rating: Float) {
+        collection.document(tripId)
+            .update(
+                "driverRating", rating,
+                "pendingSurvey", false
+
+            ).addOnCompleteListener{}
+    }
+
+    fun updateCompletedTrip(id: String, rating: Float) {
+        collection.document(id)
+            .update(
+                "status", TripStatus.COMPLETED,
+                "userRating", rating,
+                "payment", ".... 5248"
+            ).addOnCompleteListener{}
+    }
+
+    suspend fun cancelPendingTrip(id: String) {
+        collection.document(id).update(
+            "status", TripStatus.CANCELED
+        ).await()
+    }
+
     companion object {
-        const val CODE_COLLECTION_KEY = "trips"
+        const val TRIP_COLLECTION_KEY = "trips"
     }
 }

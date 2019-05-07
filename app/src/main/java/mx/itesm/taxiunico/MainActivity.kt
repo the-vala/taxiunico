@@ -17,7 +17,6 @@ package mx.itesm.taxiunico
 
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
@@ -43,14 +42,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.models.Viaje
 import mx.itesm.taxiunico.services.TripService
-import mx.itesm.taxiunico.travels.ViajeService
 import mx.itesm.taxiunico.util.ConnectivityReceiver
-import android.R.attr.gravity
 import android.widget.FrameLayout
 
 
@@ -115,7 +111,8 @@ class MainActivity : AppCompatActivity(),
         dialogView.findViewById<Button>(R.id.surveyConfirm).setOnClickListener {
             val ratingBar = dialogView.findViewById<RatingBar>(R.id.ratingBar)
             dialog.dismiss()
-            ViajeService().addUserSurveyAnswer(
+
+            TripService().addUserSurveyAnswer(
                 userId = authService.getUserUid()!!,
                 tripId = tripId,
                 rating = ratingBar.rating)

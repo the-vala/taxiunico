@@ -31,6 +31,7 @@ import mx.itesm.taxiunico.R
 import mx.itesm.taxiunico.auth.AuthService
 import mx.itesm.taxiunico.models.UserProfile
 import mx.itesm.taxiunico.prefs.UserPrefs
+import mx.itesm.taxiunico.services.UserService
 
 class UserProfileFragment : Fragment() {
     private val userService = UserService()

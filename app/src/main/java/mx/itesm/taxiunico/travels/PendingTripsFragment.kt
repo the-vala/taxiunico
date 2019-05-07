@@ -42,12 +42,14 @@ import android.net.Uri
 import android.widget.RatingBar
 import mx.itesm.taxiunico.models.TripStatus
 import mx.itesm.taxiunico.models.Viaje
+import mx.itesm.taxiunico.services.TripService
 
 class PendingTripsFragment : Fragment() {
 
     private val auth = FirebaseAuth.getInstance()
     private lateinit var adapter: ViajeAdapter
     private lateinit var authService: AuthService
+    private lateinit var tripService: TripService
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,6 +60,7 @@ class PendingTripsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         authService = AuthService(requireContext())
+        tripService = TripService()
 
         //Load pending trips
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
@@ -81,7 +84,7 @@ class PendingTripsFragment : Fragment() {
 
     private fun updateData() {
         MainScope().launch {
-            var viajes = ViajeService().getTravelHistory(auth.uid!!)
+            var viajes = TripService().getTravelHistory(auth.uid!!)
             viajes = viajes.filter{ it.second.status == TripStatus.PENDING }.toMutableList()
             adapter.setData(viajes)
         }
@@ -178,7 +181,7 @@ class PendingTripsFragment : Fragment() {
         confirm.setOnClickListener {
             val ratingBar = dialogView.findViewById<RatingBar>(R.id.ratingBar)
             dialog.dismiss()
-            ViajeService().updateCompletedTrip(data.first, ratingBar.rating, viaje)
+            tripService.updateCompletedTrip(data.first, ratingBar.rating)
             Toast.makeText(requireContext(), "Rating: ${ratingBar.rating}", Toast.LENGTH_SHORT).show()
         }
     }
@@ -195,7 +198,7 @@ class PendingTripsFragment : Fragment() {
             ).show()
 
             MainScope().launch {
-                ViajeService().cancelPendingTrip(data.first)
+                tripService.cancelPendingTrip(data.first)
                 updateData()
             }
         }

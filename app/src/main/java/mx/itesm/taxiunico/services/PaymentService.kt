@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package mx.itesm.taxiunico.billing
+package mx.itesm.taxiunico.services
 
 import com.google.firebase.firestore.FirebaseFirestore
+import mx.itesm.taxiunico.billing.PaymentMethod
 
 
 class PaymentService {

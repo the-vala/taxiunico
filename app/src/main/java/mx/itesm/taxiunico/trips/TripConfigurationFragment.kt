@@ -33,8 +33,8 @@ import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.R
 import mx.itesm.taxiunico.auth.AuthService
 import mx.itesm.taxiunico.models.FreshTrip
+import mx.itesm.taxiunico.models.Station
 import mx.itesm.taxiunico.services.BusStationService
-import mx.itesm.taxiunico.services.Station
 import mx.itesm.taxiunico.services.TripService
 import mx.itesm.taxiunico.util.Event
 import mx.itesm.taxiunico.util.toGeoPoint
