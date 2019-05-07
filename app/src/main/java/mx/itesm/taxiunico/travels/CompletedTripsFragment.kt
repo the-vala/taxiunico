@@ -53,6 +53,7 @@ class CompletedTripsFragment : Fragment() {
         MainScope().launch {
             var viajes = ViajeService().getTravelHistory(auth.uid!!)
             viajes = viajes.filter{it.completed}.toMutableList()
+
             adapter.setData(viajes)
         }
     }

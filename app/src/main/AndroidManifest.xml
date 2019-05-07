@@ -21,10 +21,6 @@
 
         <activity android:name=".auth.LoginActivity"/>
         <activity android:name=".billing.AddPaymentActivity"/>
-        <activity android:name=".survey.SurveyListFragment" />
-        <activity android:name=".auth.LoginActivity" />
-        <activity android:name=".billing.AddPaymentActivity" />
-        <activity android:name=".billing.PaymentFormsActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
