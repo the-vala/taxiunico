@@ -15,6 +15,7 @@
  */
 package mx.itesm.taxiunico.models
 
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.GeoPoint
 import java.util.*
 
@@ -40,7 +41,7 @@ data class Viaje(
     var driverName: String = "",
     var userRating: Int = 5,
     var codeId: String = "",
-    var dateTime: String = "",
+    var dateTime: Timestamp = Timestamp.now(),
     var origin: GeoPoint = GeoPoint(0.0,0.0),
     var destination: GeoPoint = GeoPoint(0.0,0.0),
     var driverRating: Int = 5,
