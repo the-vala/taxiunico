@@ -91,7 +91,6 @@ class MainActivity : AppCompatActivity(),
 
     private fun checkPendingSurveys() = MainScope().launch {
         val pendingSurveyTrip = TripService().getPendingSurveyTrip(this@MainActivity)
-
         pendingSurveyTrip?.let {
             showUserSurvey(it.first, it.second)
         }
@@ -121,7 +120,6 @@ class MainActivity : AppCompatActivity(),
             Toast.makeText(this, "Rating: ${ratingBar.rating}", Toast.LENGTH_SHORT).show()
         }
     }
-
 
     private fun openDefaultFragment() {
         supportFragmentManager.beginTransaction()

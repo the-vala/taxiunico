@@ -32,7 +32,7 @@ class ViajeService {
     fun addUserSurveyAnswer(userId: String, tripId: String, rating: Float) {
         db.collection("trips").document(tripId)
             .update(
-                "userRating", rating,
+                "driverRating", rating,
                 "pendingSurvey", false
 
             ).addOnCompleteListener{}
