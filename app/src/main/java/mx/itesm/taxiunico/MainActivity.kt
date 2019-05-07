@@ -16,6 +16,7 @@
 package mx.itesm.taxiunico
 
 import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -61,10 +62,12 @@ class MainActivity : AppCompatActivity(),
     private lateinit var authService: AuthService
     private var saveState: Int = 0
     private var mSnackBar: Snackbar? = null
+    private var receiver: BroadcastReceiver? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        registerReceiver(ConnectivityReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+        receiver = ConnectivityReceiver()
+        registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
         setContentView(R.layout.activity_main)
 
         authService = AuthService(this)
@@ -170,6 +173,11 @@ class MainActivity : AppCompatActivity(),
         super.onResume()
         ConnectivityReceiver.connectivityListener = this
         nav.setSelectedItemId(saveState)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(receiver)
     }
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
