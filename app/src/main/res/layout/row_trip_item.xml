@@ -13,7 +13,7 @@
 
         <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="112dp" tools:srcCompat="@drawable/map_example"
+                android:layout_height="300dp" tools:srcCompat="@drawable/map_example"
                 android:id="@+id/mapa"
                 app:srcCompat="@drawable/map_example"
                 app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
@@ -23,59 +23,72 @@
         <TextView
                 android:text="TextView"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content" android:id="@+id/ori"
+                android:layout_height="wrap_content" android:id="@+id/confirmationOri"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="16dp" android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/fecha" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/mapa" app:layout_constraintVertical_bias="0.0"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/mapa"
                 android:textAlignment="textStart" android:maxLines="2" android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/des" android:layout_marginEnd="8dp"/>
+                app:layout_constraintEnd_toStartOf="@+id/confirmationDateTime" android:layout_marginEnd="8dp"/>
         <TextView
                 android:text="Estación Monterrey"
-                android:layout_height="wrap_content" android:id="@+id/des"
+                android:layout_height="wrap_content" android:id="@+id/confirmationDateTime"
                 app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
                 android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/mapa" android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/costo" app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintTop_toBottomOf="@+id/mapa"
                 android:textAlignment="textEnd"
                 android:textStyle="bold" android:layout_width="0dp" app:layout_constrainedWidth="true"
                 android:orientation="horizontal" app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/ori" android:layout_marginStart="8dp" android:maxLines="2"/>
+                app:layout_constraintStart_toEndOf="@+id/confirmationOri" android:layout_marginStart="8dp"
+                android:maxLines="2"/>
         <TextView
                 android:layout_width="0dp"
                 android:text="@string/textview"
                 android:layout_height="wrap_content" android:id="@+id/fecha"
-                android:textAlignment="textStart" app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintVertical_bias="0.823" android:layout_marginStart="16dp" android:maxLines="1"
-                app:layout_constraintEnd_toStartOf="@+id/costo" android:layout_marginEnd="8dp"/>
+                android:textAlignment="textStart"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="16dp" android:maxLines="1"
+                app:layout_constraintEnd_toStartOf="@+id/costo" android:layout_marginEnd="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/confirmationOri" android:layout_marginTop="8dp"/>
         <TextView
                 android:layout_width="0dp"
-                android:text="@string/textview"
                 android:layout_height="wrap_content" android:id="@+id/costo"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintVertical_bias="0.818" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="16dp" android:textAlignment="textEnd"
                 app:layout_constraintStart_toEndOf="@+id/fecha" android:layout_marginStart="8dp"
-                app:layout_constraintHorizontal_bias="0.857"/>
+                app:layout_constraintHorizontal_bias="0.857" android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/confirmationDateTime"/>
         <TextView
                 android:layout_width="0dp"
                 android:text="@string/textview"
                 android:layout_height="wrap_content" android:id="@+id/formaPago"
-                android:textAlignment="textEnd" app:layout_constraintTop_toTopOf="parent"
+                android:textAlignment="textEnd"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintVertical_bias="0.96" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="16dp" app:layout_constraintStart_toEndOf="@+id/vehiculo"
                 android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.846"
-                app:layout_constrainedWidth="true"/>
+                app:layout_constrainedWidth="true" android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/costo" app:layout_constraintVertical_bias="1.0"
+                android:layout_marginBottom="8dp"/>
         <TextView
                 android:layout_width="0dp"
                 android:text="@string/textview"
                 android:layout_height="wrap_content" android:id="@+id/vehiculo" android:textAlignment="textStart"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginStart="16dp" app:layout_constraintVertical_bias="0.965"
-                app:layout_constraintEnd_toStartOf="@+id/formaPago" android:layout_marginEnd="8dp"/>
+                android:layout_marginStart="16dp"
+                app:layout_constraintEnd_toStartOf="@+id/formaPago" android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/fecha"
+                app:layout_constraintVertical_bias="0.0" android:layout_marginBottom="8dp"/>
+        <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tripRatingIndicator"
+                android:isIndicator="true" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintTop_toTopOf="@+id/mapa" app:layout_constraintHorizontal_bias="0.0"
+                style="?android:attr/ratingBarStyleIndicator" android:progressTint="@color/taxiYellow"
+                android:secondaryProgressTint="@color/taxiYellow" android:rating="5"
+                app:layout_constraintBottom_toBottomOf="@+id/mapa" app:layout_constraintVertical_bias="0.96"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

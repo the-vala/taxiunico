@@ -6,6 +6,7 @@
 
     <string name="calificacion">Calificación: %1$d</string>
     <string name="fecha_encuesta">Fecha: %1$s</string>
+    <string name="cost">MX $%.2f</string>
 
     <string name="name">Nombre</string>
     <string name="name_hint">Ingresa tu nombre de usuario</string>
@@ -23,7 +24,7 @@
     <string name="ya_tienes_cuenta">¿Ya tienes cuenta?</string>
     <string name="inicia_sesion">Inicia sesión</string>
     <string name="card_template">•••• •••• •••• %d</string>
-  
+
     <string name="card_details">Detalle de la tarjeta</string>
     <string name="add_card">AÑADIR TARJETA</string>
     <string name="cvc">CVC</string>
@@ -37,7 +38,9 @@
     <string name="to_house">Hacia domicilio</string>
     <string name="pick_house">Elegir domicilio</string>
     <string name="continuar">Continuar</string>
-    <string name="aviso_retraso">*Para evitar retrasos en tu viaje, nuestro socio conductor pasará por ti 1 hora antes del viaje. Considera esto para planear tus actividades.</string>
+    <string name="aviso_retraso">*Para evitar retrasos en tu viaje, nuestro socio conductor pasará por ti 1 hora antes
+        del viaje. Considera esto para planear tus actividades.
+    </string>
 
     <string name="confirmation">Confirmación de Viaje</string>
     <string name="card_number">Confirmación de Viaje</string>
@@ -56,4 +59,7 @@
     <string name="estrella_3">3</string>
     <string name="estrella_4">4</string>
     <string name="estrella_5">5</string>
+
+    <string name="from_to">De %1$s a %2$s</string>
+    <string name="central">TransPais %1$s</string>
 </resources>

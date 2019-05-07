@@ -13,15 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package mx.itesm.taxiunico.trips
+package mx.itesm.taxiunico.services
 
 import android.content.res.Resources
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import mx.itesm.taxiunico.models.Codes
-import mx.itesm.taxiunico.models.UserProfile
-import mx.itesm.taxiunico.models.Viaje
-import mx.itesm.taxiunico.util.Validator
 
 
 class CodeService {

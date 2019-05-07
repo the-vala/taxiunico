@@ -17,18 +17,40 @@ package mx.itesm.taxiunico.models
 
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.GeoPoint
+import java.util.*
+
+
+enum class TripStatus {
+    PENDING,
+    COMPLETED,
+    CANCELED
+}
+
+data class FreshTrip(
+    val userId: String,
+    var dateTime: Date,
+    var origin: GeoPoint,
+    var destination: GeoPoint,
+    var status: TripStatus = TripStatus.PENDING
+)
 
 data class Viaje(
     var userId: String = "",
+    var userName: String = "",
+    var driverId: String = "",
+    var driverName: String = "",
+    var userRating: Int = 5,
     var codeId: String = "",
     var dateTime: Timestamp = Timestamp.now(),
     var origin: GeoPoint = GeoPoint(0.0,0.0),
     var destination: GeoPoint = GeoPoint(0.0,0.0),
-    var driverName: String = "",
+    var driverRating: Int = 5,
     var vehicle: String = "",
     var distance: Double = 0.0,
+    var duration: Double = 0.0,
     var cost: Double = 0.0,
     var payment: String = "",
-    var completed: Boolean = false,
-    var imageUrl: String = ""
+    var status: TripStatus = TripStatus.PENDING,
+    var pendingSurvey: Boolean = false,
+    var imageURL: String = ""
 )

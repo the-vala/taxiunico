@@ -4,6 +4,7 @@
           package="mx.itesm.taxiunico">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -13,8 +14,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            tools:ignore="GoogleAppIndexingWarning">        
-
+            tools:ignore="GoogleAppIndexingWarning">
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
                 android:value="@string/api_key"/>
@@ -28,6 +28,15 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <receiver
+                android:name=".util.ConnectivityReceiver"
+                android:enabled="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
         <activity android:name=".auth.SignupActivity"/>
     </application>
 
