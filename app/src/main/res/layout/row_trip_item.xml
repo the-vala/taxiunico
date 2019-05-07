@@ -13,7 +13,7 @@
 
         <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" tools:srcCompat="@drawable/map_example"
+                android:layout_height="300dp" tools:srcCompat="@drawable/map_example"
                 android:id="@+id/mapa"
                 app:srcCompat="@drawable/map_example"
                 app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
