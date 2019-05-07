@@ -28,6 +28,7 @@ import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.R
 import mx.itesm.taxiunico.auth.AuthService
 import mx.itesm.taxiunico.models.TripStatus
+import mx.itesm.taxiunico.services.TripService
 
 class CompletedTripsFragment : Fragment() {
 
@@ -54,8 +55,9 @@ class CompletedTripsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+
         MainScope().launch {
-            var viajes = ViajeService().getTravelHistory(auth.uid!!)
+            var viajes = TripService().getTravelHistory(auth.uid!!)
             viajes = viajes.filter{ it.second.status == TripStatus.COMPLETED }.toMutableList()
             adapter.setData(viajes)
         }

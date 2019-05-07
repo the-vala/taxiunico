@@ -39,8 +39,3 @@ class CodeService {
         const val CODE_COLLECTION_KEY = "codes"
     }
 }
-
-sealed class Result<out T: Any> {
-    data class Success<out T: Any>(val result: T): Result<T>()
-    data class Failure(val result: Throwable?): Result<Nothing>()
-}

@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_survey_list.*
 import mx.itesm.taxiunico.R
+import mx.itesm.taxiunico.services.SurveyService
 
 class SurveyListFragment : Fragment() {
     private val surveyService = SurveyService()

@@ -30,7 +30,7 @@ import mx.itesm.taxiunico.MainActivity
 import mx.itesm.taxiunico.R
 import mx.itesm.taxiunico.models.UserProfile
 import mx.itesm.taxiunico.models.UserType
-import mx.itesm.taxiunico.profile.UserService
+import mx.itesm.taxiunico.services.UserService
 
 class SignupActivity : AppCompatActivity() {
 

@@ -18,13 +18,8 @@ package mx.itesm.taxiunico.services
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.tasks.await
+import mx.itesm.taxiunico.models.Station
 
-
-data class Station(
-    val cityId: String = "",
-    val city: String = "",
-    val cord: GeoPoint? = null
-)
 
 class BusStationService {
     private val db = FirebaseFirestore.getInstance()
