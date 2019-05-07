@@ -125,7 +125,7 @@ class ViajeAdapter(private val list:MutableList<Pair<String, Viaje>>, private va
                     val imageView = itemView.findViewById<ImageView>(R.id.mapa)
 
                     Glide.with(view)
-                        .load(it.toString())
+                        .load(it.toString()).placeholder(R.drawable.map_example)
                         .into(imageView)
                 }
 
