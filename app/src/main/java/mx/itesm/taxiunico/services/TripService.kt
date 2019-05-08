@@ -2,16 +2,25 @@ package mx.itesm.taxiunico.services
 
 import android.content.Context
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.sendBlocking
+import kotlinx.coroutines.flow.flowViaChannel
 import kotlinx.coroutines.tasks.await
 import mx.itesm.taxiunico.auth.AuthService
 import mx.itesm.taxiunico.models.FreshTrip
 import mx.itesm.taxiunico.models.TripStatus
 import mx.itesm.taxiunico.models.Viaje
+import mx.itesm.taxiunico.util.toIdPairList
 
 class TripService {
+    /*** Referencia a la instancia de Firestore */
     private val db = FirebaseFirestore.getInstance()
+    /*** Referencia a la collecion de viajes */
     private val collection = db.collection(TRIP_COLLECTION_KEY)
 
+    /**
+     * Añade una lista de [Viaje]
+     */
     suspend fun addTrips(trips: List<FreshTrip>): Result<Unit> {
         trips.forEach {
             trip -> collection.add(trip).await()
@@ -20,47 +29,97 @@ class TripService {
         return Result.Success(Unit)
     }
 
-    suspend fun getPendingSurveyTrip(context: Context): Pair<String, Viaje>? {
+    /**
+     * Emite un viaje que tenga una encuesta pendiente.
+     */
+    @FlowPreview
+    fun getPendingSurveyTrip(context: Context) = flowViaChannel<Pair<String, Viaje>> { channel ->
         val uid = AuthService(context).getUserUid()
-        val res = collection
-            .whereEqualTo("userId", uid)
-            .whereEqualTo("pendingSurvey", true)
-            .get().await()
-
-        return res.map { Pair(it.id, it.toObject(Viaje::class.java)) }.firstOrNull()
+        collection
+            .whereEqualTo(Viaje::userId.name, uid)
+            .whereEqualTo(Viaje::pendingSurvey.name, true)
+            .addSnapshotListener { querySnapshot, _ ->
+                querySnapshot!!.documents.toIdPairList<Viaje>().firstOrNull()?.let {
+                    channel.sendBlocking(it)
+                }
+            }
     }
 
+    /**
+     * Trae los viajes para el usuario.
+     */
     suspend fun getTravelHistory(id: String): MutableList<Pair<String, Viaje>> {
-        val res = collection.whereEqualTo("userId", id).get().await()
+        val res = collection.whereEqualTo(Viaje::userId.name, id).get().await()
 
-        return res.documents.map { Pair(it.id, it.toObject(Viaje::class.java)!!) }.toMutableList()
+        return res.documents.toIdPairList<Viaje>().toMutableList()
     }
 
-    fun addUserSurveyAnswer(userId: String, tripId: String, rating: Float) {
+    /**
+     * Emite los viajes disponibles para los conductores que estan en la ciudad [cityId],
+     * cada vez que haya actualizaciones a esta lista.
+     */
+    @FlowPreview
+    fun getRealTimeDriverHistory() = flowViaChannel<MutableList<Pair<String, Viaje>> > { channel ->
+        collection
+            .whereEqualTo(Viaje::status.name, TripStatus.PENDING)
+            .addSnapshotListener { querySnapshot, _ ->
+                querySnapshot?.documents?.let { docs ->
+                    channel.sendBlocking(
+                        docs.toIdPairList<Viaje>().toMutableList()
+                    )
+                }
+            }
+        }
+
+
+    /**
+     * Asigna la calificacion que da el pasajero al conductor del viaje [tripId].
+     */
+    fun addUserSurveyAnswer(tripId: String, rating: Float) {
         collection.document(tripId)
             .update(
-                "driverRating", rating,
-                "pendingSurvey", false
+                Viaje::driverRating.name, rating,
+                Viaje::pendingSurvey.name, false
 
-            ).addOnCompleteListener{}
+            )
     }
 
-    fun updateCompletedTrip(id: String, rating: Float) {
-        collection.document(id)
+    /**
+     * Marca el viaje [tripId] como completado y le asigna una calificacion al pasajero..
+     */
+    fun updateCompletedTrip(tripId: String, rating: Float) {
+        collection.document(tripId)
             .update(
-                "status", TripStatus.COMPLETED,
-                "userRating", rating,
-                "payment", ".... 5248"
-            ).addOnCompleteListener{}
+                Viaje::status.name, TripStatus.COMPLETED,
+                Viaje::pendingSurvey.name,  true,
+                Viaje::userRating.name, rating,
+                Viaje::payment.name, ".... 5248"
+            )
     }
 
-    suspend fun cancelPendingTrip(id: String) {
-        collection.document(id).update(
-            "status", TripStatus.CANCELED
+    /**
+     * Cancela el viaje [tripId].
+     */
+    suspend fun cancelPendingTrip(tripId: String) {
+        collection.document(tripId).update(
+            Viaje::status.name, TripStatus.CANCELED
         ).await()
     }
 
+    /**
+     * Comienza el viaje [tripId] and se lo asigna al conductor [driverId].
+     */
+    fun startTrip(driverId: String?, tripId: String) {
+        collection.document(tripId)
+            .update(
+                Viaje::driverId.name, driverId,
+                Viaje::status.name, TripStatus.IN_PROGRESS)
+    }
+
     companion object {
+        /**
+         * Llave de la coleccion de viajes en Firestore
+         */
         const val TRIP_COLLECTION_KEY = "trips"
     }
 }
