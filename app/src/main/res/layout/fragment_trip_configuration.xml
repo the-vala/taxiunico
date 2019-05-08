@@ -30,45 +30,49 @@
                 android:layout_marginStart="8dp" android:layout_marginTop="8dp"
                 app:layout_constraintTop_toBottomOf="@+id/textView" android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent" android:textAlignment="viewStart"
-                android:layout_width="match_parent"/>
-        <CheckBox
-                android:text="@string/to_terminal"
+                android:layout_width="match_parent" android:layout_marginBottom="8dp"/>
+        <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/firstLegToTerminal" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/firstLegTitle" app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="8dp" android:textColorLink="@color/taxiYellow"/>
-        <CheckBox
-                android:text="@string/to_house"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/firstLegToDestination"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="8dp"
-                app:layout_constraintHorizontal_bias="0.281" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/firstLegToTerminal"/>
+                android:layout_height="wrap_content" android:gravity="center">
+            <CheckBox
+                    android:text="@string/to_terminal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/firstLegToTerminal"
+                    app:layout_constraintTop_toBottomOf="@+id/firstLegTitle" app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="8dp" android:textColorLink="@color/taxiYellow"
+                    android:layout_weight="1"/>
+            <Button
+                    android:text="@string/pick_house"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/firstLegPickupAddress"
+                    android:visibility="visible"
+                    android:layout_weight="1" android:layout_marginEnd="8dp" android:layout_marginStart="8dp"/>
+        </LinearLayout>
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+            <CheckBox
+                    android:text="@string/to_house"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/firstLegToDestination"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintHorizontal_bias="0.281"
+                    app:layout_constraintTop_toBottomOf="@+id/firstLegToTerminal"
+                    android:layout_marginEnd="8dp" android:layout_marginStart="8dp" android:layout_weight="1"/>
             <Button
                     android:text="@string/pick_house"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:id="@+id/firstLegPickupAddress"
-                    android:visibility="visible"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="32dp" android:layout_weight="1"/>
-            <Button
-                    android:text="@string/pick_house"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:id="@+id/firstLegDropoffAddress"
                     android:visibility="visible"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="32dp" android:layout_weight="1"/>
+                    android:layout_marginEnd="8dp" android:layout_marginStart="8dp" android:layout_weight="1"/>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -83,45 +87,51 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/secondLegTitle" android:textSize="20sp"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:textAlignment="viewStart"
-                app:layout_constraintHorizontal_bias="0.0"/>
-        <CheckBox
-                android:text="@string/to_terminal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/secondLegtoTerminal" android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.0"/>
-        <CheckBox
-                android:text="@string/to_house"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/secondLegToHome" android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.0"
-                android:textColorLink="@color/taxiYellow"/>
+                app:layout_constraintHorizontal_bias="0.0" android:layout_marginBottom="8dp"/>
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+            <CheckBox
+                    android:text="@string/to_terminal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/secondLegtoTerminal"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.0"
+                    android:layout_weight="1"/>
             <Button
                     android:text="@string/pick_house"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:id="@+id/secondLegPickupAddress"
                     android:visibility="visible"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="32dp" android:layout_weight="1"/>
+                    android:layout_weight="1" android:layout_marginEnd="8dp"/>
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <CheckBox
+                    android:text="@string/to_house"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/secondLegToHome" android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.0"
+                    android:textColorLink="@color/taxiYellow" android:layout_weight="1"/>
             <Button
                     android:text="@string/pick_house"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:id="@+id/secondLegDropoffAddress"
                     android:visibility="visible"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="32dp" android:layout_weight="1"/>
+                    android:layout_weight="1" android:layout_marginEnd="8dp"/>
         </LinearLayout>
     </LinearLayout>
     <Button

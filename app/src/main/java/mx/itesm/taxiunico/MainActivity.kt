@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity(),
 
         if (authService.isUserAuthenticated()) {
             if (savedInstanceState != null) {
-                nav.setSelectedItemId(saveState)
+                nav.selectedItemId = saveState
             } else {
                 openDefaultFragment()
             }
@@ -151,7 +151,7 @@ class MainActivity : AppCompatActivity(),
     override fun onResume() {
         super.onResume()
         ConnectivityReceiver.connectivityListener = this
-        nav.setSelectedItemId(saveState)
+        nav.selectedItemId = saveState
     }
 
     override fun onPause() {
@@ -161,7 +161,7 @@ class MainActivity : AppCompatActivity(),
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)
-        saveState = nav.getSelectedItemId()
+        saveState = nav.selectedItemId
     }
 
 }

@@ -52,7 +52,7 @@ class ViajeAdapter(private val list:MutableList<Pair<String, Viaje>>, private va
         return list.size
     }
 
-    override fun onBindViewHolder(holder: ViajeAdapter.ViewHolder, pos: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, pos: Int) {
         holder.bindItems(list[pos].second)
     }
 
@@ -82,8 +82,8 @@ class ViajeAdapter(private val list:MutableList<Pair<String, Viaje>>, private va
 
             var geocodeMatchesOri: List<Address>? = null
             var geocodeMatchesDes: List<Address>? = null
-            val AddressOri: String?
-            val AddressDes: String?
+            val addressOri: String?
+            val addressDes: String?
 
             try {
                 geocodeMatchesOri = Geocoder(itemView.context)
@@ -99,13 +99,13 @@ class ViajeAdapter(private val list:MutableList<Pair<String, Viaje>>, private va
             }
 
             if (geocodeMatchesOri != null) {
-                AddressOri = geocodeMatchesOri[0].getAddressLine(0)
-                ori.text = AddressOri.toString()
+                addressOri = geocodeMatchesOri[0].getAddressLine(0)
+                ori.text = addressOri.toString()
             }
 
             if (geocodeMatchesDes != null) {
-                AddressDes = geocodeMatchesDes[0].getAddressLine(0)
-                des.text = AddressDes.toString()
+                addressDes = geocodeMatchesDes[0].getAddressLine(0)
+                des.text = addressDes.toString()
             }
 
             fecha.text = data.dateTime.toDate().toString()
