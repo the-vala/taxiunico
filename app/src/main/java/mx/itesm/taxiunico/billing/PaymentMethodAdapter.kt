@@ -25,6 +25,9 @@ import kotlinx.android.synthetic.main.row_payment_form_card.cardNumText
 import java.nio.channels.IllegalSelectorException
 import mx.itesm.taxiunico.R
 
+/**
+ * Modelo para definir método de pago. Define dos tipos, efectivo y tarjeta
+ */
 sealed class PaymentMethod {
     object Cash: PaymentMethod()
     data class Card(
@@ -33,6 +36,9 @@ sealed class PaymentMethod {
     ): PaymentMethod()
 }
 
+/**
+ * Adapter para mostrar lista de métodos de pago
+ */
 class PaymentMethodAdapter(
     private val paymentMethods: MutableList<PaymentMethod>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -72,7 +78,9 @@ class PaymentMethodAdapter(
     }
 }
 
-
+/**
+ * Clase para hacer bind entre el objeto tarjeta y el viewholder
+ */
 class CardViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
     fun bindData(card: PaymentMethod.Card) {
         with (card) {
@@ -83,6 +91,9 @@ class CardViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
     }
 }
 
+/**
+ * Clase para hacer bind entre el objeto cash y el viewholder
+ */
 class CashViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
 fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View {

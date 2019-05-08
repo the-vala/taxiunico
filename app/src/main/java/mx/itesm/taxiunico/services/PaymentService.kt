@@ -18,10 +18,15 @@ package mx.itesm.taxiunico.services
 import com.google.firebase.firestore.FirebaseFirestore
 import mx.itesm.taxiunico.billing.PaymentMethod
 
-
+/**
+ * Servicio que administra las formas de pago del sistema
+ */
 class PaymentService {
     private val db = FirebaseFirestore.getInstance()
 
+    /**
+     * Función que recupera la lista de formas de pago registradas al usuario actual
+     */
     fun getMethods(userId: String, onComplete: (MutableList<PaymentMethod.Card>) -> Unit) {
         db.collection(PAYMENT_COLLECTION_KEY)
             .document(userId).collection(METHODS_COLLECTION_KEY).get().addOnSuccessListener {
@@ -32,6 +37,9 @@ class PaymentService {
             }
     }
 
+    /**
+     * Función que agrega una forma de pago a la base de datos
+     */
     fun addMethod(userId: String, method: PaymentMethod.Card, onSuccess: () -> Unit) {
         db.collection(PAYMENT_COLLECTION_KEY)
             .document(userId).collection(METHODS_COLLECTION_KEY).add(method)

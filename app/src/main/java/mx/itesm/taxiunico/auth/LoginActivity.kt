@@ -28,7 +28,8 @@ import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.*
 
 import mx.itesm.taxiunico.MainActivity
-import mx.itesm.taxiunico.prefs.UserPrefs
+import mx.itesm.taxiunico.services.AuthService
+import mx.itesm.taxiunico.services.Result
 
 class LoginActivity : AppCompatActivity() {
 
@@ -75,6 +76,9 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Usa el email y el password para autenticar la cuenta.
+     */
     private fun signIn(email: String, password: String) {
         Log.d(TAG, "signIn:$email")
         if (!validateForm()) {
@@ -91,6 +95,10 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    /**
+    * Valida que se haya ingresado un email y password.
+     * Confirma que el password sea mayor de 6 caracteres.
+    */
     private fun validateForm(): Boolean {
         var valid = true
 

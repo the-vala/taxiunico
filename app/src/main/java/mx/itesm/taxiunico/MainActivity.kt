@@ -22,7 +22,7 @@ import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import mx.itesm.taxiunico.auth.AuthService
+import mx.itesm.taxiunico.services.AuthService
 import mx.itesm.taxiunico.auth.LoginActivity
 import mx.itesm.taxiunico.billing.PaymentFormsFragment
 import mx.itesm.taxiunico.models.UserType
@@ -31,16 +31,8 @@ import mx.itesm.taxiunico.travels.TripsPagerFragment
 import mx.itesm.taxiunico.trips.CheckTripCodeFragment
 import android.os.PersistableBundle
 import android.content.IntentFilter
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.view.Gravity
-import android.view.LayoutInflater
-import android.widget.Button
-import android.widget.RatingBar
-import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -96,6 +88,10 @@ class MainActivity : AppCompatActivity(),
         nav.setOnNavigationItemSelectedListener { navigate(it) }
     }
 
+    /**
+     * Función que revisa si existen viajes con encuestas pendientes. Si existe, le pide al usuario contestar
+     * la encuesta de la mas reciente al abrir la app
+     */
     @FlowPreview
     private fun checkPendingSurveys() = MainScope().launch {
         TripService().getPendingSurveyTrip(this@MainActivity).collect {
@@ -103,10 +99,16 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
+    /**
+     * Función que recibe el id del viaje sin encuesta mas reciente y muestra dicha encuesta al usuario
+     */
     private fun showUserSurvey(tripId: String, viaje: Viaje) {
         UserSurveyDialog(this).show(tripId, viaje)
     }
 
+    /**
+     * Función que abre la vista default al iniciar la aplicación
+     */
     private fun openDefaultFragment() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.mainContent, UserProfileFragment())
@@ -147,6 +149,9 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
+    /**
+     * Función que revisa el estado de la conexión y carga la opción del menu seleccionada al resumir la actividad
+     */
     override fun onResume() {
         super.onResume()
 
@@ -162,13 +167,20 @@ class MainActivity : AppCompatActivity(),
         unregisterReceiver(receiver)
     }
 
+    /**
+     * Función que guarda la opción seleccionada del menu en el companión object al interrumpir la actividad
+     */
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)
         saveState = nav.selectedItemId
     }
-
+    
+    /**
+     * Función que detecta si la red se conectó o desconectó y muestra un mensaje segón sea el caso
+     */
     override fun onNetworkChanged(isConnected: Boolean) {
         showConnectionMessage(isConnected)
         connectionVM.setConnectionState(isConnected)
     }
+
 }

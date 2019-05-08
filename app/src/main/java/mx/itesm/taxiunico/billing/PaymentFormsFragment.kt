@@ -27,6 +27,9 @@ import kotlinx.android.synthetic.main.activity_payment_forms.*
 import mx.itesm.taxiunico.R
 import mx.itesm.taxiunico.services.PaymentService
 
+/**
+ * Fragmento de formas de pago para abrir forma para agrear nueva forma de pago, mostrar lista y actualizar lista
+ */
 class PaymentFormsFragment : Fragment() {
 
     private val paymentService = PaymentService()
@@ -59,11 +62,17 @@ class PaymentFormsFragment : Fragment() {
         )
     }
 
+    /**
+     * Función para actualizar el adapter con una nueva lista de métodos de pago
+     */
     private fun updatePaymentCards(newList: MutableList<PaymentMethod.Card>) {
         val list = mutableListOf<PaymentMethod>()
         list.addAll(newList)
         adapter.setData(list)
     }
 
+    /**
+     * Función para crear intent para abrir form de nueva forma de pago
+     */
     fun getAddPaymentIntent(): Intent = Intent(requireContext(), AddPaymentActivity::class.java)
 }
