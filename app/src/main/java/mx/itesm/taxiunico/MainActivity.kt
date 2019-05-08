@@ -31,16 +31,8 @@ import mx.itesm.taxiunico.travels.TripsPagerFragment
 import mx.itesm.taxiunico.trips.CheckTripCodeFragment
 import android.os.PersistableBundle
 import android.content.IntentFilter
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.view.Gravity
-import android.view.LayoutInflater
-import android.widget.Button
-import android.widget.RatingBar
-import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -184,9 +176,5 @@ class MainActivity : AppCompatActivity(),
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)
         saveState = nav.selectedItemId
-    }
-
-    override fun onNetworkChanged(isConnected: Boolean) {
-        showConnectionMessage(isConnected)
     }
 }
