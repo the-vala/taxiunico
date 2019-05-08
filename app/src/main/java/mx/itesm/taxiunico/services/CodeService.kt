@@ -21,15 +21,18 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.tasks.await
 import mx.itesm.taxiunico.models.Codes
 
-
+/**
+ * Servicio para adminsitrar códigos de reservación
+ */
 class CodeService {
     private val db = FirebaseFirestore.getInstance()
     private val collection = db.collection(CODE_COLLECTION_KEY)
 
-    suspend fun getTravelData(reservationCode: String): Result<Codes> = try {
-        val res = coroutineScope {
-            collection.document(reservationCode).get().await()
-        }
+    /**
+     * Función que regresa la informacion relacionada al código de reservacion como origen y destino
+     */
+    suspend fun getTravelData(reservationCode: String): Result<Codes> {
+        val res = db.collection(CODE_COLLECTION_KEY).document(reservationCode).get().await()
 
         if (!res.exists()) {
             Result.Failure(Resources.NotFoundException("reservation code $reservationCode not found"))

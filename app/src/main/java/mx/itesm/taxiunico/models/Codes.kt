@@ -15,6 +15,9 @@
  */
 package mx.itesm.taxiunico.models
 
+/**
+ * Modelo de Codigo de reservación con información obtenida al momento de hacer la compra
+ */
  data class Codes (
     val destination: String = "",
     val fRegreso: String = "",

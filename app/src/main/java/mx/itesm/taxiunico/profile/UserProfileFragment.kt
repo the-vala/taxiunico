@@ -33,6 +33,9 @@ import mx.itesm.taxiunico.models.UserProfile
 import mx.itesm.taxiunico.prefs.UserPrefs
 import mx.itesm.taxiunico.services.UserService
 
+/**
+ * Fragmento del perfil del usuario
+ */
 class UserProfileFragment : Fragment() {
     private val userService = UserService()
     private lateinit var authService: AuthService
@@ -69,6 +72,9 @@ class UserProfileFragment : Fragment() {
         phoneInput.setText(userProfile.phone)
     }
 
+    /**
+     * Función que guarda los nuevos datos del usuario en la base de datos y muestra un mensaje de confirmación
+     */
     private fun saveProfile() {
         Toast.makeText(requireContext(), "Guardando", Toast.LENGTH_SHORT).show()
 
@@ -83,7 +89,9 @@ class UserProfileFragment : Fragment() {
         }
     }
 
-
+    /**
+     * Función para hacer sign out. Carga la visa de login y restablece el auth de la aplicación.
+     */
     private fun signOut() {
         auth.signOut()
         UserPrefs(requireContext()).clear()

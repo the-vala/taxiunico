@@ -39,6 +39,9 @@ import kotlinx.android.synthetic.main.fragment_place_picker.*
 
 import mx.itesm.taxiunico.R
 
+/**
+ * Fragmento para cargar la API de Google Maps y poder elegir destion y origen de manera sencilla
+ */
 class PlacePickerFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var vm: TripConfigurationViewModel
@@ -89,7 +92,9 @@ class PlacePickerFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-
+    /**
+     * Funcion que inicializa mapa con las coordenadas de las estaciones en cuestion
+     */
     private fun initializeMap() {
         val referencePointLocation = arguments!!.getParcelable<LatLng>(REFERENCE_POINT_LOCATION)
         val selectedPoint = arguments!!.getParcelable(SELECTED_POINT_LOCATION) ?: getDefaultUserSelection()
@@ -131,6 +136,9 @@ class PlacePickerFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    /**
+     * Función que administra permisos de Api de Google Maps en dispositivo de usuario
+     */
     private fun requestMapPermission() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
             == PackageManager.PERMISSION_GRANTED) {
@@ -142,7 +150,9 @@ class PlacePickerFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-
+    /**
+     * Función que inicializa el picker del usuario
+     */
     private fun getDefaultUserSelection(): LatLng {
         val referencePoint = arguments!!.getParcelable<LatLng>(REFERENCE_POINT_LOCATION)!!
         return LatLng(referencePoint.latitude +.1, referencePoint.longitude)

@@ -20,7 +20,9 @@ import com.google.firebase.firestore.GeoPoint
 import java.sql.Time
 import java.util.*
 
-
+/**
+ * Clase para definir el estatus del viaje
+ */
 enum class TripStatus {
     PENDING,
     IN_PROGRESS,
@@ -28,6 +30,9 @@ enum class TripStatus {
     CANCELED,
 }
 
+/**
+ * Modelo para definir viaje recién solicitado y sin información completa
+ */
 data class FreshTrip(
     val userId: String,
     var dateTime: Date,
@@ -36,6 +41,9 @@ data class FreshTrip(
     var status: TripStatus = TripStatus.PENDING
 )
 
+/**
+ * Modelo para definir un viaje iniciado o terminado con información mucho mas robusta
+ */
 data class Viaje(
     var userId: String = "",
     var userName: String = "",
