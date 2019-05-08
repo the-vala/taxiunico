@@ -20,10 +20,15 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import mx.itesm.taxiunico.models.Codes
 
-
+/**
+ * Servicio para adminsitrar codigos de reservacion
+ */
 class CodeService {
     private val db = FirebaseFirestore.getInstance()
 
+    /**
+     * Funcion que regresa la informacion relacionada al codigo de reservacion como origen y destino
+     */
     suspend fun getTravelData(reservationCode: String): Result<Codes> {
         val res = db.collection(CODE_COLLECTION_KEY).document(reservationCode).get().await()
 

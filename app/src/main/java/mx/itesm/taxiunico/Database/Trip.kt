@@ -4,6 +4,9 @@ import androidx.room.*
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.GeoPoint
 
+//@Entity, indica el nombre del la entidad (tabla) en la base de datos
+//@ColumnInfo, indica el nombre de la columna de la entidad
+//@PrimaryKey(autoGenerate = true) indica la llave primaria de Nino, con autoincremento
 @Entity(tableName = "Trip")
 data class Trip (@ColumnInfo(name = "userId") val userId:String,
                  @ColumnInfo(name = "codeId") val codeId:String,

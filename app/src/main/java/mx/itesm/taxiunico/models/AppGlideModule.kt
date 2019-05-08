@@ -9,7 +9,9 @@ import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.module.AppGlideModule
 import java.io.InputStream
 
-
+/**
+ * Modelo para definir glider que ayuda a traducir referencias de Firebase en refencias utilizables
+ */
 @GlideModule
 class AppGlideModule : AppGlideModule() {
 
