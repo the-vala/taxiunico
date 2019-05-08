@@ -48,8 +48,11 @@ import mx.itesm.taxiunico.models.Viaje
 import mx.itesm.taxiunico.services.TripService
 import mx.itesm.taxiunico.util.ConnectivityReceiver
 import android.widget.FrameLayout
+import androidx.lifecycle.ViewModelProviders
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
+import mx.itesm.taxiunico.Network.ConnectionViewModel
+import mx.itesm.taxiunico.trips.TripConfigurationViewModel
 import mx.itesm.taxiunico.trips.UserSurveyDialog
 
 
@@ -61,11 +64,13 @@ class MainActivity : AppCompatActivity(),
     private var saveState: Int = 0
     private var mSnackBar: Snackbar? = null
     private var receiver: BroadcastReceiver? = null
+    private lateinit var connectionVM: ConnectionViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        connectionVM = ViewModelProviders.of(this).get(ConnectionViewModel::class.java)
         authService = AuthService(this)
 
         if (authService.isUserAuthenticated()) {
@@ -128,7 +133,6 @@ class MainActivity : AppCompatActivity(),
 
     @SuppressLint("WrongConstant")
     private fun showConnectionMessage(isConnected: Boolean) {
-
         if (!isConnected) {
             val message = "No hay conexion."
             mSnackBar = Snackbar.make(findViewById(R.id.mainContent), message, Snackbar.LENGTH_LONG)
@@ -165,5 +169,6 @@ class MainActivity : AppCompatActivity(),
 
     override fun onNetworkChanged(isConnected: Boolean) {
         showConnectionMessage(isConnected)
+        connectionVM.setConnectionState(isConnected)
     }
 }

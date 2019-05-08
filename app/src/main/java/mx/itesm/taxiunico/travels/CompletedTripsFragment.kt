@@ -19,12 +19,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import mx.itesm.taxiunico.Network.ConnectionViewModel
 import mx.itesm.taxiunico.R
 import mx.itesm.taxiunico.auth.AuthService
 import mx.itesm.taxiunico.models.TripStatus
@@ -36,6 +39,12 @@ class CompletedTripsFragment : Fragment() {
     private lateinit var adapter: ViajeAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var authService: AuthService
+    private lateinit var connectionVM: ConnectionViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        connectionVM = ViewModelProviders.of(requireActivity()).get(ConnectionViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,12 +64,14 @@ class CompletedTripsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
-        MainScope().launch {
-            var viajes = TripService().getTravelHistory(auth.uid!!)
-            viajes = viajes.filter{ it.second.status == TripStatus.COMPLETED }.toMutableList()
-            adapter.setData(viajes)
+        if (!connectionVM.getConnectionState().value!!) {
+            Toast.makeText(requireContext(),"No hay conexion.", Toast.LENGTH_SHORT).show()
+        } else {
+            MainScope().launch {
+                var viajes = TripService().getTravelHistory(auth.uid!!)
+                viajes = viajes.filter{ it.second.status == TripStatus.COMPLETED }.toMutableList()
+                adapter.setData(viajes)
+            }
         }
     }
-
 }

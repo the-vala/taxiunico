@@ -40,7 +40,9 @@ import java.io.IOException
 import android.content.Intent
 import android.net.Uri
 import android.widget.RatingBar
+import androidx.lifecycle.ViewModelProviders
 import kotlinx.coroutines.flow.collect
+import mx.itesm.taxiunico.Network.ConnectionViewModel
 import mx.itesm.taxiunico.models.TripStatus
 import mx.itesm.taxiunico.models.Viaje
 import mx.itesm.taxiunico.services.TripService
@@ -52,6 +54,12 @@ class PendingTripsFragment : Fragment() {
     private lateinit var adapter: ViajeAdapter
     private lateinit var authService: AuthService
     private lateinit var tripService: TripService
+    private lateinit var connectionVM: ConnectionViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        connectionVM = ViewModelProviders.of(requireActivity()).get(ConnectionViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,8 +82,12 @@ class PendingTripsFragment : Fragment() {
         when(authService.getUserType()) {
             UserType.DRIVER -> {
                 adapter.onItemClick = { data -> createConfirmTripDialog(data) }
-                MainScope().launch {
-                    tripService.getRealTimeDriverHistory().collect { adapter.setData(it) }
+                if (!connectionVM.getConnectionState().value!!) {
+                    Toast.makeText(requireContext(),"No hay conexion.",Toast.LENGTH_SHORT).show()
+                } else {
+                    MainScope().launch {
+                        tripService.getRealTimeDriverHistory().collect { adapter.setData(it) }
+                    }
                 }
             }
             UserType.TRAVELER -> adapter.onItemClick = { data -> createCancelTripDialog(data) }
