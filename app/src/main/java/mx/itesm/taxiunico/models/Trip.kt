@@ -22,8 +22,9 @@ import java.util.*
 
 enum class TripStatus {
     PENDING,
+    IN_PROGRESS,
     COMPLETED,
-    CANCELED
+    CANCELED,
 }
 
 data class FreshTrip(
@@ -48,7 +49,6 @@ data class Viaje(
     var vehicle: String = "",
     var distance: Double = 0.0,
     var duration: Double = 0.0,
-    var cost: Double = 0.0,
     var payment: String = "",
     var status: TripStatus = TripStatus.PENDING,
     var pendingSurvey: Boolean = false,
