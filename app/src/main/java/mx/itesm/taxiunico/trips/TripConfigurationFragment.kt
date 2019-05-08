@@ -36,12 +36,12 @@ import mx.itesm.taxiunico.models.FreshTrip
 import mx.itesm.taxiunico.models.Station
 import mx.itesm.taxiunico.services.BusStationService
 import mx.itesm.taxiunico.services.TripService
+import mx.itesm.taxiunico.travels.TripsPagerFragment
 import mx.itesm.taxiunico.util.Event
 import mx.itesm.taxiunico.util.toGeoPoint
 import mx.itesm.taxiunico.util.toLatLng
 import mx.itesm.taxiunico.util.toSentenceCase
 import java.text.SimpleDateFormat
-
 
 @Parcelize
 data class TripForm(
@@ -120,9 +120,6 @@ class TripConfigurationFragment : Fragment() {
             val trips = mutableListOf<FreshTrip>()
             val userId = AuthService(requireContext()).getUserUid()!!
 
-            val firstLegDepartureDate = arguments!!.getString(FIRST_LEG_DEPARTURE_DATE)
-            val secondLegDepartureDate = arguments!!.getString(SECOND_LEG_DEPARTURE_DATE, null)
-
             if (tripForm.needsFirstLegToTerminalTaxi) {
                 trips.add(FreshTrip(
                     userId = userId,
@@ -163,6 +160,7 @@ class TripConfigurationFragment : Fragment() {
 
             TripService().addTrips(trips)
         }
+        requireFragmentManager().popBackStack()
     }
 
 
@@ -308,19 +306,19 @@ class TripConfigurationFragment : Fragment() {
             /**
              * The date when the first bus leaves.
              */
-            firstLegDepartureDate: String,
+            firstLegDepartureTime: String,
             /**
              * The date when the second bus leaves. Is null when the [isRoundTrip] is false.
              */
-            secondLegDepartureDate: String?
+            secondLegDepartureTime: String?
         ) =
             TripConfigurationFragment().apply {
                 arguments = bundleOf(
                     HOME_CITY_ID to homeCityId,
                     DESTINATION_CITY_ID to destinationCityId,
                     ROUND_TRIP to isRoundTrip,
-                    FIRST_LEG_DEPARTURE_DATE to firstLegDepartureDate,
-                    SECOND_LEG_DEPARTURE_DATE to secondLegDepartureDate
+                    FIRST_LEG_DEPARTURE_DATE to firstLegDepartureTime,
+                    SECOND_LEG_DEPARTURE_DATE to secondLegDepartureTime
 
                 )
             }

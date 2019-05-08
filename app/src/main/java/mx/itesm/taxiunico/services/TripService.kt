@@ -49,10 +49,37 @@ class TripService {
     /**
      * Trae los viajes para el usuario.
      */
-    suspend fun getTravelHistory(id: String): MutableList<Pair<String, Viaje>> {
-        val res = collection.whereEqualTo(Viaje::userId.name, id).get().await()
+    @FlowPreview
+    fun getRealTimeCompletedHistory(id: String) = flowViaChannel<MutableList<Pair<String, Viaje>> > { channel ->
+        collection
+            .whereEqualTo(Viaje::userId.name, id)
+            .whereEqualTo(Viaje::status.name, TripStatus.COMPLETED)
+            .orderBy(Viaje::dateTime.name)
+            .addSnapshotListener { querySnapshot, _ ->
+                querySnapshot?.documents?.let { docs ->
+                    channel.sendBlocking(
+                        docs.toIdPairList<Viaje>().toMutableList()
+                    )
+                }
+            }
+    }
 
-        return res.documents.toIdPairList<Viaje>().toMutableList()
+    /**
+     * Trae los viajes para el usuario.
+     */
+    @FlowPreview
+    fun getRealTimeTravelerPendingHistory(id: String) = flowViaChannel<MutableList<Pair<String, Viaje>> > { channel ->
+        collection
+            .whereEqualTo(Viaje::userId.name, id)
+            .whereEqualTo(Viaje::status.name, TripStatus.PENDING)
+            .orderBy(Viaje::dateTime.name)
+            .addSnapshotListener { querySnapshot, _ ->
+                querySnapshot?.documents?.let { docs ->
+                    channel.sendBlocking(
+                        docs.toIdPairList<Viaje>().toMutableList()
+                    )
+                }
+            }
     }
 
     /**
@@ -63,6 +90,7 @@ class TripService {
     fun getRealTimeDriverHistory() = flowViaChannel<MutableList<Pair<String, Viaje>> > { channel ->
         collection
             .whereEqualTo(Viaje::status.name, TripStatus.PENDING)
+            .orderBy(Viaje::dateTime.name)
             .addSnapshotListener { querySnapshot, _ ->
                 querySnapshot?.documents?.let { docs ->
                     channel.sendBlocking(

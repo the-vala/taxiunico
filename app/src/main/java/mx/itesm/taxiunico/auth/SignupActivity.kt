@@ -19,6 +19,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.FirebaseApp
@@ -45,9 +46,7 @@ class SignupActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         signupBtn.setOnClickListener {
-            createAccount(signupInputName.text.toString(),
-                          signupInputEmail.text.toString(),
-                          signupInputPhone.text.toString(),
+            createAccount(signupInputEmail.text.toString(),
                           signupInputPass.text.toString())
         }
 
@@ -57,7 +56,7 @@ class SignupActivity : AppCompatActivity() {
         }
     }
 
-    private fun createAccount(name: String, email: String, phone: String, password: String) {
+    private fun createAccount(email: String, password: String) {
         Log.d(TAG, "createAccount:$email")
         if (!validateForm()) {
             return
@@ -105,35 +104,42 @@ class SignupActivity : AppCompatActivity() {
         }
 
         val email = signupInputEmail.text.toString()
-        if (TextUtils.isEmpty(email)) {
-            signupInputEmail.error = "Required."
+        if (!isEmailValid(email)) {
+            signupInputEmail.error = "Invalid."
             valid = false
         } else {
             signupInputEmail.error = null
         }
 
         val phone = signupInputPhone.text.toString()
-        if (TextUtils.isEmpty(phone)) {
-            signupInputPhone.error = "Required."
+        if (!isPhoneValid(phone)) {
+            signupInputPhone.error = "Invalid."
             valid = false
         } else {
             signupInputPhone.error = null
         }
 
         val password = signupInputPass.text.toString()
-        if (TextUtils.isEmpty(password)) {
-            signupInputPass.error = "Required."
-            valid = false
-        }
-        else if (password.length < 6) {
-            signupInputPass.error = "At least 6 characters."
-            valid = false
-        }
-        else {
-            signupInputPass.error = null
+        when {
+            TextUtils.isEmpty(password) -> {
+                signupInputPass.error = "Required."
+                valid = false
+            }
+            password.length < 6 -> {
+                signupInputPass.error = "At least 6 characters."
+                valid = false
+            }
+            else -> signupInputPass.error = null
         }
 
         return valid
+    }
+
+    private fun isEmailValid(email: String): Boolean {
+        return Patterns.EMAIL_ADDRESS.toRegex().matches(email)
+    }
+    private fun isPhoneValid(phone: String): Boolean {
+        return Patterns.PHONE.toRegex().matches(phone)
     }
 
     companion object {

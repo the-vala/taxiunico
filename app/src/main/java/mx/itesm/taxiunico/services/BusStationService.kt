@@ -16,7 +16,6 @@
 package mx.itesm.taxiunico.services
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.tasks.await
 import mx.itesm.taxiunico.models.Station
 

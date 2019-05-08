@@ -43,7 +43,7 @@
     </string>
 
     <string name="confirmation">Confirmación de Viaje</string>
-    <string name="card_number">Confirmación de Viaje</string>
+    <string name="card_number">Número de tarjeta</string>
     <string name="exp_date">Fecha de expiración</string>
     <string name="cash">Pago en efectivo</string>
     <string name="textview">Textview</string>

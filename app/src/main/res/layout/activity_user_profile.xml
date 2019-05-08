@@ -71,7 +71,8 @@
         <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/emailInput" android:singleLine="true" android:inputType="textEmailAddress"/>
+                android:id="@+id/emailInput" android:singleLine="true" android:inputType="textEmailAddress"
+                android:editable="false"/>
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"

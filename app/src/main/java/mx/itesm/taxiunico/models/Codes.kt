@@ -15,11 +15,15 @@
  */
 package mx.itesm.taxiunico.models
 
- data class Codes (
+import com.google.firebase.Timestamp
+
+data class Codes (
     val destination: String = "",
-    val fRegreso: String = "",
-    val fSalida: String = "",
     @JvmField var isRound: Boolean = false,
-    val origin: String = ""
+    val origin: String = "",
+    val firstLegDepartureTime: Timestamp = Timestamp.now(),
+    val firstLegArrivalTime: Timestamp = Timestamp.now(),
+    val secondLegDepartureTime: Timestamp = Timestamp.now(),
+    val secondLegArrivalTime: Timestamp = Timestamp.now()
  )
 
