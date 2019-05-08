@@ -64,8 +64,6 @@ class MainActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        receiver = ConnectivityReceiver()
-        registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
         setContentView(R.layout.activity_main)
 
         authService = AuthService(this)
@@ -89,6 +87,7 @@ class MainActivity : AppCompatActivity(),
             UserType.DRIVER -> nav.inflateMenu(R.menu.driver_menu)
         }
 
+        ConnectivityReceiver.connectivityListener = this
         nav.setOnNavigationItemSelectedListener { navigate(it) }
     }
 
@@ -144,18 +143,18 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-    override fun onNetworkChanged(isConnected: Boolean) {
-        showConnectionMessage(isConnected)
-    }
-
     override fun onResume() {
         super.onResume()
-        ConnectivityReceiver.connectivityListener = this
+
+        receiver = ConnectivityReceiver()
+        registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+
         nav.selectedItemId = saveState
     }
 
     override fun onPause() {
         super.onPause()
+
         unregisterReceiver(receiver)
     }
 
@@ -164,4 +163,7 @@ class MainActivity : AppCompatActivity(),
         saveState = nav.selectedItemId
     }
 
+    override fun onNetworkChanged(isConnected: Boolean) {
+        showConnectionMessage(isConnected)
+    }
 }
