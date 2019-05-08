@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity(),
 
     private lateinit var authService: AuthService
     private var saveState: Int = 0
-    private var mSnackBar: Snackbar? = null
+    private var snackBar: Snackbar? = null
     private var receiver: BroadcastReceiver? = null
     private lateinit var connectionVM: ConnectionViewModel
 
@@ -135,15 +135,15 @@ class MainActivity : AppCompatActivity(),
     private fun showConnectionMessage(isConnected: Boolean) {
         if (!isConnected) {
             val message = "No hay conexion."
-            mSnackBar = Snackbar.make(findViewById(R.id.mainContent), message, Snackbar.LENGTH_LONG)
-            mSnackBar?.duration = Snackbar.LENGTH_INDEFINITE
-            val view = mSnackBar!!.view
+            snackBar = Snackbar.make(findViewById(R.id.mainContent), message, Snackbar.LENGTH_LONG)
+            snackBar?.duration = Snackbar.LENGTH_INDEFINITE
+            val view = snackBar!!.view
             val params = view.layoutParams as FrameLayout.LayoutParams
             params.gravity = Gravity.TOP
             view.layoutParams = params
-            mSnackBar?.show()
+            snackBar?.show()
         } else {
-            mSnackBar?.dismiss()
+            snackBar?.dismiss()
         }
     }
 
