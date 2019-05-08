@@ -49,6 +49,7 @@ class PendingTripsFragment : Fragment() {
     private val auth = FirebaseAuth.getInstance()
     private lateinit var adapter: ViajeAdapter
     private lateinit var authService: AuthService
+    private lateinit var tripService: TripService
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,6 +60,7 @@ class PendingTripsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         authService = AuthService(requireContext())
+        tripService = TripService()
 
         //Load pending trips
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
@@ -179,7 +181,7 @@ class PendingTripsFragment : Fragment() {
         confirm.setOnClickListener {
             val ratingBar = dialogView.findViewById<RatingBar>(R.id.ratingBar)
             dialog.dismiss()
-            TripService().updateCompletedTrip(data.first, ratingBar.rating, viaje)
+            tripService.updateCompletedTrip(data.first, ratingBar.rating)
             Toast.makeText(requireContext(), "Rating: ${ratingBar.rating}", Toast.LENGTH_SHORT).show()
         }
     }
@@ -196,7 +198,7 @@ class PendingTripsFragment : Fragment() {
             ).show()
 
             MainScope().launch {
-                TripService().cancelPendingTrip(data.first)
+                tripService.cancelPendingTrip(data.first)
                 updateData()
             }
         }

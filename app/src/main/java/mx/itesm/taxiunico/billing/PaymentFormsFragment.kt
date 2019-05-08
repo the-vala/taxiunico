@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_payment_forms.*
 import mx.itesm.taxiunico.R
+import mx.itesm.taxiunico.services.PaymentService
 
 class PaymentFormsFragment : Fragment() {
 

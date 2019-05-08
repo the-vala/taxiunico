@@ -55,6 +55,7 @@ class CompletedTripsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+
         MainScope().launch {
             var viajes = TripService().getTravelHistory(auth.uid!!)
             viajes = viajes.filter{ it.second.status == TripStatus.COMPLETED }.toMutableList()

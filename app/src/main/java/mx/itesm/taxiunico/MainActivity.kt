@@ -16,6 +16,7 @@
 package mx.itesm.taxiunico
 
 import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
 import android.content.Intent
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
@@ -33,6 +34,7 @@ import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.RatingBar
@@ -45,6 +47,9 @@ import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.models.Viaje
 import mx.itesm.taxiunico.services.TripService
 import mx.itesm.taxiunico.util.ConnectivityReceiver
+import android.widget.FrameLayout
+
+
 
 @SuppressLint("Registered")
 class MainActivity : AppCompatActivity(),
@@ -53,10 +58,12 @@ class MainActivity : AppCompatActivity(),
     private lateinit var authService: AuthService
     private var saveState: Int = 0
     private var mSnackBar: Snackbar? = null
+    private var receiver: BroadcastReceiver? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        registerReceiver(ConnectivityReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+        receiver = ConnectivityReceiver()
+        registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
         setContentView(R.layout.activity_main)
 
         authService = AuthService(this)
@@ -83,7 +90,6 @@ class MainActivity : AppCompatActivity(),
 
     private fun checkPendingSurveys() = MainScope().launch {
         val pendingSurveyTrip = TripService().getPendingSurveyTrip(this@MainActivity)
-
         pendingSurveyTrip?.let {
             showUserSurvey(it.first, it.second)
         }
@@ -114,9 +120,6 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-
-
-
     private fun openDefaultFragment() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.mainContent, UserProfileFragment())
@@ -143,10 +146,15 @@ class MainActivity : AppCompatActivity(),
 
     @SuppressLint("WrongConstant")
     private fun showConnectionMessage(isConnected: Boolean) {
+
         if (!isConnected) {
             val message = "No hay conexion."
             mSnackBar = Snackbar.make(findViewById(R.id.mainContent), message, Snackbar.LENGTH_LONG)
             mSnackBar?.duration = Snackbar.LENGTH_INDEFINITE
+            val view = mSnackBar!!.view
+            val params = view.layoutParams as FrameLayout.LayoutParams
+            params.gravity = Gravity.TOP
+            view.layoutParams = params
             mSnackBar?.show()
         } else {
             mSnackBar?.dismiss()
@@ -161,6 +169,11 @@ class MainActivity : AppCompatActivity(),
         super.onResume()
         ConnectivityReceiver.connectivityListener = this
         nav.selectedItemId = saveState
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(receiver)
     }
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
