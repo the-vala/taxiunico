@@ -26,7 +26,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.R
-import mx.itesm.taxiunico.auth.AuthService
+import mx.itesm.taxiunico.services.AuthService
 import mx.itesm.taxiunico.models.TripStatus
 import mx.itesm.taxiunico.services.TripService
 

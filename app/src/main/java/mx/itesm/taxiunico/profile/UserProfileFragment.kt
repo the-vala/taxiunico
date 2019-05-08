@@ -17,7 +17,6 @@ package mx.itesm.taxiunico.profile
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -29,7 +28,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.MainActivity
 import mx.itesm.taxiunico.R
-import mx.itesm.taxiunico.auth.AuthService
+import mx.itesm.taxiunico.services.AuthService
 import mx.itesm.taxiunico.models.UserProfile
 import mx.itesm.taxiunico.prefs.UserPrefs
 import mx.itesm.taxiunico.services.UserService

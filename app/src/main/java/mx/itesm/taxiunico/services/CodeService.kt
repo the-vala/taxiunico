@@ -17,6 +17,7 @@ package mx.itesm.taxiunico.services
 
 import android.content.res.Resources
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.tasks.await
 import mx.itesm.taxiunico.models.Codes
 
@@ -25,6 +26,7 @@ import mx.itesm.taxiunico.models.Codes
  */
 class CodeService {
     private val db = FirebaseFirestore.getInstance()
+    private val collection = db.collection(CODE_COLLECTION_KEY)
 
     /**
      * Función que regresa la informacion relacionada al código de reservacion como origen y destino
@@ -33,11 +35,12 @@ class CodeService {
         val res = db.collection(CODE_COLLECTION_KEY).document(reservationCode).get().await()
 
         if (!res.exists()) {
-            return Result.Failure(Resources.NotFoundException("reservation code $reservationCode not found"))
+            Result.Failure(Resources.NotFoundException("reservation code $reservationCode not found"))
         }
 
-        val trip = res.toObject(Codes::class.java)!!
-        return Result.Success(trip)
+        Result.Success(res.toObject(Codes::class.java)!!)
+    } catch (err: Throwable) {
+        Result.Failure(err)
     }
 
     companion object {

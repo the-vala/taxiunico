@@ -49,8 +49,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/firstLegPickupAddress"
-                    android:visibility="visible"
-                    android:layout_weight="1" android:layout_marginEnd="8dp" android:layout_marginStart="8dp"/>
+                    android:visibility="invisible"
+                    android:layout_weight="1" android:layout_marginEnd="8dp" android:layout_marginStart="8dp"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored" tools:visibility="visible"/>
         </LinearLayout>
         <LinearLayout
                 android:orientation="horizontal"
@@ -71,8 +72,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/firstLegDropoffAddress"
-                    android:visibility="visible"
-                    android:layout_marginEnd="8dp" android:layout_marginStart="8dp" android:layout_weight="1"/>
+                    android:visibility="invisible"
+                    android:layout_marginEnd="8dp" android:layout_marginStart="8dp" android:layout_weight="1"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored" tools:visibility="visible"/>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -108,9 +110,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/secondLegPickupAddress"
-                    android:visibility="visible"
+                    android:visibility="invisible"
                     android:layout_marginStart="8dp"
-                    android:layout_weight="1" android:layout_marginEnd="8dp"/>
+                    android:layout_weight="1" android:layout_marginEnd="8dp"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored" tools:visibility="visible"/>
         </LinearLayout>
         <LinearLayout
                 android:orientation="horizontal"
@@ -129,9 +132,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/secondLegDropoffAddress"
-                    android:visibility="visible"
+                    android:visibility="invisible"
                     android:layout_marginStart="8dp"
-                    android:layout_weight="1" android:layout_marginEnd="8dp"/>
+                    android:layout_weight="1" android:layout_marginEnd="8dp"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored" tools:visibility="visible"/>
         </LinearLayout>
     </LinearLayout>
     <Button

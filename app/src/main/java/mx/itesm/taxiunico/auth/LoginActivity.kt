@@ -28,7 +28,8 @@ import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.*
 
 import mx.itesm.taxiunico.MainActivity
-import mx.itesm.taxiunico.prefs.UserPrefs
+import mx.itesm.taxiunico.services.AuthService
+import mx.itesm.taxiunico.services.Result
 
 class LoginActivity : AppCompatActivity() {
 
