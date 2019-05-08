@@ -2,6 +2,9 @@ package mx.itesm.taxiunico.Database
 
 import androidx.room.*
 
+// @Dao, In Room you use data access objects (DAO) to access and manage your data.
+// The DAO is the main component of Room and includes methods that offer access
+// to your apps database
 @Dao
 interface TripDao {
 
