@@ -30,6 +30,9 @@ import mx.itesm.taxiunico.auth.AuthService
 import mx.itesm.taxiunico.models.TripStatus
 import mx.itesm.taxiunico.services.TripService
 
+/**
+ * Fragmento para la lista de viajes pasados
+ */
 class CompletedTripsFragment : Fragment() {
 
     private val auth = FirebaseAuth.getInstance()
@@ -44,7 +47,9 @@ class CompletedTripsFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_completed_trips, container, false)
     }
-
+    /**
+     * Funcion que carga las instancias necesarias para este fragmento
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         authService = AuthService(requireContext())
         recyclerView = view.findViewById(R.id.recyclerView)
@@ -53,6 +58,9 @@ class CompletedTripsFragment : Fragment() {
         recyclerView.adapter = adapter
     }
 
+    /**
+     * Funcion que carga los viajes de firebase y los muestra en forma de lista
+     */
     override fun onResume() {
         super.onResume()
 

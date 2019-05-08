@@ -88,6 +88,10 @@ class MainActivity : AppCompatActivity(),
         nav.setOnNavigationItemSelectedListener { navigate(it) }
     }
 
+    /**
+     * Funcion que revisa si existen viajes con encuestas pendientes. Si existe, le pide al usuario contestar
+     * la encuesta de la mas reciente al abrir la app
+     */
     private fun checkPendingSurveys() = MainScope().launch {
         val pendingSurveyTrip = TripService().getPendingSurveyTrip(this@MainActivity)
         pendingSurveyTrip?.let {
@@ -95,6 +99,9 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
+    /**
+     * Funcion que recibe el id del viaje sin encuesta mas reciente y muestra dicha encuesta al usuario
+     */
     private fun showUserSurvey(tripId: String, viaje: Viaje) {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.alert_trip_survey, null)
         val builder = AlertDialog.Builder(this).setView(dialogView)
@@ -120,6 +127,9 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
+    /**
+     * Funcion que abre la vista default al iniciar la aplicacion
+     */
     private fun openDefaultFragment() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.mainContent, UserProfileFragment())
@@ -161,10 +171,16 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
+    /**
+     * Funcion que detecta si la red se conecto o desconecto y muestra un mensaje segun sea el caso
+     */
     override fun onNetworkChanged(isConnected: Boolean) {
         showConnectionMessage(isConnected)
     }
 
+    /**
+     * Funcion que revisa el estado de la conexion y carga la opcion del menu seleccionada al resumir la actividad
+     */
     override fun onResume() {
         super.onResume()
         ConnectivityReceiver.connectivityListener = this
@@ -176,6 +192,9 @@ class MainActivity : AppCompatActivity(),
         unregisterReceiver(receiver)
     }
 
+    /**
+     * Funcion que guarda la opcion seleccionada del menu en el companion object al interrumpir la actividad
+     */
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)
         saveState = nav.selectedItemId
