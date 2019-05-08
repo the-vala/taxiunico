@@ -16,7 +16,6 @@
 package mx.itesm.taxiunico
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
@@ -45,7 +44,6 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.models.Viaje
 import mx.itesm.taxiunico.services.TripService
-import mx.itesm.taxiunico.travels.ViajeService
 import mx.itesm.taxiunico.util.ConnectivityReceiver
 
 @SuppressLint("Registered")
@@ -65,7 +63,7 @@ class MainActivity : AppCompatActivity(),
 
         if (authService.isUserAuthenticated()) {
             if (savedInstanceState != null) {
-                nav.setSelectedItemId(saveState)
+                nav.selectedItemId = saveState
             } else {
                 openDefaultFragment()
             }
@@ -98,7 +96,7 @@ class MainActivity : AppCompatActivity(),
 
         }
         val dialog = builder.show()
-        dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val total = dialogView.findViewById<TextView>(R.id.surveyTotal)
         total.text = viaje.cost.toString()
@@ -107,7 +105,7 @@ class MainActivity : AppCompatActivity(),
         dialogView.findViewById<Button>(R.id.surveyConfirm).setOnClickListener {
             val ratingBar = dialogView.findViewById<RatingBar>(R.id.ratingBar)
             dialog.dismiss()
-            ViajeService().addUserSurveyAnswer(
+            TripService().addUserSurveyAnswer(
                 userId = authService.getUserUid()!!,
                 tripId = tripId,
                 rating = ratingBar.rating)
@@ -162,12 +160,12 @@ class MainActivity : AppCompatActivity(),
     override fun onResume() {
         super.onResume()
         ConnectivityReceiver.connectivityListener = this
-        nav.setSelectedItemId(saveState)
+        nav.selectedItemId = saveState
     }
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)
-        saveState = nav.getSelectedItemId()
+        saveState = nav.selectedItemId
     }
 
 }
