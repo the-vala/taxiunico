@@ -103,8 +103,8 @@ class PendingTripsFragment : Fragment() {
         val des = dialogView.findViewById<TextView>(R.id.confirmationDes)
         var geocodeMatchesOri: List<Address>? = null
         var geocodeMatchesDes: List<Address>? = null
-        val AddressOri: String?
-        val AddressDes: String?
+        val addressOri: String?
+        val addressDes: String?
 
         try {
             geocodeMatchesOri = Geocoder(requireContext())
@@ -124,20 +124,20 @@ class PendingTripsFragment : Fragment() {
         }
 
         if (geocodeMatchesOri != null && geocodeMatchesDes != null) {
-            AddressOri = geocodeMatchesOri[0].getAddressLine(0)
-            ori.text = AddressOri.toString()
-            AddressDes = geocodeMatchesDes[0].getAddressLine(0)
-            des.text = AddressDes.toString()
+            addressOri = geocodeMatchesOri[0].getAddressLine(0)
+            ori.text = addressOri.toString()
+            addressDes = geocodeMatchesDes[0].getAddressLine(0)
+            des.text = addressDes.toString()
         }
 
         //Get trip start time and client info
-        var dateTime = dialogView.findViewById<TextView>(R.id.confirmationDateTime)
+        val dateTime = dialogView.findViewById<TextView>(R.id.confirmationDateTime)
         dateTime.text = viaje.dateTime.toDate().toString()
-        var cliente = dialogView.findViewById<TextView>(R.id.name)
+        val cliente = dialogView.findViewById<TextView>(R.id.name)
         cliente.text = viaje.userName
 
         //If trip accepted
-        var confirm = dialogView.findViewById<Button>(R.id.confirm)
+        val confirm = dialogView.findViewById<Button>(R.id.confirm)
         confirm.setOnClickListener {
             dialog.dismiss()
             Toast.makeText(requireContext(), "Iniciando viaje", Toast.LENGTH_SHORT).show()
@@ -191,7 +191,7 @@ class PendingTripsFragment : Fragment() {
         builder.setTitle("Cancelar viaje")
         builder.setMessage("¿Desea cancelar el viaje seleccionado?")
 
-        builder.setPositiveButton("Si") { dialog, which ->
+        builder.setPositiveButton("Si") { _, _ ->
             Toast.makeText(
                 requireContext(),
                 "Cancelando viaje", Toast.LENGTH_SHORT
@@ -203,7 +203,7 @@ class PendingTripsFragment : Fragment() {
             }
         }
 
-        builder.setNegativeButton("No") { dialog, which ->
+        builder.setNegativeButton("No") { _, _ ->
             Toast.makeText(
                 requireContext(),
                 "Ok", Toast.LENGTH_SHORT

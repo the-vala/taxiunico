@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity(),
 
         if (authService.isUserAuthenticated()) {
             if (savedInstanceState != null) {
-                nav.setSelectedItemId(saveState)
+                nav.selectedItemId = saveState
             } else {
                 openDefaultFragment()
             }
@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity(),
 
         }
         val dialog = builder.show()
-        dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val total = dialogView.findViewById<TextView>(R.id.surveyTotal)
         total.text = viaje.cost.toString()
@@ -111,7 +111,6 @@ class MainActivity : AppCompatActivity(),
         dialogView.findViewById<Button>(R.id.surveyConfirm).setOnClickListener {
             val ratingBar = dialogView.findViewById<RatingBar>(R.id.ratingBar)
             dialog.dismiss()
-
             TripService().addUserSurveyAnswer(
                 userId = authService.getUserUid()!!,
                 tripId = tripId,
@@ -169,7 +168,7 @@ class MainActivity : AppCompatActivity(),
     override fun onResume() {
         super.onResume()
         ConnectivityReceiver.connectivityListener = this
-        nav.setSelectedItemId(saveState)
+        nav.selectedItemId = saveState
     }
 
     override fun onPause() {
@@ -179,7 +178,7 @@ class MainActivity : AppCompatActivity(),
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)
-        saveState = nav.getSelectedItemId()
+        saveState = nav.selectedItemId
     }
 
 }

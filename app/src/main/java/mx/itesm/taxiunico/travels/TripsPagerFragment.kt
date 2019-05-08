@@ -24,7 +24,6 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_trips_pager.*
 
 import mx.itesm.taxiunico.R
-import mx.itesm.taxiunico.trips.TripConfirmationFragment
 
 class TripsPagerFragment : Fragment() {
 

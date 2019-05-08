@@ -50,7 +50,8 @@ class TripService {
             .update(
                 "status", TripStatus.COMPLETED,
                 "userRating", rating,
-                "payment", ".... 5248"
+                "payment", ".... 5248",
+                "pendingSurvey", true
             ).addOnCompleteListener{}
     }
 
