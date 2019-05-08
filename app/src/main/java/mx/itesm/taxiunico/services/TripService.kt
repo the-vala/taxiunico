@@ -1,6 +1,7 @@
 package mx.itesm.taxiunico.services
 
 import android.content.Context
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.sendBlocking
@@ -90,6 +91,7 @@ class TripService {
     fun updateCompletedTrip(tripId: String, rating: Float) {
         collection.document(tripId)
             .update(
+                Viaje::completionDateTime.name, Timestamp.now(),
                 Viaje::status.name, TripStatus.COMPLETED,
                 Viaje::pendingSurvey.name,  true,
                 Viaje::userRating.name, rating,
@@ -112,6 +114,7 @@ class TripService {
     fun startTrip(driverId: String?, tripId: String) {
         collection.document(tripId)
             .update(
+                Viaje::startDateTime.name, Timestamp.now(),
                 Viaje::driverId.name, driverId,
                 Viaje::status.name, TripStatus.IN_PROGRESS)
     }
