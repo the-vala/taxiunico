@@ -22,6 +22,9 @@ import kotlinx.android.synthetic.main.activity_add_payment.*
 import mx.itesm.taxiunico.R
 import mx.itesm.taxiunico.services.PaymentService
 
+/**
+ * Actividad para agregar una nueva forma de pago
+ */
 class AddPaymentActivity : AppCompatActivity() {
 
     val paymentService = PaymentService()
@@ -36,6 +39,9 @@ class AddPaymentActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Función para guardar información de un nuevo método de pago
+     */
     private fun savePaymentMethod() {
         val cardNumText = cardNum.text.toString()
         paymentService.addMethod(auth.uid!!, PaymentMethod.Card(

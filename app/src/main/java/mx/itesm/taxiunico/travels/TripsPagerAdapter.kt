@@ -25,19 +25,31 @@ class TripsPagerAdapter(manager: FragmentManager) : FragmentStatePagerAdapter(ma
     private val fragmentList : MutableList<Fragment> = ArrayList()
     private val titleList : MutableList<String> = ArrayList()
 
+    /**
+     * Regresa el elemento in índice position de fragmentList
+     * */
     override fun getItem(position: Int): Fragment {
         return fragmentList[position]
     }
 
+    /**
+     * Regresa el tamaño de fragmentList
+     * */
     override fun getCount(): Int {
         return fragmentList.size
     }
 
+    /**
+     * Añade el fragmento a la lista y el title a la lista de strings
+     * */
     fun addFragment(fragment: Fragment, title:String){
         fragmentList.add(fragment)
         titleList.add(title)
     }
 
+    /**
+     * Obtiene el string de título de position de la lista de títulos
+     * */
     override fun getPageTitle(position: Int): CharSequence? {
         return titleList[position]
     }

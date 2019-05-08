@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2019 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package mx.itesm.taxiunico.auth
 
 import android.content.Context
@@ -8,7 +23,6 @@ import kotlinx.coroutines.tasks.await
 import mx.itesm.taxiunico.models.UserProfile
 import mx.itesm.taxiunico.models.UserType
 import mx.itesm.taxiunico.prefs.UserPrefs
-import mx.itesm.taxiunico.services.UserService
 
 class AuthService constructor(context: Context) {
     private val userService = UserService()
@@ -31,11 +45,13 @@ class AuthService constructor(context: Context) {
         try {
             // Authenticate with firebase
             val result = coroutineScope {
-                async { auth.signInWithEmailAndPassword(email, password).await() }.await()
+                auth.signInWithEmailAndPassword(email, password).await()
             }
+
             prefs.userUUID = result.user.uid
 
             // Then, load user profile and save it to user prefs.
+            // TODO(VER SI DEJAR ESTO O SACARLO PARA QUE TRUENE SI NO PUEDE TRAER EL PERFIL)
             coroutineScope {
                 launch { userService.getProfile(result.user.uid)?.let { prefs.userProfile = it } }
             }
@@ -45,11 +61,5 @@ class AuthService constructor(context: Context) {
             Log.e(TAG, e.toString())
             Result.Failure(e)
         }
-    }
-
-
-sealed class Result<out T: Any> {
-    data class Success<out T: Any>(val result: T): Result<T>()
-    data class Failure(val result: Throwable?): Result<Nothing>()
 }
 
