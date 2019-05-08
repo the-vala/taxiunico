@@ -15,12 +15,17 @@
  */
 package mx.itesm.taxiunico.models
 
-
+/**
+ * Clase para definir tipo de usuario
+ */
 enum class UserType {
     TRAVELER,
     DRIVER
 }
 
+/**
+ * Modelo de Usuario
+ */
 data class UserProfile(
     var name: String = "",
     var country: String = "",

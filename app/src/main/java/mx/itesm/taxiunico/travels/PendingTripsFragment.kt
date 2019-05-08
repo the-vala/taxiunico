@@ -46,6 +46,9 @@ import mx.itesm.taxiunico.models.Viaje
 import mx.itesm.taxiunico.services.TripService
 import mx.itesm.taxiunico.util.cost
 
+/**
+ * Fragmento para mostrar la lista de viajes programados
+ */
 class PendingTripsFragment : Fragment() {
 
     private val auth = FirebaseAuth.getInstance()
@@ -60,6 +63,9 @@ class PendingTripsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_pending_trips, container, false)
     }
 
+    /**
+     * Función que carga los viajes de firebase y los muestra en forma de lista
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         authService = AuthService(requireContext())
         tripService = TripService()
@@ -90,6 +96,9 @@ class PendingTripsFragment : Fragment() {
         }
     }
 
+    /**
+     * Función que carga los viajes de firebase y los muestra en forma de lista
+     */
     private fun updateData() {
         MainScope().launch {
             var viajes = TripService().getTravelHistory(auth.uid!!)

@@ -20,10 +20,15 @@ import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.tasks.await
 import mx.itesm.taxiunico.models.Station
 
-
+/**
+ * Servicio de busqueda de terminales Transpais para definir origen y destino de viajes
+ */
 class BusStationService {
     private val db = FirebaseFirestore.getInstance()
 
+    /**
+     * Función que regresa la lista de estaciones registradas en el sistema
+     */
     suspend fun getStations(): List<Station> {
         val res = db.collection(BUS_STATION_COLLECTION_KEY).get().await()
         return res.documents

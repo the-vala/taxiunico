@@ -36,7 +36,9 @@ import mx.itesm.taxiunico.models.Viaje
 import mx.itesm.taxiunico.util.cost
 import java.io.IOException
 
-
+/**
+ * Adaptador de viaje para mostrar viajes en forma de lista
+ */
 class ViajeAdapter(private val list:MutableList<Pair<String, Viaje>>, private val authService: AuthService): RecyclerView.Adapter<ViajeAdapter.ViewHolder>() {
 
     var onItemClick: ((Pair<String,Viaje>) -> Unit)? = null

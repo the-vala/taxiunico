@@ -57,6 +57,9 @@ class SignupActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Crea una nuevo perfil de usuario y lo registra en la BD
+     */
     private fun createAccount(name: String, email: String, phone: String, password: String) {
         Log.d(TAG, "createAccount:$email")
         if (!validateForm()) {
@@ -93,6 +96,10 @@ class SignupActivity : AppCompatActivity() {
             }
     }
 
+    /**
+     * Valida que se hayan ingresado todos los campos requridos para
+     * crear una cuenta.
+     */
     private fun validateForm(): Boolean {
         var valid = true
 
