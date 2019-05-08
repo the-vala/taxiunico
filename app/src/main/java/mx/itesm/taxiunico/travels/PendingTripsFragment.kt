@@ -62,7 +62,7 @@ class PendingTripsFragment : Fragment() {
     }
 
     /**
-     * Funcion que carga los viajes de firebase y los muestra en forma de lista
+     * Función que carga los viajes de firebase y los muestra en forma de lista
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         authService = AuthService(requireContext())
@@ -89,7 +89,7 @@ class PendingTripsFragment : Fragment() {
     }
 
     /**
-     * Funcion que carga los viajes de firebase y los muestra en forma de lista
+     * Función que carga los viajes de firebase y los muestra en forma de lista
      */
     private fun updateData() {
         MainScope().launch {

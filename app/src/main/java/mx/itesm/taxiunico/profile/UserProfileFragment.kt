@@ -74,7 +74,7 @@ class UserProfileFragment : Fragment() {
     }
 
     /**
-     * Funcion que guarda los nuevos datos del usuario en la base de datos y muestra un mensaje de confirmacion
+     * Función que guarda los nuevos datos del usuario en la base de datos y muestra un mensaje de confirmación
      */
     private fun saveProfile() {
         Toast.makeText(requireContext(), "Guardando", Toast.LENGTH_SHORT).show()
@@ -91,7 +91,7 @@ class UserProfileFragment : Fragment() {
     }
 
     /**
-     * Funcion para hacer sign out. Carga la visa de login y restablece el auth de la aplicacion.
+     * Función para hacer sign out. Carga la visa de login y restablece el auth de la aplicación.
      */
     private fun signOut() {
         auth.signOut()

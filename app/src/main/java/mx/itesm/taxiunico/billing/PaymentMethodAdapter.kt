@@ -26,7 +26,7 @@ import java.nio.channels.IllegalSelectorException
 import mx.itesm.taxiunico.R
 
 /**
- * Modelo para definir metodo de pago. Define dos tipos, efectivo y tarjeta
+ * Modelo para definir método de pago. Define dos tipos, efectivo y tarjeta
  */
 sealed class PaymentMethod {
     object Cash: PaymentMethod()
@@ -37,7 +37,7 @@ sealed class PaymentMethod {
 }
 
 /**
- * Adapter para mostrar lista de metodos de pago
+ * Adapter para mostrar lista de métodos de pago
  */
 class PaymentMethodAdapter(
     private val paymentMethods: MutableList<PaymentMethod>

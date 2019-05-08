@@ -31,7 +31,7 @@ import mx.itesm.taxiunico.services.Result
 import mx.itesm.taxiunico.util.Validator
 
 /**
- * Fragmento para verificar la existencia de un codigo de reservacion
+ * Fragmento para verificar la existencia de un código de reservación
  */
 class CheckTripCodeFragment : Fragment() {
 
@@ -52,7 +52,7 @@ class CheckTripCodeFragment : Fragment() {
     }
 
     /**
-     * Funcion para verificar codigo de reservacion
+     * Función para verificar código de reservación
      */
     private fun verifyCode() {
         currentJob = MainScope().launch {
@@ -69,13 +69,13 @@ class CheckTripCodeFragment : Fragment() {
                            result.result.fSalida)
                }
            } else {
-                Toast.makeText(context,"Código invalido", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,"Código inválido", Toast.LENGTH_SHORT).show()
            }
         }
     }
 
     /**
-     * Funcion para establecer los parametros del viaje
+     * Función para establecer los parametros del viaje
      */
     private fun startTripConfiguration(
         departureCityId: String,

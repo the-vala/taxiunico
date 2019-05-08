@@ -26,7 +26,7 @@ class UserService {
     private val db = FirebaseFirestore.getInstance()
 
     /**
-     * Funcion que recupera el perfil del usuario de la base de datos basado en el ID del usuario
+     * Función que recupera el perfil del usuario de la base de datos basado en el ID del usuario
      */
     suspend fun getProfile(userId: String): UserProfile? {
         val res = db.collection(USER_COLLECTION_KEY).document(userId).get().await()
@@ -35,7 +35,7 @@ class UserService {
     }
 
     /**
-     * Funcion que actualiza la informacion del usuario en la base de datos
+     * Función que actualiza la información del usuario en la base de datos
      */
     suspend fun updateProfile(userId: String, userProfile: UserProfile) {
         db.collection(USER_COLLECTION_KEY).document(userId).set(userProfile).await()

@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2019 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package mx.itesm.taxiunico.services
 
 import android.content.Context
@@ -16,7 +31,7 @@ class TripService {
     private val collection = db.collection(TRIP_COLLECTION_KEY)
 
     /**
-     * Funcion que inserta los viajes nuevos en la base de datos de firebase
+     * Función que inserta los viajes nuevos en la base de datos de firebase
      */
     suspend fun addTrips(trips: List<FreshTrip>): Result<Unit> {
         trips.forEach {
@@ -27,7 +42,7 @@ class TripService {
     }
 
     /**
-     * Funcion que regresa la lista de viajes con encuesta pendiente
+     * Función que regresa la lista de viajes con encuesta pendiente
      */
     suspend fun getPendingSurveyTrip(context: Context): Pair<String, Viaje>? {
         val uid = AuthService(context).getUserUid()
@@ -40,7 +55,7 @@ class TripService {
     }
 
     /**
-     * Funcion que regresa la lista de viajes del usuario
+     * Función que regresa la lista de viajes del usuario
      */
     suspend fun getTravelHistory(id: String): MutableList<Pair<String, Viaje>> {
         val res = collection.whereEqualTo("userId", id).get().await()
@@ -49,7 +64,7 @@ class TripService {
     }
 
     /**
-     * Funcion que inserta las encuestas hechas por el usuario en la tabla de viajes de firebase
+     * Función que inserta las encuestas hechas por el usuario en la tabla de viajes de firebase
      */
     fun addUserSurveyAnswer(userId: String, tripId: String, rating: Float) {
         collection.document(tripId)
@@ -61,7 +76,7 @@ class TripService {
     }
 
     /**
-     * Funcion que actualiza el estado de un viaje una vez que ha sido terminado
+     * Función que actualiza el estado de un viaje una vez que ha sido terminado
      */
     fun updateCompletedTrip(id: String, rating: Float) {
         collection.document(id)
@@ -74,7 +89,7 @@ class TripService {
     }
 
     /**
-     * Funcion que actualiza el estado de un viaje que ha sido cancelado
+     * Función que actualiza el estado de un viaje que ha sido cancelado
      */
     suspend fun cancelPendingTrip(id: String) {
         collection.document(id).update(

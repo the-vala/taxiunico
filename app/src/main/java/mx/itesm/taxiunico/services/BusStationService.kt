@@ -27,7 +27,7 @@ class BusStationService {
     private val db = FirebaseFirestore.getInstance()
 
     /**
-     * Funcion que regresa la lista de estaciones registradas en el sistema
+     * Función que regresa la lista de estaciones registradas en el sistema
      */
     suspend fun getStations(): List<Station> {
         val res = db.collection(BUS_STATION_COLLECTION_KEY).get().await()

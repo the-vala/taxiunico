@@ -29,7 +29,7 @@ enum class TripStatus {
 }
 
 /**
- * Modelo para definir viaje recien solicitado y sin informacion completa
+ * Modelo para definir viaje recién solicitado y sin información completa
  */
 data class FreshTrip(
     val userId: String,
@@ -40,7 +40,7 @@ data class FreshTrip(
 )
 
 /**
- * Modelo para definir un viaje iniciado o terminado con informacion mucho mas robusta
+ * Modelo para definir un viaje iniciado o terminado con información mucho mas robusta
  */
 data class Viaje(
     var userId: String = "",

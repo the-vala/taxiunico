@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     /**
-     * Funcion que revisa si existen viajes con encuestas pendientes. Si existe, le pide al usuario contestar
+     * Función que revisa si existen viajes con encuestas pendientes. Si existe, le pide al usuario contestar
      * la encuesta de la mas reciente al abrir la app
      */
     private fun checkPendingSurveys() = MainScope().launch {
@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     /**
-     * Funcion que recibe el id del viaje sin encuesta mas reciente y muestra dicha encuesta al usuario
+     * Función que recibe el id del viaje sin encuesta mas reciente y muestra dicha encuesta al usuario
      */
     private fun showUserSurvey(tripId: String, viaje: Viaje) {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.alert_trip_survey, null)
@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     /**
-     * Funcion que abre la vista default al iniciar la aplicacion
+     * Función que abre la vista default al iniciar la aplicación
      */
     private fun openDefaultFragment() {
         supportFragmentManager.beginTransaction()
@@ -172,14 +172,14 @@ class MainActivity : AppCompatActivity(),
     }
 
     /**
-     * Funcion que detecta si la red se conecto o desconecto y muestra un mensaje segun sea el caso
+     * Función que detecta si la red se conectó o desconectó y muestra un mensaje segón sea el caso
      */
     override fun onNetworkChanged(isConnected: Boolean) {
         showConnectionMessage(isConnected)
     }
 
     /**
-     * Funcion que revisa el estado de la conexion y carga la opcion del menu seleccionada al resumir la actividad
+     * Función que revisa el estado de la conexión y carga la opción del menu seleccionada al resumir la actividad
      */
     override fun onResume() {
         super.onResume()
@@ -193,7 +193,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     /**
-     * Funcion que guarda la opcion seleccionada del menu en el companion object al interrumpir la actividad
+     * Función que guarda la opción seleccionada del menu en el companión object al interrumpir la actividad
      */
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)

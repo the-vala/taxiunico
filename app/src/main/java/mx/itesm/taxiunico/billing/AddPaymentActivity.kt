@@ -40,7 +40,7 @@ class AddPaymentActivity : AppCompatActivity() {
     }
 
     /**
-     * Funcion para guardar informacion de un nuevo metodo de pago
+     * Función para guardar información de un nuevo método de pago
      */
     private fun savePaymentMethod() {
         val cardNumText = cardNum.text.toString()

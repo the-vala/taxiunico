@@ -137,7 +137,7 @@ class PlacePickerFragment : Fragment(), OnMapReadyCallback {
     }
 
     /**
-     * Funcion que administra permisos de Api de Google Maps en dispositivo de usuario
+     * Función que administra permisos de Api de Google Maps en dispositivo de usuario
      */
     private fun requestMapPermission() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
@@ -151,7 +151,7 @@ class PlacePickerFragment : Fragment(), OnMapReadyCallback {
     }
 
     /**
-     * Funcion que inicializa el picker del usuario
+     * Función que inicializa el picker del usuario
      */
     private fun getDefaultUserSelection(): LatLng {
         val referencePoint = arguments!!.getParcelable<LatLng>(REFERENCE_POINT_LOCATION)!!

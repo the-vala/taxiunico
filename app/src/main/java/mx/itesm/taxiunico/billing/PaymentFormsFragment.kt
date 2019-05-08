@@ -63,7 +63,7 @@ class PaymentFormsFragment : Fragment() {
     }
 
     /**
-     * Funcion para actualizar el adaptere con una nueva lista de metodos de pago
+     * Función para actualizar el adapter con una nueva lista de métodos de pago
      */
     private fun updatePaymentCards(newList: MutableList<PaymentMethod.Card>) {
         val list = mutableListOf<PaymentMethod>()
@@ -72,7 +72,7 @@ class PaymentFormsFragment : Fragment() {
     }
 
     /**
-     * Funcion para crear intent para abrir form de nueva forma de pago
+     * Función para crear intent para abrir form de nueva forma de pago
      */
     fun getAddPaymentIntent(): Intent = Intent(requireContext(), AddPaymentActivity::class.java)
 }

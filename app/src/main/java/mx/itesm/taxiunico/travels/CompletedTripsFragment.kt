@@ -48,7 +48,7 @@ class CompletedTripsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_completed_trips, container, false)
     }
     /**
-     * Funcion que carga las instancias necesarias para este fragmento
+     * Función que carga las instancias necesarias para este fragmento
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         authService = AuthService(requireContext())
@@ -59,7 +59,7 @@ class CompletedTripsFragment : Fragment() {
     }
 
     /**
-     * Funcion que carga los viajes de firebase y los muestra en forma de lista
+     * Función que carga los viajes de firebase y los muestra en forma de lista
      */
     override fun onResume() {
         super.onResume()
