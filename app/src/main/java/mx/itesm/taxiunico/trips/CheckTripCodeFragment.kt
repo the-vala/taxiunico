@@ -49,23 +49,26 @@ class CheckTripCodeFragment : Fragment() {
     }
 
     private fun verifyCode() {
-        currentJob = MainScope().launch {
         val reserveCode = editText.text.toString()
-           if ( Validator.valReservationCode(reserveCode) ) {
-               val result = codeService.getTravelData(editText.text.toString())
-               when(result) {
-                   is Result.Success ->
-                       startTripConfiguration(
-                           result.result.origin,
-                           result.result.destination,
-                           result.result.isRound,
-                           result.result.fRegreso,
-                           result.result.fSalida)
-               }
-           } else {
-                Toast.makeText(context,"Código invalido", Toast.LENGTH_SHORT).show()
-           }
+
+        if (!Validator.valReservationCode(reserveCode)) {
+            Toast.makeText(context,"Código invalido", Toast.LENGTH_SHORT).show()
+            return
         }
+
+        currentJob = MainScope().launch {
+           val result = codeService.getTravelData(editText.text.toString())
+           when(result) {
+               is Result.Success ->
+                   startTripConfiguration(
+                       result.result.origin,
+                       result.result.destination,
+                       result.result.isRound,
+                       result.result.fRegreso,
+                       result.result.fSalida)
+               is Result.Failure -> Toast.makeText(context,"Ha ocurrido un error", Toast.LENGTH_SHORT).show()
+           }
+       }
     }
 
     private fun startTripConfiguration(

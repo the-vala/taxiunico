@@ -47,3 +47,6 @@ inline fun <reified T>List<DocumentSnapshot>.toIdPairList(): List<Pair<String, T
  * Calcula el cost de un viaje.
  */
 fun Viaje.cost(): Double = (this.duration/60) * (this.distance/1000) * 0.5
+
+
+val FirebaseTimeFormat = SimpleDateFormat("yyyy-MM-dd")

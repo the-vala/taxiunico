@@ -29,7 +29,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.storage.FirebaseStorage
 import mx.itesm.taxiunico.R
-import mx.itesm.taxiunico.auth.AuthService
+import mx.itesm.taxiunico.services.AuthService
 import mx.itesm.taxiunico.models.TripStatus
 import mx.itesm.taxiunico.models.UserType
 import mx.itesm.taxiunico.models.Viaje

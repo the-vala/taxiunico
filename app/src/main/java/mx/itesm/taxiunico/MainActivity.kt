@@ -22,7 +22,7 @@ import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import mx.itesm.taxiunico.auth.AuthService
+import mx.itesm.taxiunico.services.AuthService
 import mx.itesm.taxiunico.auth.LoginActivity
 import mx.itesm.taxiunico.billing.PaymentFormsFragment
 import mx.itesm.taxiunico.models.UserType
@@ -31,16 +31,8 @@ import mx.itesm.taxiunico.travels.TripsPagerFragment
 import mx.itesm.taxiunico.trips.CheckTripCodeFragment
 import android.os.PersistableBundle
 import android.content.IntentFilter
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.view.Gravity
-import android.view.LayoutInflater
-import android.widget.Button
-import android.widget.RatingBar
-import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch

@@ -1,4 +1,4 @@
-package mx.itesm.taxiunico.auth
+package mx.itesm.taxiunico.services
 
 import android.content.Context
 import android.util.Log
@@ -8,7 +8,6 @@ import kotlinx.coroutines.tasks.await
 import mx.itesm.taxiunico.models.UserProfile
 import mx.itesm.taxiunico.models.UserType
 import mx.itesm.taxiunico.prefs.UserPrefs
-import mx.itesm.taxiunico.services.UserService
 
 class AuthService constructor(context: Context) {
     private val userService = UserService()
@@ -31,11 +30,13 @@ class AuthService constructor(context: Context) {
         try {
             // Authenticate with firebase
             val result = coroutineScope {
-                async { auth.signInWithEmailAndPassword(email, password).await() }.await()
+                auth.signInWithEmailAndPassword(email, password).await()
             }
+
             prefs.userUUID = result.user.uid
 
             // Then, load user profile and save it to user prefs.
+            // TODO(VER SI DEJAR ESTO O SACARLO PARA QUE TRUENE SI NO PUEDE TRAER EL PERFIL)
             coroutineScope {
                 launch { userService.getProfile(result.user.uid)?.let { prefs.userProfile = it } }
             }
@@ -45,11 +46,5 @@ class AuthService constructor(context: Context) {
             Log.e(TAG, e.toString())
             Result.Failure(e)
         }
-    }
-
-
-sealed class Result<out T: Any> {
-    data class Success<out T: Any>(val result: T): Result<T>()
-    data class Failure(val result: Throwable?): Result<Nothing>()
 }
 
