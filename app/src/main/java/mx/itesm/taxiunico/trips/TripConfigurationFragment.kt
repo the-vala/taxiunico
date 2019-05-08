@@ -15,6 +15,7 @@
  */
 package mx.itesm.taxiunico.trips
 
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.fragment.app.Fragment
@@ -22,6 +23,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.model.LatLng
@@ -85,19 +88,23 @@ class TripConfigurationFragment : Fragment() {
 
         firstLegToTerminal.setOnCheckedChangeListener { _, isChecked ->
             tripForm = tripForm.copy(needsFirstLegToTerminalTaxi = isChecked)
+            firstLegPickupAddress.isInvisible = !isChecked
         }
 
         firstLegToDestination.setOnCheckedChangeListener { _, isChecked ->
             tripForm = tripForm.copy(needsFirstLegToDestinationTaxi = isChecked)
+            firstLegDropoffAddress.isInvisible = !isChecked
         }
 
 
         secondLegtoTerminal.setOnCheckedChangeListener { _, isChecked ->
             tripForm = tripForm.copy(needsSecondLegToTerminalTaxi = isChecked)
+            secondLegPickupAddress.isInvisible = !isChecked
         }
 
         secondLegToHome.setOnCheckedChangeListener { _, isChecked ->
             tripForm = tripForm.copy(needsSecondLegToHomeTaxi = isChecked)
+            secondLegDropoffAddress.isInvisible = !isChecked
         }
 
 
