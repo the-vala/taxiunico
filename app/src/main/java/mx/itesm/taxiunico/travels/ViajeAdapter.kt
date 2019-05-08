@@ -15,6 +15,8 @@
  */
 package mx.itesm.taxiunico.travels
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.location.Address
 import android.location.Geocoder
 import android.view.LayoutInflater
@@ -31,6 +33,7 @@ import mx.itesm.taxiunico.auth.AuthService
 import mx.itesm.taxiunico.models.TripStatus
 import mx.itesm.taxiunico.models.UserType
 import mx.itesm.taxiunico.models.Viaje
+import mx.itesm.taxiunico.util.cost
 import java.io.IOException
 
 /**
@@ -109,7 +112,7 @@ class ViajeAdapter(private val list:MutableList<Pair<String, Viaje>>, private va
 
             fecha.text = data.dateTime.toDate().toString()
             vehiculo.text = data.vehicle
-            costo.text = view.context.getString(R.string.cost,data.cost)
+            costo.text = view.context.getString(R.string.cost, data.cost())
             formaPago.text = data.payment
 
             if(data.status == TripStatus.COMPLETED) {
@@ -127,7 +130,8 @@ class ViajeAdapter(private val list:MutableList<Pair<String, Viaje>>, private va
                     val imageView = itemView.findViewById<ImageView>(R.id.mapa)
 
                     Glide.with(view)
-                        .load(it.toString()).placeholder(R.drawable.map_example)
+                        .load(it.toString())
+                        .placeholder(ColorDrawable(Color.LTGRAY))
                         .into(imageView)
                 }
 

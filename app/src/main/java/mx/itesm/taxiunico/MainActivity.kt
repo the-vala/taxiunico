@@ -48,7 +48,9 @@ import mx.itesm.taxiunico.models.Viaje
 import mx.itesm.taxiunico.services.TripService
 import mx.itesm.taxiunico.util.ConnectivityReceiver
 import android.widget.FrameLayout
-
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.collect
+import mx.itesm.taxiunico.trips.UserSurveyDialog
 
 
 @SuppressLint("Registered")
@@ -62,8 +64,6 @@ class MainActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        receiver = ConnectivityReceiver()
-        registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
         setContentView(R.layout.activity_main)
 
         authService = AuthService(this)
@@ -75,16 +75,19 @@ class MainActivity : AppCompatActivity(),
                 openDefaultFragment()
             }
 
-            checkPendingSurveys()
         } else {
             startActivity(Intent(this, LoginActivity::class.java))
         }
 
         when(authService.getUserType()) {
-            UserType.TRAVELER -> nav.inflateMenu(R.menu.traveler_menu)
+            UserType.TRAVELER -> {
+                nav.inflateMenu(R.menu.traveler_menu)
+                checkPendingSurveys()
+            }
             UserType.DRIVER -> nav.inflateMenu(R.menu.driver_menu)
         }
 
+        ConnectivityReceiver.connectivityListener = this
         nav.setOnNavigationItemSelectedListener { navigate(it) }
     }
 
@@ -92,9 +95,9 @@ class MainActivity : AppCompatActivity(),
      * Función que revisa si existen viajes con encuestas pendientes. Si existe, le pide al usuario contestar
      * la encuesta de la mas reciente al abrir la app
      */
+    @FlowPreview
     private fun checkPendingSurveys() = MainScope().launch {
-        val pendingSurveyTrip = TripService().getPendingSurveyTrip(this@MainActivity)
-        pendingSurveyTrip?.let {
+        TripService().getPendingSurveyTrip(this@MainActivity).collect {
             showUserSurvey(it.first, it.second)
         }
     }
@@ -103,28 +106,7 @@ class MainActivity : AppCompatActivity(),
      * Función que recibe el id del viaje sin encuesta mas reciente y muestra dicha encuesta al usuario
      */
     private fun showUserSurvey(tripId: String, viaje: Viaje) {
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.alert_trip_survey, null)
-        val builder = AlertDialog.Builder(this).setView(dialogView)
-        builder.setOnDismissListener {
-
-        }
-        val dialog = builder.show()
-        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        val total = dialogView.findViewById<TextView>(R.id.surveyTotal)
-        total.text = viaje.cost.toString()
-
-        // TODO(terminar de poner info de este layout)
-        dialogView.findViewById<Button>(R.id.surveyConfirm).setOnClickListener {
-            val ratingBar = dialogView.findViewById<RatingBar>(R.id.ratingBar)
-            dialog.dismiss()
-            TripService().addUserSurveyAnswer(
-                userId = authService.getUserUid()!!,
-                tripId = tripId,
-                rating = ratingBar.rating)
-
-            Toast.makeText(this, "Rating: ${ratingBar.rating}", Toast.LENGTH_SHORT).show()
-        }
+        UserSurveyDialog(this).show(tripId, viaje)
     }
 
     /**
@@ -183,12 +165,16 @@ class MainActivity : AppCompatActivity(),
      */
     override fun onResume() {
         super.onResume()
-        ConnectivityReceiver.connectivityListener = this
+
+        receiver = ConnectivityReceiver()
+        registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+
         nav.selectedItemId = saveState
     }
 
     override fun onPause() {
         super.onPause()
+
         unregisterReceiver(receiver)
     }
 
@@ -200,4 +186,7 @@ class MainActivity : AppCompatActivity(),
         saveState = nav.selectedItemId
     }
 
+    override fun onNetworkChanged(isConnected: Boolean) {
+        showConnectionMessage(isConnected)
+    }
 }

@@ -40,9 +40,11 @@ import java.io.IOException
 import android.content.Intent
 import android.net.Uri
 import android.widget.RatingBar
+import kotlinx.coroutines.flow.collect
 import mx.itesm.taxiunico.models.TripStatus
 import mx.itesm.taxiunico.models.Viaje
 import mx.itesm.taxiunico.services.TripService
+import mx.itesm.taxiunico.util.cost
 
 /**
  * Fragmento para mostrar la lista de viajes programados
@@ -75,17 +77,23 @@ class PendingTripsFragment : Fragment() {
         recyclerView.adapter = adapter
 
         //If user is driver make item clickable
-        if (authService.getUserType() == UserType.DRIVER) {
-            adapter.onItemClick = { data -> createConfirmTripDialog(data)}
-        }
-        else if (authService.getUserType() == UserType.TRAVELER) {
-            adapter.onItemClick = { data -> createCancelTripDialog(data) }
+        when(authService.getUserType()) {
+            UserType.DRIVER -> {
+                adapter.onItemClick = { data -> createConfirmTripDialog(data) }
+                MainScope().launch {
+                    tripService.getRealTimeDriverHistory().collect { adapter.setData(it) }
+                }
+            }
+            UserType.TRAVELER -> adapter.onItemClick = { data -> createCancelTripDialog(data) }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        updateData()
+
+        if (authService.getUserType() == UserType.TRAVELER) {
+            adapter.onItemClick = { data -> createCancelTripDialog(data) }
+        }
     }
 
     /**
@@ -148,10 +156,14 @@ class PendingTripsFragment : Fragment() {
         //If trip accepted
         val confirm = dialogView.findViewById<Button>(R.id.confirm)
         confirm.setOnClickListener {
+
+            tripService.startTrip(
+                driverId=authService.getUserUid(),
+                tripId=data.first
+            )
+
             dialog.dismiss()
             Toast.makeText(requireContext(), "Iniciando viaje", Toast.LENGTH_SHORT).show()
-
-            viaje.cost = (viaje.duration/60) * (viaje.distance/1000) * 0.5
 
             //Create trip finished dialog
             createCompletedTripDialog(data)
@@ -180,7 +192,7 @@ class PendingTripsFragment : Fragment() {
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val total = dialogView.findViewById<TextView>(R.id.surveyTotal)
-        total.text = viaje.cost.toString()
+        total.text = viaje.cost().toString()
         val dateTime = dialogView.findViewById<TextView>(R.id.surveyDateTime)
         dateTime.text = viaje.dateTime.toDate().toString()
         val cliente = dialogView.findViewById<TextView>(R.id.name)

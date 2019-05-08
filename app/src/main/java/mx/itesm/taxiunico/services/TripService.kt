@@ -16,22 +16,29 @@
 package mx.itesm.taxiunico.services
 
 import android.content.Context
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.sendBlocking
+import kotlinx.coroutines.flow.flowViaChannel
 import kotlinx.coroutines.tasks.await
 import mx.itesm.taxiunico.auth.AuthService
 import mx.itesm.taxiunico.models.FreshTrip
 import mx.itesm.taxiunico.models.TripStatus
 import mx.itesm.taxiunico.models.Viaje
+import mx.itesm.taxiunico.util.toIdPairList
 
 /**
  * Servicio de viajes que inserta y recuepera viajes de la base de datos
  */
 class TripService {
+    /*** Referencia a la instancia de Firestore */
     private val db = FirebaseFirestore.getInstance()
+    /*** Referencia a la collecion de viajes */
     private val collection = db.collection(TRIP_COLLECTION_KEY)
 
     /**
-     * Función que inserta los viajes nuevos en la base de datos de firebase
+     * Función que inserta una lista de [Viaje] nuevos en la base de datos de firebase
      */
     suspend fun addTrips(trips: List<FreshTrip>): Result<Unit> {
         trips.forEach {
@@ -42,70 +49,97 @@ class TripService {
     }
 
     /**
-     * Función que regresa la lista de viajes con encuesta pendiente
+     * Emite un viaje que tenga una encuesta pendiente.
      */
-    suspend fun getPendingSurveyTrip(context: Context): Pair<String, Viaje>? {
+    @FlowPreview
+    fun getPendingSurveyTrip(context: Context) = flowViaChannel<Pair<String, Viaje>> { channel ->
         val uid = AuthService(context).getUserUid()
-        val res = collection
-            .whereEqualTo("userId", uid)
-            .whereEqualTo("pendingSurvey", true)
-            .get().await()
-
-        return res.map { Pair(it.id, it.toObject(Viaje::class.java)) }.firstOrNull()
+        collection
+            .whereEqualTo(Viaje::userId.name, uid)
+            .whereEqualTo(Viaje::pendingSurvey.name, true)
+            .addSnapshotListener { querySnapshot, _ ->
+                querySnapshot!!.documents.toIdPairList<Viaje>().firstOrNull()?.let {
+                    channel.sendBlocking(it)
+                }
+            }
     }
 
     /**
      * Función que regresa la lista de viajes del usuario
      */
     suspend fun getTravelHistory(id: String): MutableList<Pair<String, Viaje>> {
-        val res = collection.whereEqualTo("userId", id).get().await()
+        val res = collection.whereEqualTo(Viaje::userId.name, id).get().await()
 
-        return res.documents.map { Pair(it.id, it.toObject(Viaje::class.java)!!) }.toMutableList()
+        return res.documents.toIdPairList<Viaje>().toMutableList()
     }
 
     /**
-     * Función que inserta las encuestas hechas por el usuario en la tabla de viajes de firebase
+     * Emite los viajes disponibles para los conductores que estan en la ciudad [cityId],
+     * cada vez que haya actualizaciones a esta lista.
      */
-    fun addUserSurveyAnswer(userId: String, tripId: String, rating: Float) {
+    @FlowPreview
+    fun getRealTimeDriverHistory() = flowViaChannel<MutableList<Pair<String, Viaje>> > { channel ->
+        collection
+            .whereEqualTo(Viaje::status.name, TripStatus.PENDING)
+            .addSnapshotListener { querySnapshot, _ ->
+                querySnapshot?.documents?.let { docs ->
+                    channel.sendBlocking(
+                        docs.toIdPairList<Viaje>().toMutableList()
+                    )
+                }
+            }
+        }
+
+    /**
+     * Asigna la calificacion que da el pasajero al conductor del viaje [tripId].
+     */
+    fun addUserSurveyAnswer(tripId: String, rating: Float) {
         collection.document(tripId)
             .update(
-                "driverRating", rating,
-                "pendingSurvey", false
+                Viaje::driverRating.name, rating,
+                Viaje::pendingSurvey.name, false
 
-            ).addOnCompleteListener{}
+            )
     }
 
     /**
-     * Función que actualiza el estado de un viaje una vez que ha sido terminado
+     * Marca el viaje [tripId] como completado y le asigna una calificacion al pasajero..
      */
-    fun updateCompletedTrip(id: String, rating: Float) {
-        collection.document(id)
+    fun updateCompletedTrip(tripId: String, rating: Float) {
+        collection.document(tripId)
             .update(
-                "status", TripStatus.COMPLETED,
-                "userRating", rating,
-                "payment", ".... 5248",
-                "pendingSurvey", true
-            ).addOnCompleteListener{}
+                Viaje::completionDateTime.name, Timestamp.now(),
+                Viaje::status.name, TripStatus.COMPLETED,
+                Viaje::pendingSurvey.name,  true,
+                Viaje::userRating.name, rating,
+                Viaje::payment.name, ".... 5248"
+            )
     }
 
     /**
      * Función que actualiza el estado de un viaje que ha sido cancelado
      */
-    suspend fun cancelPendingTrip(id: String) {
-        collection.document(id).update(
-            "status", TripStatus.CANCELED
-        ).await()
+    suspend fun cancelPendingTrip(tripId: String) {
+          collection.document(tripId).update(
+              Viaje::status.name, TripStatus.CANCELED
+          ).await()
+      }
+
+    /**
+     * Comienza el viaje [tripId] and se lo asigna al conductor [driverId].
+     */
+    fun startTrip(driverId: String?, tripId: String) {
+        collection.document(tripId)
+            .update(
+                Viaje::startDateTime.name, Timestamp.now(),
+                Viaje::driverId.name, driverId,
+                Viaje::status.name, TripStatus.IN_PROGRESS)
     }
 
     companion object {
+        /**
+         * Llave de la coleccion de viajes en Firestore
+         */
         const val TRIP_COLLECTION_KEY = "trips"
     }
-}
-
-/**
- * Sealed class para determinar si el fetch de un viaje fue correcto o no
- */
-sealed class Result<out T: Any> {
-    data class Success<out T: Any>(val result: T): Result<T>()
-    data class Failure(val result: Throwable?): Result<Nothing>()
 }

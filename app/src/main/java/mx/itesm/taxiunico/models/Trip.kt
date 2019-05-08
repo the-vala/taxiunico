@@ -17,6 +17,7 @@ package mx.itesm.taxiunico.models
 
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.GeoPoint
+import java.sql.Time
 import java.util.*
 
 /**
@@ -24,8 +25,9 @@ import java.util.*
  */
 enum class TripStatus {
     PENDING,
+    IN_PROGRESS,
     COMPLETED,
-    CANCELED
+    CANCELED,
 }
 
 /**
@@ -49,6 +51,8 @@ data class Viaje(
     var driverName: String = "",
     var userRating: Int = 5,
     var codeId: String = "",
+    var startDateTime: Timestamp = Timestamp.now(),
+    var completionDateTime: Timestamp = Timestamp.now(),
     var dateTime: Timestamp = Timestamp.now(),
     var origin: GeoPoint = GeoPoint(0.0,0.0),
     var destination: GeoPoint = GeoPoint(0.0,0.0),
@@ -56,7 +60,6 @@ data class Viaje(
     var vehicle: String = "",
     var distance: Double = 0.0,
     var duration: Double = 0.0,
-    var cost: Double = 0.0,
     var payment: String = "",
     var status: TripStatus = TripStatus.PENDING,
     var pendingSurvey: Boolean = false,
