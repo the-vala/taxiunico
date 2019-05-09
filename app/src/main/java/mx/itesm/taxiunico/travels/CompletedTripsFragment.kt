@@ -19,7 +19,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -27,6 +29,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import mx.itesm.taxiunico.Network.ConnectionViewModel
 import mx.itesm.taxiunico.R
 import mx.itesm.taxiunico.services.AuthService
 import mx.itesm.taxiunico.models.TripStatus
@@ -41,7 +44,13 @@ class CompletedTripsFragment : Fragment() {
     private val auth = FirebaseAuth.getInstance()
     private lateinit var adapter: ViajeAdapter
     private lateinit var authService: AuthService
+    private lateinit var connectionVM: ConnectionViewModel
     private lateinit var tripService: TripService
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        connectionVM = ViewModelProviders.of(requireActivity()).get(ConnectionViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,8 +79,11 @@ class CompletedTripsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        MainScope().launch {
+        if (!connectionVM.getConnectionState().value!!) {
+            Toast.makeText(requireContext(),"No hay conexion.", Toast.LENGTH_SHORT).show()
+        } else {
+          MainScope().launch {
             tripService.getRealTimeCompletedHistory(auth.uid!!).collect { adapter.setData(it) }
-        }
+          }
     }
 }

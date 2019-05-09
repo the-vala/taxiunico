@@ -21,13 +21,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_trips_pager.*
+import mx.itesm.taxiunico.Network.ConnectionViewModel
 
 import mx.itesm.taxiunico.R
+import mx.itesm.taxiunico.trips.TripConfigurationViewModel
 
 class TripsPagerFragment : Fragment() {
 
     private lateinit var adapter: TripsPagerAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,12 +44,13 @@ class TripsPagerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Toast.makeText(requireContext(), "Cargando viajes", Toast.LENGTH_SHORT).show()
-        adapter = TripsPagerAdapter(fragmentManager!!)
-        adapter.addFragment(CompletedTripsFragment(), "Viajes Completados")
-        adapter.addFragment(PendingTripsFragment(), "Viajes Pendientes")
-        //adapter.addFragment(TripConfirmationFragment(), "TEST")
-        viewPager.adapter = adapter
-        tabs.setupWithViewPager(viewPager)
+            Toast.makeText(requireContext(), "Cargando viajes", Toast.LENGTH_SHORT).show()
+            adapter = TripsPagerAdapter(fragmentManager!!)
+            adapter.addFragment(CompletedTripsFragment(), "Viajes Completados")
+            adapter.addFragment(PendingTripsFragment(), "Viajes Pendientes")
+            //adapter.addFragment(TripConfirmationFragment(), "TEST")
+            viewPager.adapter = adapter
+            tabs.setupWithViewPager(viewPager)
+
     }
 }
