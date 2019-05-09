@@ -49,6 +49,23 @@ class TripService {
     }
 
     /**
+     * Emite un viaje que esté en curso.
+     */
+    @FlowPreview
+    fun getInProgressTrip(context: Context) = flowViaChannel<Pair<String, Viaje>> { channel ->
+        val uid = AuthService(context).getUserUid()
+        collection
+            .whereEqualTo(Viaje::userId.name, uid)
+            .whereEqualTo(Viaje::status.name, TripStatus.IN_PROGRESS)
+            .addSnapshotListener { querySnapshot, _ ->
+                querySnapshot!!.documents.toIdPairList<Viaje>().firstOrNull()?.let {
+                    channel.sendBlocking(it)
+                }
+            }
+    }
+
+
+    /**
      * Emite un viaje que tenga una encuesta pendiente.
      */
     @FlowPreview

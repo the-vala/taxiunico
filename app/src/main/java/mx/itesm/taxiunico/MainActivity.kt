@@ -31,7 +31,6 @@ import mx.itesm.taxiunico.travels.TripsPagerFragment
 import mx.itesm.taxiunico.trips.CheckTripCodeFragment
 import android.os.PersistableBundle
 import android.content.IntentFilter
-import android.content.res.ColorStateList
 import android.net.ConnectivityManager
 import android.view.Gravity
 import com.google.android.material.snackbar.Snackbar
@@ -46,7 +45,7 @@ import androidx.lifecycle.ViewModelProviders
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
 import mx.itesm.taxiunico.Network.ConnectionViewModel
-import mx.itesm.taxiunico.trips.TripConfigurationViewModel
+import mx.itesm.taxiunico.trips.InProgressTripFragment
 import mx.itesm.taxiunico.trips.UserSurveyDialog
 
 
@@ -83,6 +82,7 @@ class MainActivity : AppCompatActivity(),
                 nav.inflateMenu(R.menu.traveler_menu)
                 nav.setBackgroundColor(ContextCompat.getColor(this, R.color.taxiBlue))
                 checkPendingSurveys()
+                checkInProgressTrip()
             }
             UserType.DRIVER -> {
                 nav.inflateMenu(R.menu.driver_menu)
@@ -108,6 +108,13 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
+    @FlowPreview
+    private fun checkInProgressTrip() = MainScope().launch {
+        TripService().getInProgressTrip(this@MainActivity).collect {
+            showCurrentTrip(it.first, it.second)
+        }
+    }
+
     /**
      * Función que recibe el id del viaje sin encuesta mas reciente y muestra dicha encuesta al usuario
      */
@@ -115,6 +122,21 @@ class MainActivity : AppCompatActivity(),
         UserSurveyDialog(this@MainActivity).show(tripId, viaje)
     }
 
+    private fun showCurrentTrip(tripId: String, viaje: Viaje) {
+        supportFragmentManager.beginTransaction()
+            .replace(
+                android.R.id.content,
+                InProgressTripFragment.newInstance(
+                    destinationAddress = viaje.endAddress,
+                    originAddress = viaje.startAddress,
+                    mapUrl = viaje.imageURL,
+                    driverName = viaje.driverName,
+                    distance = viaje.distance,
+                    duration = viaje.duration
+                )
+            )
+            .commitAllowingStateLoss()
+    }
     /**
      * Función que abre la vista default al iniciar la aplicación
      */

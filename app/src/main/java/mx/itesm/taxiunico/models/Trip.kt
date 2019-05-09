@@ -66,5 +66,7 @@ data class Viaje(
     var payment: String = "",
     var status: TripStatus = TripStatus.PENDING,
     var pendingSurvey: Boolean = false,
-    var imageURL: String = ""
+    var imageURL: String = "",
+    var startAddress: String = "",
+    var endAddress: String = ""
 )
