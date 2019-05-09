@@ -18,6 +18,7 @@ package mx.itesm.taxiunico.profile
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -29,7 +30,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.MainActivity
 import mx.itesm.taxiunico.R
-import mx.itesm.taxiunico.auth.AuthService
+import mx.itesm.taxiunico.services.AuthService
 import mx.itesm.taxiunico.models.UserProfile
 import mx.itesm.taxiunico.prefs.UserPrefs
 import mx.itesm.taxiunico.services.UserService
@@ -77,17 +78,58 @@ class UserProfileFragment : Fragment() {
      * Función que guarda los nuevos datos del usuario en la base de datos y muestra un mensaje de confirmación
      */
     private fun saveProfile() {
-        Toast.makeText(requireContext(), "Guardando", Toast.LENGTH_SHORT).show()
+        if (validateForm()) {
+            Toast.makeText(requireContext(), "Guardando", Toast.LENGTH_SHORT).show()
 
-        MainScope().launch {
-            userService.updateProfile(authService.getUserUid()!!, UserProfile(
-            name = nameInput.text.toString(),
-            email = emailInput.text.toString(),
-            phone = phoneInput.text.toString()
-        ))
+            MainScope().launch {
+                userService.updateProfile(
+                    authService.getUserUid()!!, UserProfile(
+                        name = nameInput.text.toString(),
+                        email = emailInput.text.toString(),
+                        phone = phoneInput.text.toString()
+                    )
+                )
 
-            Toast.makeText(requireContext(), "Perfil Guardado", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Perfil Guardado", Toast.LENGTH_SHORT).show()
+            }
         }
+    }
+
+    private fun validateForm(): Boolean {
+        var valid = true
+
+        val name = nameInput.text.toString()
+        if (TextUtils.isEmpty(name)) {
+            nameInput.error = "Requerido"
+            valid = false
+        } else {
+            nameInput.error = null
+        }
+
+        val email = emailInput.text.toString()
+        if (isEmailValid(email)) {
+            emailInput.error = null
+        } else {
+            emailInput.error = "Inválido"
+            valid = false
+        }
+
+        val phone = phoneInput.text.toString()
+        if (isPhoneValid(phone)) {
+            phoneInput.error = null
+        } else {
+            phoneInput.error = "Inválido"
+            valid = false
+        }
+
+        return valid
+    }
+
+    private fun isEmailValid(email: String): Boolean {
+        return Patterns.EMAIL_ADDRESS.toRegex().matches(email)
+    }
+    private fun isPhoneValid(phone: String): Boolean {
+        return Patterns.PHONE.toRegex().matches(phone)
     }
 
     /**
@@ -99,4 +141,5 @@ class UserProfileFragment : Fragment() {
         val mainIntent = Intent(context, MainActivity::class.java)
         startActivity(mainIntent)
     }
+
 }

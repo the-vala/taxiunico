@@ -15,6 +15,7 @@
  */
 package mx.itesm.taxiunico.trips
 
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.fragment.app.Fragment
@@ -22,27 +23,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.Timestamp
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_trip_configuration.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.R
-import mx.itesm.taxiunico.auth.AuthService
 import mx.itesm.taxiunico.models.Codes
+import mx.itesm.taxiunico.services.AuthService
 import mx.itesm.taxiunico.models.FreshTrip
 import mx.itesm.taxiunico.models.Station
 import mx.itesm.taxiunico.services.BusStationService
 import mx.itesm.taxiunico.services.TripService
+import mx.itesm.taxiunico.travels.TripsPagerFragment
 import mx.itesm.taxiunico.util.Event
 import mx.itesm.taxiunico.util.toGeoPoint
 import mx.itesm.taxiunico.util.toLatLng
 import mx.itesm.taxiunico.util.toSentenceCase
-
+import mx.itesm.taxiunico.util.*
 
 @Parcelize
 data class TripForm(
@@ -90,19 +95,23 @@ class TripConfigurationFragment : Fragment() {
 
         firstLegToTerminal.setOnCheckedChangeListener { _, isChecked ->
             tripForm = tripForm.copy(needsFirstLegToTerminalTaxi = isChecked)
+            firstLegPickupAddress.isInvisible = !isChecked
         }
 
         firstLegToDestination.setOnCheckedChangeListener { _, isChecked ->
             tripForm = tripForm.copy(needsFirstLegToDestinationTaxi = isChecked)
+            firstLegDropoffAddress.isInvisible = !isChecked
         }
 
 
         secondLegtoTerminal.setOnCheckedChangeListener { _, isChecked ->
             tripForm = tripForm.copy(needsSecondLegToTerminalTaxi = isChecked)
+            secondLegPickupAddress.isInvisible = !isChecked
         }
 
         secondLegToHome.setOnCheckedChangeListener { _, isChecked ->
             tripForm = tripForm.copy(needsSecondLegToHomeTaxi = isChecked)
+            secondLegDropoffAddress.isInvisible = !isChecked
         }
 
         tripCode = arguments!!.getParcelable<Codes>(CODE_ID)!!
@@ -118,9 +127,45 @@ class TripConfigurationFragment : Fragment() {
         confirmButton.setOnClickListener { saveTrips() }
     }
 
+    private fun validateTripForm(): ValidationResult = when {
+        tripForm.needsFirstLegToTerminalTaxi && tripForm.firstLegPickupLocation == null ->
+            ValidationResult(false, "Especifica una ubicacion para xxxx")
+        tripForm.needsFirstLegToDestinationTaxi && tripForm.firstLegDropoffLocation == null ->
+            ValidationResult(false, "Especifica una ubicacion para xxxx")
+        tripForm.needsSecondLegToTerminalTaxi && tripForm.secondLegPickupLocation == null ->
+            ValidationResult(false, "Especifica una ubicacion para xxxx")
+        tripForm.needsSecondLegToHomeTaxi && tripForm.secondLegDropoffLocation == null ->
+            ValidationResult(false, "Especifica una ubicacion para xxxx")
+        else -> ValidationResult(true)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // Re-attach the place picker observer, if any.
+        placePickerChangedObserver?.let { vm.getLocation().observe(this, it) }
+    }
+    override fun onPause() {
+        super.onPause()
+        currentJob?.cancel()
+    }
+
+
     private fun saveTrips() {
-        MainScope().launch {
-            val trips = mutableListOf<FreshTrip>()
+        val trips = mutableListOf<FreshTrip>()
+        val userId = AuthService(requireContext()).getUserUid()!!
+
+        val firstLegDepartureDate = arguments!!.getString(FIRST_LEG_DEPARTURE_DATE)
+        val secondLegDepartureDate = arguments!!.getString(SECOND_LEG_DEPARTURE_DATE, null)
+
+        val validationResult = validateTripForm()
+
+        if (!validationResult.valid) {
+            Snackbar.make(requireView(), validationResult.message, Snackbar.LENGTH_SHORT).show()
+            return
+        }
+      
+        val trips = mutableListOf<FreshTrip>()
             val userId = AuthService(requireContext()).getUserUid()!!
 
             if (tripForm.needsFirstLegToTerminalTaxi) {
@@ -140,8 +185,7 @@ class TripConfigurationFragment : Fragment() {
                     destination = tripForm.firstLegDropoffLocation!!.toGeoPoint()
                 ))
             }
-
-
+      
             if (tripForm.needsSecondLegToTerminalTaxi) {
                 trips.add(FreshTrip(
                     userId = userId,
@@ -160,88 +204,69 @@ class TripConfigurationFragment : Fragment() {
                     destination = tripForm.secondLegDropoffLocation!!.toGeoPoint()
                 ))
             }
-
+   
+        MainScope().launch {
             TripService().addTrips(trips)
+            requireFragmentManager().popBackStack()
         }
     }
+
 
 
     private fun openFirstLegPickupAddress() {
-        requireFragmentManager().beginTransaction()
-            .replace(android.R.id.content, PlacePickerFragment.newInstance(
+            openPlacePicker(
                 referencePointLabel = getString(R.string.central, homeBusStation.city.toSentenceCase()),
                 referencePointLocation = LatLng(homeBusStation.cord!!.latitude, homeBusStation.cord!!.longitude),
-                selectedPointLocation = tripForm.firstLegPickupLocation
-            ))
-            .addToBackStack(null)
-            .commitAllowingStateLoss()
-
-        placePickerChangedObserver = Observer { event ->
-            event.getContentIfNotHandled()?.let {
-                tripForm = tripForm.copy(firstLegPickupLocation = it)
-                vm.getLocation().removeObserver(placePickerChangedObserver!!)
-                placePickerChangedObserver = null
-            }
-        }
-
-        vm.getLocation().observe(this, placePickerChangedObserver!!)
+                selectedPointLocation = tripForm.firstLegPickupLocation,
+                onPlacePicked = { tripForm = tripForm.copy(firstLegPickupLocation = it) }
+            )
     }
 
     private fun openFirstLegDropoffAddress() {
-        requireFragmentManager().beginTransaction()
-            .replace(android.R.id.content, PlacePickerFragment.newInstance(
-                referencePointLabel = getString(R.string.central, destinationBusStation.city.toSentenceCase()),
-                referencePointLocation = destinationBusStation.cord!!.toLatLng(),
-                selectedPointLocation = tripForm.firstLegDropoffLocation
-            ))
-            .addToBackStack(null)
-            .commitAllowingStateLoss()
-
-        placePickerChangedObserver = Observer { event ->
-            event.getContentIfNotHandled()?.let {
-                tripForm = tripForm.copy(firstLegDropoffLocation = it)
-                vm.getLocation().removeObserver(placePickerChangedObserver!!)
-                placePickerChangedObserver = null
-            }
-        }
-
-        vm.getLocation().observe(this, placePickerChangedObserver!!)
+        openPlacePicker(
+            referencePointLabel = getString(R.string.central, destinationBusStation.city.toSentenceCase()),
+            referencePointLocation = destinationBusStation.cord!!.toLatLng(),
+            selectedPointLocation = tripForm.firstLegDropoffLocation,
+            onPlacePicked = { tripForm = tripForm.copy(firstLegDropoffLocation = it) }
+        )
     }
 
     private fun openSecondLegPickupAddress() {
-        requireFragmentManager().beginTransaction()
-            .replace(android.R.id.content, PlacePickerFragment.newInstance(
-                referencePointLabel = getString(R.string.central, destinationBusStation.city.toSentenceCase()),
-                referencePointLocation = destinationBusStation.cord!!.toLatLng(),
-                selectedPointLocation = tripForm.secondLegPickupLocation
-            ))
-            .addToBackStack(null)
-            .commitAllowingStateLoss()
-
-        placePickerChangedObserver = Observer { event ->
-            event.getContentIfNotHandled()?.let {
-                tripForm = tripForm.copy(secondLegPickupLocation = it)
-                vm.getLocation().removeObserver(placePickerChangedObserver!!)
-                placePickerChangedObserver = null
-            }
-        }
-
-        vm.getLocation().observe(this, placePickerChangedObserver!!)
+        openPlacePicker(
+            referencePointLabel = getString(R.string.central, destinationBusStation.city.toSentenceCase()),
+            referencePointLocation = destinationBusStation.cord!!.toLatLng(),
+            selectedPointLocation = tripForm.secondLegPickupLocation,
+            onPlacePicked = { tripForm = tripForm.copy(secondLegPickupLocation = it) }
+        )
     }
 
     private fun openSecondLegDropoffAddress() {
+        openPlacePicker(
+            referencePointLabel = getString(R.string.central, homeBusStation.city.toSentenceCase()),
+            referencePointLocation = homeBusStation.cord!!.toLatLng(),
+            selectedPointLocation = tripForm.secondLegDropoffLocation,
+            onPlacePicked = { tripForm = tripForm.copy(secondLegDropoffLocation = it) }
+            )
+    }
+
+    private fun openPlacePicker(
+        referencePointLabel: String,
+        referencePointLocation: LatLng,
+        selectedPointLocation: LatLng? = null,
+        onPlacePicked:  (LatLng) -> Unit
+    ) {
         requireFragmentManager().beginTransaction()
             .replace(android.R.id.content, PlacePickerFragment.newInstance(
-                referencePointLabel = getString(R.string.central, homeBusStation.city.toSentenceCase()),
-                referencePointLocation = homeBusStation.cord!!.toLatLng(),
-                selectedPointLocation = tripForm.secondLegDropoffLocation
+                referencePointLabel = referencePointLabel,
+                referencePointLocation = referencePointLocation,
+                selectedPointLocation = selectedPointLocation
             ))
             .addToBackStack(null)
             .commitAllowingStateLoss()
 
         placePickerChangedObserver = Observer { event ->
             event.getContentIfNotHandled()?.let {
-                tripForm = tripForm.copy(secondLegDropoffLocation = it)
+                onPlacePicked(it)
                 vm.getLocation().removeObserver(placePickerChangedObserver!!)
                 placePickerChangedObserver = null
             }
@@ -263,18 +288,6 @@ class TripConfigurationFragment : Fragment() {
         render()
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        // Re-attach the place picker observer, if any.
-        placePickerChangedObserver?.let { vm.getLocation().observe(this, it) }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        currentJob?.cancel()
-    }
-
     /**
      * Renders the content
      */
@@ -293,14 +306,13 @@ class TripConfigurationFragment : Fragment() {
     companion object {
         fun newInstance(code: Codes) =
             TripConfigurationFragment().apply {
-                arguments = bundleOf(
-                    CODE_ID to code
-
-                )
+                arguments = bundleOf(CODE_ID to code)
             }
 
         private const val CODE_ID = "code.id"
     }
+
+    data class ValidationResult(val valid: Boolean, val message: String = "")
 }
 
 

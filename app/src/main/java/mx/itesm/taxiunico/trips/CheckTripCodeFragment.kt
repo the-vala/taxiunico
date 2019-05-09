@@ -15,12 +15,15 @@
  */
 package mx.itesm.taxiunico.trips
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.firebase.Timestamp
 import kotlinx.android.synthetic.main.fragment_check_trip_code.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
@@ -30,6 +33,7 @@ import mx.itesm.taxiunico.models.Codes
 import mx.itesm.taxiunico.services.CodeService
 import mx.itesm.taxiunico.services.Result
 import mx.itesm.taxiunico.util.Validator
+import java.util.*
 
 /**
  * Fragmento para verificar la existencia de un código de reservación
@@ -59,26 +63,28 @@ class CheckTripCodeFragment : Fragment() {
         currentJob = MainScope().launch {
         val reserveCode = editText.text.toString()
            if ( Validator.valReservationCode(reserveCode) ) {
-               val result = codeService.getTravelData(editText.text.toString())
-               when(result) {
-                   is Result.Success ->
-                       startTripConfiguration(result.result)
+               when(val result = codeService.getTravelData(editText.text.toString())) {
+                   is Result.Success -> startTripConfiguration(result.result)
                }
            } else {
-                Toast.makeText(context,"Código inválido", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,"Código invalido", Toast.LENGTH_SHORT).show()
            }
         }
+    }
+
+    private fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
     /**
      * Función para establecer los parametros del viaje
      */
     private fun startTripConfiguration(code: Codes) {
+        requireView().hideKeyboard()
+      
         requireFragmentManager().beginTransaction()
-            .replace(
-                android.R.id.content,
-                TripConfigurationFragment.newInstance(code)
-            )
+            .replace(android.R.id.content, TripConfigurationFragment.newInstance(code))
             .addToBackStack(null)
             .commitAllowingStateLoss()
     }
