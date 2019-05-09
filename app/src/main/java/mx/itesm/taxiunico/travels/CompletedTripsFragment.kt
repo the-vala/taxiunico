@@ -31,6 +31,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.Network.ConnectionViewModel
 import mx.itesm.taxiunico.R
+import mx.itesm.taxiunico.models.UserType
 import mx.itesm.taxiunico.services.AuthService
 import mx.itesm.taxiunico.services.TripService
 
@@ -82,8 +83,17 @@ class CompletedTripsFragment : Fragment() {
         if (!connectionVM.getConnectionState().value!!) {
             Toast.makeText(requireContext(), "No hay conexion.", Toast.LENGTH_SHORT).show()
         } else {
-            MainScope().launch {
-                tripService.getRealTimeCompletedHistory(auth.uid!!).collect { adapter.setData(it) }
+            when(authService.getUserType()) {
+                UserType.DRIVER -> {
+                    MainScope().launch {
+                        tripService.getRealTimeDriverCompletedHistory(auth.uid!!).collect { adapter.setData(it) }
+                    }
+                }
+                UserType.TRAVELER -> {
+                    MainScope().launch {
+                        tripService.getRealTimeTravelerCompletedHistory(auth.uid!!).collect { adapter.setData(it) }
+                    }
+                }
             }
         }
     }

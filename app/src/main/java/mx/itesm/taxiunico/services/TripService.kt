@@ -85,9 +85,27 @@ class TripService {
      * Función que regresa la lista de viajes del usuario
      */
     @FlowPreview
-    fun getRealTimeCompletedHistory(id: String) = flowViaChannel<MutableList<Pair<String, Viaje>> > { channel ->
+    fun getRealTimeTravelerCompletedHistory(id: String) = flowViaChannel<MutableList<Pair<String, Viaje>> > { channel ->
         collection
             .whereEqualTo(Viaje::userId.name, id)
+            .whereEqualTo(Viaje::status.name, TripStatus.COMPLETED)
+            .orderBy(Viaje::dateTime.name)
+            .addSnapshotListener { querySnapshot, _ ->
+                querySnapshot?.documents?.let { docs ->
+                    channel.sendBlocking(
+                        docs.toIdPairList<Viaje>().toMutableList()
+                    )
+                }
+            }
+    }
+
+    /**
+     * Función que regresa la lista de viajes del usuario
+     */
+    @FlowPreview
+    fun getRealTimeDriverCompletedHistory(id: String) = flowViaChannel<MutableList<Pair<String, Viaje>> > { channel ->
+        collection
+            .whereEqualTo(Viaje::driverId.name, id)
             .whereEqualTo(Viaje::status.name, TripStatus.COMPLETED)
             .orderBy(Viaje::dateTime.name)
             .addSnapshotListener { querySnapshot, _ ->
