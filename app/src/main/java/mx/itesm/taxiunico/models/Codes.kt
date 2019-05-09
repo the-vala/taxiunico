@@ -15,18 +15,22 @@
  */
 package mx.itesm.taxiunico.models
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import com.google.firebase.Timestamp
 
 /**
  * Modelo de Codigo de reservación con información obtenida al momento de hacer la compra
  */
+
+@Parcelize
  data class Codes (
     val destination: String = "",
-    @JvmField var isRound: Boolean = false,
-    val origin: String = "",
-    val firstLegDepartureTime: Timestamp = Timestamp.now(),
     val firstLegArrivalTime: Timestamp = Timestamp.now(),
+    val firstLegDepartureTime: Timestamp = Timestamp.now(),
+    val secondLegArrivalTime: Timestamp = Timestamp.now(),
     val secondLegDepartureTime: Timestamp = Timestamp.now(),
-    val secondLegArrivalTime: Timestamp = Timestamp.now()
- )
+    @JvmField var isRound: Boolean = false,
+    val origin: String = ""
+ ) : Parcelable
 

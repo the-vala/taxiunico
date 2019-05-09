@@ -24,10 +24,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.Timestamp
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_trip_configuration.*
@@ -35,18 +35,16 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.R
+import mx.itesm.taxiunico.models.Codes
 import mx.itesm.taxiunico.services.AuthService
 import mx.itesm.taxiunico.models.FreshTrip
 import mx.itesm.taxiunico.models.Station
 import mx.itesm.taxiunico.services.BusStationService
 import mx.itesm.taxiunico.services.TripService
-import mx.itesm.taxiunico.travels.TripsPagerFragment
 import mx.itesm.taxiunico.util.Event
 import mx.itesm.taxiunico.util.toGeoPoint
 import mx.itesm.taxiunico.util.toLatLng
 import mx.itesm.taxiunico.util.toSentenceCase
-import java.text.SimpleDateFormat
-import mx.itesm.taxiunico.util.*
 
 @Parcelize
 data class TripForm(
@@ -64,6 +62,7 @@ data class TripForm(
 class TripConfigurationFragment : Fragment() {
     private val busStationStation = BusStationService()
 
+    private lateinit var tripCode: Codes
     private lateinit var homeBusStation: Station
     private lateinit var destinationBusStation: Station
 
@@ -112,8 +111,9 @@ class TripConfigurationFragment : Fragment() {
             secondLegDropoffAddress.isInvisible = !isChecked
         }
 
+        tripCode = arguments!!.getParcelable<Codes>(CODE_ID)!!
 
-        if (!arguments!!.getBoolean(ROUND_TRIP)) {
+        if (tripCode.isRound) {
             linearLayout2.visibility = View.GONE
         }
 
@@ -142,7 +142,6 @@ class TripConfigurationFragment : Fragment() {
         // Re-attach the place picker observer, if any.
         placePickerChangedObserver?.let { vm.getLocation().observe(this, it) }
     }
-
     override fun onPause() {
         super.onPause()
         currentJob?.cancel()
@@ -152,9 +151,6 @@ class TripConfigurationFragment : Fragment() {
     private fun saveTrips() {
         val trips = mutableListOf<FreshTrip>()
         val userId = AuthService(requireContext()).getUserUid()!!
-
-        val firstLegDepartureDate = arguments!!.getString(FIRST_LEG_DEPARTURE_DATE)
-        val secondLegDepartureDate = arguments!!.getString(SECOND_LEG_DEPARTURE_DATE, null)
 
         val validationResult = validateTripForm()
 
@@ -166,7 +162,7 @@ class TripConfigurationFragment : Fragment() {
         if (tripForm.needsFirstLegToTerminalTaxi) {
             trips.add(FreshTrip(
                 userId = userId,
-                dateTime = FirebaseTimeFormat.parse("2019-03-01"),
+                dateTime = (tripCode.firstLegDepartureTime - Times.HOUR).toDate(),
                 origin = tripForm.firstLegPickupLocation!!.toGeoPoint(),
                 destination = homeBusStation.cord!!
             ))
@@ -175,17 +171,16 @@ class TripConfigurationFragment : Fragment() {
         if (tripForm.needsFirstLegToDestinationTaxi) {
             trips.add(FreshTrip(
                 userId = userId,
-                dateTime = FirebaseTimeFormat.parse("2019-03-01"),
+                dateTime = (tripCode.firstLegArrivalTime + Times.HALF_HOUR).toDate(),
                 origin = destinationBusStation.cord!!,
                 destination = tripForm.firstLegDropoffLocation!!.toGeoPoint()
             ))
         }
 
-
         if (tripForm.needsSecondLegToTerminalTaxi) {
             trips.add(FreshTrip(
                 userId = userId,
-                dateTime = FirebaseTimeFormat.parse("2019-03-01"),
+                dateTime = (tripCode.secondLegDepartureTime - Times.HOUR).toDate(),
                 origin = tripForm.secondLegPickupLocation!!.toGeoPoint(),
                 destination = destinationBusStation.cord!!
             ))
@@ -195,12 +190,12 @@ class TripConfigurationFragment : Fragment() {
         if (tripForm.needsSecondLegToHomeTaxi) {
             trips.add(FreshTrip(
                 userId = userId,
-                dateTime = FirebaseTimeFormat.parse("2019-03-01"),
+                dateTime = (tripCode.secondLegArrivalTime + Times.HALF_HOUR).toDate(),
                 origin = homeBusStation.cord!!,
                 destination = tripForm.secondLegDropoffLocation!!.toGeoPoint()
             ))
         }
-
+   
         MainScope().launch {
             TripService().addTrips(trips)
             requireFragmentManager().popBackStack()
@@ -273,13 +268,12 @@ class TripConfigurationFragment : Fragment() {
 
     private fun fetchLocationDataAndRender() = MainScope().launch {
         val stations = busStationStation.getStations()
-
         destinationBusStation = stations.find {
-            it.cityId == arguments!!.getString(DESTINATION_CITY_ID)
+            it.cityId == tripCode.destination
         } ?: throw IllegalArgumentException()
 
         homeBusStation = stations.find {
-            it.cityId == arguments!!.getString(HOME_CITY_ID)
+            it.cityId == tripCode.origin
         } ?: throw IllegalArgumentException()
 
         render()
@@ -301,45 +295,31 @@ class TripConfigurationFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(
-            /**
-             * The ID of the city where the bus takes off.
-             */
-            homeCityId: String,
-            /**
-             * The ID of the city where the bus is arriving.
-             */
-            destinationCityId: String,
-            /**
-             * Specifies if the user needs a bus to return home.
-             */
-            isRoundTrip: Boolean,
-            /**
-             * The date when the first bus leaves.
-             */
-            firstLegDepartureTime: String,
-            /**
-             * The date when the second bus leaves. Is null when the [isRoundTrip] is false.
-             */
-            secondLegDepartureTime: String?
-        ) =
+        fun newInstance(code: Codes) =
             TripConfigurationFragment().apply {
-                arguments = bundleOf(
-                    HOME_CITY_ID to homeCityId,
-                    DESTINATION_CITY_ID to destinationCityId,
-                    ROUND_TRIP to isRoundTrip,
-                    FIRST_LEG_DEPARTURE_DATE to firstLegDepartureTime,
-                    SECOND_LEG_DEPARTURE_DATE to secondLegDepartureTime
-
-                )
+                arguments = bundleOf(CODE_ID to code)
             }
 
-        private const val HOME_CITY_ID = "home.city.id"
-        private const val DESTINATION_CITY_ID = "destination.city.id"
-        private const val ROUND_TRIP = "is.round.trip.id"
-        private const val FIRST_LEG_DEPARTURE_DATE= "first.leg.departure.date.id"
-        private const val SECOND_LEG_DEPARTURE_DATE= "second.leg.departure.date.id"
+        private const val CODE_ID = "code.id"
     }
 
     data class ValidationResult(val valid: Boolean, val message: String = "")
 }
+
+
+operator fun Timestamp.plus(seconds: Int): Timestamp {
+    return Timestamp(this.seconds + seconds, 0)
+}
+
+operator fun Timestamp.minus(seconds: Int): Timestamp {
+    return Timestamp(this.seconds - seconds, 0)
+}
+
+class Times {
+    companion object {
+        const val HOUR = 3600
+        const val HALF_HOUR = 1800
+
+    }
+}
+

@@ -31,8 +31,8 @@ class CodeService {
     /**
      * Función que regresa la informacion relacionada al código de reservacion como origen y destino
      */
-    suspend fun getTravelData(reservationCode: String): Result<Codes> {
-        val res = db.collection(CODE_COLLECTION_KEY).document(reservationCode).get().await()
+    suspend fun getTravelData(reservationCode: String): Result<Codes> = try {
+        val res = collection.document(reservationCode).get().await()
 
         if (!res.exists()) {
             Result.Failure(Resources.NotFoundException("reservation code $reservationCode not found"))

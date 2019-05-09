@@ -64,9 +64,7 @@ class CheckTripCodeFragment : Fragment() {
         val reserveCode = editText.text.toString()
            if ( Validator.valReservationCode(reserveCode) ) {
                when(val result = codeService.getTravelData(editText.text.toString())) {
-                   is Result.Success ->
-                       startTripConfiguration(
-                           result.result)
+                   is Result.Success -> startTripConfiguration(result.result)
                }
            } else {
                 Toast.makeText(context,"Código invalido", Toast.LENGTH_SHORT).show()
@@ -84,17 +82,9 @@ class CheckTripCodeFragment : Fragment() {
      */
     private fun startTripConfiguration(code: Codes) {
         requireView().hideKeyboard()
-        val minusOneHour = Date(code.firstLegDepartureTime.seconds - 3600)
+      
         requireFragmentManager().beginTransaction()
-            .replace(
-                android.R.id.content,
-                TripConfigurationFragment.newInstance(
-                    homeCityId = code.origin,
-                    destinationCityId = code.destination,
-                    isRoundTrip = code.isRound,
-                    firstLegDepartureTime = minusOneHour.toString(),
-                    secondLegDepartureTime = code.secondLegDepartureTime.toDate().toString())
-            )
+            .replace(android.R.id.content, TripConfigurationFragment.newInstance(code))
             .addToBackStack(null)
             .commitAllowingStateLoss()
     }
