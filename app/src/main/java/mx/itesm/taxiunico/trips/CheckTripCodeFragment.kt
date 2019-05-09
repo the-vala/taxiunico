@@ -35,6 +35,9 @@ import mx.itesm.taxiunico.services.Result
 import mx.itesm.taxiunico.util.Validator
 import java.util.*
 
+/**
+ * Fragmento para verificar la existencia de un código de reservación
+ */
 class CheckTripCodeFragment : Fragment() {
 
     private val codeService = CodeService()
@@ -53,6 +56,9 @@ class CheckTripCodeFragment : Fragment() {
         }
     }
 
+    /**
+     * Función para verificar código de reservación
+     */
     private fun verifyCode() {
         currentJob = MainScope().launch {
         val reserveCode = editText.text.toString()
@@ -73,6 +79,9 @@ class CheckTripCodeFragment : Fragment() {
         imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
+    /**
+     * Función para establecer los parametros del viaje
+     */
     private fun startTripConfiguration(code: Codes) {
         requireView().hideKeyboard()
         val minusOneHour = Date(code.firstLegDepartureTime.seconds - 3600)

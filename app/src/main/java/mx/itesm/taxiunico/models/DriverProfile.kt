@@ -15,6 +15,9 @@
  */
 package mx.itesm.taxiunico.models
 
+/**
+ * Modelo para choferes. Se usa UserType definido en UserProfile
+ */
 data class DriverProfile(
     var name: String = "",
     var lastname: String = "",

@@ -29,16 +29,25 @@ class UserPrefs(
 ) {
     private val prefs = context.applicationContext.getSharedPreferences(FILE_KEY, Context.MODE_PRIVATE)
 
+    /**
+     * Función que vacóa las preferencias del usuario
+     */
     fun clear() {
         prefs.edit().clear().apply()
     }
 
+    /**
+     * Función para obtener userID
+     */
     var userUUID: String?
         get() = prefs.getString(USER_UUID_KEY, null)
         set(value) {
             prefs.edit().putString(USER_UUID_KEY, value).apply()
         }
 
+    /**
+     * Función para obtener perfil de usuario
+     */
     var userProfile: UserProfile
         get() = UserProfile(
                 name = prefs.getString(USER_NAME_KEY, ""),
@@ -48,6 +57,9 @@ class UserPrefs(
                 userType = UserType.valueOf(prefs.getString(USER_TYPE_KEY, UserType.TRAVELER.toString()))
         )
 
+        /**
+         * Función para guardar información de usuario
+         */
         set(value) {
             prefs.edit().apply {
                 putString(USER_NAME_KEY, value.name)

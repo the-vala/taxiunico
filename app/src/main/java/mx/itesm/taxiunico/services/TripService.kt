@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2019 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package mx.itesm.taxiunico.services
 
 import android.content.Context
@@ -7,12 +22,14 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.flowViaChannel
 import kotlinx.coroutines.tasks.await
-import mx.itesm.taxiunico.auth.AuthService
 import mx.itesm.taxiunico.models.FreshTrip
 import mx.itesm.taxiunico.models.TripStatus
 import mx.itesm.taxiunico.models.Viaje
 import mx.itesm.taxiunico.util.toIdPairList
 
+/**
+ * Servicio de viajes que inserta y recuepera viajes de la base de datos
+ */
 class TripService {
     /*** Referencia a la instancia de Firestore */
     private val db = FirebaseFirestore.getInstance()
@@ -20,7 +37,7 @@ class TripService {
     private val collection = db.collection(TRIP_COLLECTION_KEY)
 
     /**
-     * Añade una lista de [Viaje]
+     * Función que inserta una lista de [Viaje] nuevos en la base de datos de firebase
      */
     suspend fun addTrips(trips: List<FreshTrip>): Result<Unit> {
         trips.forEach {
@@ -47,7 +64,7 @@ class TripService {
     }
 
     /**
-     * Trae los viajes para el usuario.
+     * Función que regresa la lista de viajes del usuario
      */
     @FlowPreview
     fun getRealTimeCompletedHistory(id: String) = flowViaChannel<MutableList<Pair<String, Viaje>> > { channel ->
@@ -100,7 +117,6 @@ class TripService {
             }
         }
 
-
     /**
      * Asigna la calificacion que da el pasajero al conductor del viaje [tripId].
      */
@@ -128,13 +144,13 @@ class TripService {
     }
 
     /**
-     * Cancela el viaje [tripId].
+     * Función que actualiza el estado de un viaje que ha sido cancelado
      */
     suspend fun cancelPendingTrip(tripId: String) {
-        collection.document(tripId).update(
-            Viaje::status.name, TripStatus.CANCELED
-        ).await()
-    }
+          collection.document(tripId).update(
+              Viaje::status.name, TripStatus.CANCELED
+          ).await()
+      }
 
     /**
      * Comienza el viaje [tripId] and se lo asigna al conductor [driverId].

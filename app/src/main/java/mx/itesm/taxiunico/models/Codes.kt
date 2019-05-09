@@ -17,7 +17,10 @@ package mx.itesm.taxiunico.models
 
 import com.google.firebase.Timestamp
 
-data class Codes (
+/**
+ * Modelo de Codigo de reservación con información obtenida al momento de hacer la compra
+ */
+ data class Codes (
     val destination: String = "",
     @JvmField var isRound: Boolean = false,
     val origin: String = "",
