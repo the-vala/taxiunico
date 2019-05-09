@@ -16,6 +16,7 @@
 package mx.itesm.taxiunico.services
 
 import android.content.res.Resources
+import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.tasks.await
@@ -36,9 +37,9 @@ class CodeService {
 
         if (!res.exists()) {
             Result.Failure(Resources.NotFoundException("reservation code $reservationCode not found"))
+        } else {
+            Result.Success(res.toObject(Codes::class.java)!!)
         }
-
-        Result.Success(res.toObject(Codes::class.java)!!)
     } catch (err: Throwable) {
         Result.Failure(err)
     }
