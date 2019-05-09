@@ -22,7 +22,6 @@ import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import mx.itesm.taxiunico.auth.AuthService
 import mx.itesm.taxiunico.auth.LoginActivity
 import mx.itesm.taxiunico.billing.PaymentFormsFragment
 import mx.itesm.taxiunico.models.UserType
@@ -42,6 +41,7 @@ import mx.itesm.taxiunico.util.ConnectivityReceiver
 import android.widget.FrameLayout
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
+import mx.itesm.taxiunico.auth.AuthService
 import mx.itesm.taxiunico.trips.UserSurveyDialog
 
 
