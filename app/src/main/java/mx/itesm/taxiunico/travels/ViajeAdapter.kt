@@ -114,7 +114,13 @@ class ViajeAdapter(private val list:MutableList<Pair<String, Viaje>>, private va
                 des.text = addressDes.toString()
             }
 
-            fecha.text = data.startDateTime.toDate().toString()
+            when(data.status) {
+                TripStatus.COMPLETED ->
+                    fecha.text = data.startDateTime.toDate().toString()
+                TripStatus.PENDING ->
+                    fecha.text = data.dateTime.toDate().toString()
+            }
+
             vehiculo.text = data.vehicle
             costo.text = view.context.getString(R.string.cost, data.cost())
             formaPago.text = data.payment
