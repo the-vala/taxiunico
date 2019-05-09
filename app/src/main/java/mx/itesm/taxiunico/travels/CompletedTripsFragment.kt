@@ -76,14 +76,16 @@ class CompletedTripsFragment : Fragment() {
     /**
      * Función que carga los viajes de firebase y los muestra en forma de lista
      */
+    @FlowPreview
     override fun onResume() {
         super.onResume()
 
         if (!connectionVM.getConnectionState().value!!) {
-            Toast.makeText(requireContext(),"No hay conexion.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "No hay conexion.", Toast.LENGTH_SHORT).show()
         } else {
-          MainScope().launch {
-            tripService.getRealTimeCompletedHistory(auth.uid!!).collect { adapter.setData(it) }
-          }
+            MainScope().launch {
+                tripService.getRealTimeCompletedHistory(auth.uid!!).collect { adapter.setData(it) }
+            }
+        }
     }
 }
