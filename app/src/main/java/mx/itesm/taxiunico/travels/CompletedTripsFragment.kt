@@ -32,8 +32,6 @@ import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.Network.ConnectionViewModel
 import mx.itesm.taxiunico.R
 import mx.itesm.taxiunico.services.AuthService
-import mx.itesm.taxiunico.models.TripStatus
-import mx.itesm.taxiunico.models.UserType
 import mx.itesm.taxiunico.services.TripService
 
 /**
@@ -67,6 +65,7 @@ class CompletedTripsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         authService = AuthService(requireContext())
         tripService = TripService()
+
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager= LinearLayoutManager(view.context, RecyclerView.VERTICAL,false)
         adapter = ViajeAdapter(mutableListOf(), authService)

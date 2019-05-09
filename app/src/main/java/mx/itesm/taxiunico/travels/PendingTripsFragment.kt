@@ -46,6 +46,7 @@ import kotlinx.coroutines.flow.collect
 import mx.itesm.taxiunico.Network.ConnectionViewModel
 import mx.itesm.taxiunico.models.TripStatus
 import mx.itesm.taxiunico.models.Viaje
+import mx.itesm.taxiunico.prefs.UserPrefs
 import mx.itesm.taxiunico.services.TripService
 import mx.itesm.taxiunico.util.cost
 
@@ -85,6 +86,11 @@ class PendingTripsFragment : Fragment() {
         recyclerView.layoutManager= LinearLayoutManager(view.context, RecyclerView.VERTICAL,false)
         adapter = ViajeAdapter(mutableListOf(), authService)
         recyclerView.adapter = adapter
+    }
+
+    @FlowPreview
+    override fun onResume() {
+        super.onResume()
 
         //If user is driver make item clickable
         when(authService.getUserType()) {
@@ -159,10 +165,11 @@ class PendingTripsFragment : Fragment() {
 
         //If trip accepted
         val confirm = dialogView.findViewById<Button>(R.id.confirm)
+        val driverName = UserPrefs(requireContext()).userProfile.name
         confirm.setOnClickListener {
-
             tripService.startTrip(
                 driverId=authService.getUserUid(),
+                driverName = driverName,
                 tripId=data.first
             )
 
@@ -196,12 +203,11 @@ class PendingTripsFragment : Fragment() {
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val total = dialogView.findViewById<TextView>(R.id.surveyTotal)
-        total.text = viaje.cost().toString()
+        total.text = getString(R.string.cost,viaje.cost())
         val dateTime = dialogView.findViewById<TextView>(R.id.surveyDateTime)
         dateTime.text = viaje.dateTime.toDate().toString()
         val cliente = dialogView.findViewById<TextView>(R.id.name)
         cliente.text = viaje.userName
-
         val confirm = dialogView.findViewById<Button>(R.id.surveyConfirm)
         confirm.setOnClickListener {
             val ratingBar = dialogView.findViewById<RatingBar>(R.id.ratingBar)

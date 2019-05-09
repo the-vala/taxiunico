@@ -156,12 +156,13 @@ class TripService {
     /**
      * Comienza el viaje [tripId] and se lo asigna al conductor [driverId].
      */
-    fun startTrip(driverId: String?, tripId: String) {
+    fun startTrip(driverId: String?, driverName: String, tripId: String) {
         collection.document(tripId)
             .update(
                 Viaje::startDateTime.name, Timestamp.now(),
                 Viaje::driverId.name, driverId,
-                Viaje::status.name, TripStatus.IN_PROGRESS)
+                Viaje::status.name, TripStatus.IN_PROGRESS,
+                Viaje::driverName.name, driverName)
     }
 
     companion object {
