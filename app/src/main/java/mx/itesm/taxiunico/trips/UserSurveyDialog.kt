@@ -9,6 +9,9 @@ import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProviders
+import mx.itesm.taxiunico.Network.ConnectionViewModel
 import mx.itesm.taxiunico.R
 import mx.itesm.taxiunico.models.Viaje
 import mx.itesm.taxiunico.services.TripService
@@ -16,9 +19,12 @@ import mx.itesm.taxiunico.util.cost
 
 
 class UserSurveyDialog(
-    private val context: Context
+    private val context: FragmentActivity
 ) {
     fun show(tripId: String, viaje: Viaje) {
+
+        val model = ViewModelProviders.of(context).get(ConnectionViewModel::class.java)
+
         val dialogView = LayoutInflater.from(context).inflate(R.layout.alert_trip_survey, null)
         val builder = AlertDialog.Builder(context).setView(dialogView)
         val dialog = builder.show()
@@ -42,12 +48,16 @@ class UserSurveyDialog(
 
         // TODO(terminar de poner info de este layout)
         dialogView.findViewById<Button>(R.id.surveyConfirm).setOnClickListener {
-            dialog.dismiss()
+            if ( model.getConnectionState().value!!) {
+                TripService().addUserSurveyAnswer(
+                    tripId = tripId,
+                    rating = ratingBar.rating
+                )
+                dialog.dismiss()
+            } else {
+                Toast.makeText(context, "No hay conexion.", Toast.LENGTH_SHORT).show()
+            }
 
-            TripService().addUserSurveyAnswer(
-                tripId = tripId,
-                rating = ratingBar.rating
-            )
         }
     }
 
