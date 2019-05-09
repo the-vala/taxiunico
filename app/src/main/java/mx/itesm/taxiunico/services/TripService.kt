@@ -18,6 +18,7 @@ package mx.itesm.taxiunico.services
 import android.content.Context
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.flowViaChannel
@@ -89,7 +90,7 @@ class TripService {
         collection
             .whereEqualTo(Viaje::userId.name, id)
             .whereEqualTo(Viaje::status.name, TripStatus.COMPLETED)
-            .orderBy(Viaje::dateTime.name)
+            .orderBy(Viaje::startDateTime.name,Query.Direction.DESCENDING)
             .addSnapshotListener { querySnapshot, _ ->
                 querySnapshot?.documents?.let { docs ->
                     channel.sendBlocking(
@@ -107,7 +108,7 @@ class TripService {
         collection
             .whereEqualTo(Viaje::driverId.name, id)
             .whereEqualTo(Viaje::status.name, TripStatus.COMPLETED)
-            .orderBy(Viaje::dateTime.name)
+            .orderBy(Viaje::startDateTime.name,Query.Direction.DESCENDING)
             .addSnapshotListener { querySnapshot, _ ->
                 querySnapshot?.documents?.let { docs ->
                     channel.sendBlocking(

@@ -225,6 +225,9 @@ class PendingTripsFragment : Fragment() {
             builder.setMessage("¿Desea cancelar el viaje seleccionado?")
 
             builder.setPositiveButton("Si") { _, _ ->
+                MainScope().launch {
+                    tripService.cancelPendingTrip(data.first)
+                }
                 Toast.makeText(
                     requireContext(),
                     "Cancelando viaje", Toast.LENGTH_SHORT

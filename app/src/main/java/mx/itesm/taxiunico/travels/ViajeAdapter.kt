@@ -114,7 +114,7 @@ class ViajeAdapter(private val list:MutableList<Pair<String, Viaje>>, private va
                 des.text = addressDes.toString()
             }
 
-            fecha.text = data.dateTime.toDate().toString()
+            fecha.text = data.startDateTime.toDate().toString()
             vehiculo.text = data.vehicle
             costo.text = view.context.getString(R.string.cost, data.cost())
             formaPago.text = data.payment
