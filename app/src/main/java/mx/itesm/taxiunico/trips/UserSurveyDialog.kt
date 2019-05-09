@@ -28,7 +28,7 @@ class UserSurveyDialog(
         val dialogView = LayoutInflater.from(context).inflate(R.layout.alert_trip_survey, null)
         val builder = AlertDialog.Builder(context).setView(dialogView)
         val dialog = builder.show()
-        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         dialogView.findViewById<TextView>(R.id.surveyTotal).apply {
             text = context.getString(R.string.cost, viaje.cost())

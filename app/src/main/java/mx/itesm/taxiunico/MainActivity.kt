@@ -41,6 +41,7 @@ import mx.itesm.taxiunico.services.TripService
 import mx.itesm.taxiunico.util.ConnectivityReceiver
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
@@ -119,10 +120,15 @@ class MainActivity : AppCompatActivity(),
      * Función que recibe el id del viaje sin encuesta mas reciente y muestra dicha encuesta al usuario
      */
     private fun showUserSurvey(tripId: String, viaje: Viaje) {
+        supportFragmentManager.popBackStack()
+
         UserSurveyDialog(this@MainActivity).show(tripId, viaje)
     }
 
     private fun showCurrentTrip(tripId: String, viaje: Viaje) {
+        val tag = "CURRENT_TRIP"
+
+        supportFragmentManager.popBackStack(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         supportFragmentManager.beginTransaction()
             .replace(
                 android.R.id.content,
@@ -135,6 +141,7 @@ class MainActivity : AppCompatActivity(),
                     duration = viaje.duration
                 )
             )
+            .addToBackStack(tag)
             .commitAllowingStateLoss()
     }
     /**
