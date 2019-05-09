@@ -38,7 +38,8 @@ data class FreshTrip(
     var dateTime: Date,
     var origin: GeoPoint,
     var destination: GeoPoint,
-    var status: TripStatus = TripStatus.PENDING
+    var status: TripStatus = TripStatus.PENDING,
+    var userName: String = ""
 )
 
 /**

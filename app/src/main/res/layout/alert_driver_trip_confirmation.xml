@@ -37,7 +37,8 @@
             android:layout_marginStart="24dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/confirmationDes"
-            android:layout_marginEnd="8dp"/>
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/confirmationDes" android:layout_marginTop="16dp"/>
 
     <TextView
             android:text="Destino:"
@@ -57,14 +58,14 @@
             app:layout_constraintTop_toBottomOf="@+id/mensaje3" android:layout_marginEnd="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/confirmationOri" android:layout_marginStart="8dp"
-    />
+            android:layout_marginTop="16dp"/>
 
     <TextView
             android:text="TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/confirmationDateTime"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@+id/confirmationDes" android:textSize="20sp" android:maxLines="1"/>
     <View
             android:layout_width="312dp"

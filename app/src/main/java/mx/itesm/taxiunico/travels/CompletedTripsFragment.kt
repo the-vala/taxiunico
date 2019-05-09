@@ -29,8 +29,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.R
 import mx.itesm.taxiunico.services.AuthService
-import mx.itesm.taxiunico.models.TripStatus
-import mx.itesm.taxiunico.models.UserType
 import mx.itesm.taxiunico.services.TripService
 
 /**
@@ -58,6 +56,7 @@ class CompletedTripsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         authService = AuthService(requireContext())
         tripService = TripService()
+
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager= LinearLayoutManager(view.context, RecyclerView.VERTICAL,false)
         adapter = ViajeAdapter(mutableListOf(), authService)
@@ -67,6 +66,7 @@ class CompletedTripsFragment : Fragment() {
     /**
      * Función que carga los viajes de firebase y los muestra en forma de lista
      */
+    @FlowPreview
     override fun onResume() {
         super.onResume()
 

@@ -39,6 +39,7 @@ import mx.itesm.taxiunico.models.Codes
 import mx.itesm.taxiunico.services.AuthService
 import mx.itesm.taxiunico.models.FreshTrip
 import mx.itesm.taxiunico.models.Station
+import mx.itesm.taxiunico.prefs.UserPrefs
 import mx.itesm.taxiunico.services.BusStationService
 import mx.itesm.taxiunico.services.TripService
 import mx.itesm.taxiunico.util.Event
@@ -164,7 +165,8 @@ class TripConfigurationFragment : Fragment() {
                 userId = userId,
                 dateTime = (tripCode.firstLegDepartureTime - Times.HOUR).toDate(),
                 origin = tripForm.firstLegPickupLocation!!.toGeoPoint(),
-                destination = homeBusStation.cord!!
+                destination = homeBusStation.cord!!,
+                userName = UserPrefs(requireContext()).userProfile.name
             ))
         }
 
@@ -173,7 +175,8 @@ class TripConfigurationFragment : Fragment() {
                 userId = userId,
                 dateTime = (tripCode.firstLegArrivalTime + Times.HALF_HOUR).toDate(),
                 origin = destinationBusStation.cord!!,
-                destination = tripForm.firstLegDropoffLocation!!.toGeoPoint()
+                destination = tripForm.firstLegDropoffLocation!!.toGeoPoint(),
+                userName = UserPrefs(requireContext()).userProfile.name
             ))
         }
 
@@ -182,7 +185,8 @@ class TripConfigurationFragment : Fragment() {
                 userId = userId,
                 dateTime = (tripCode.secondLegDepartureTime - Times.HOUR).toDate(),
                 origin = tripForm.secondLegPickupLocation!!.toGeoPoint(),
-                destination = destinationBusStation.cord!!
+                destination = destinationBusStation.cord!!,
+                userName = UserPrefs(requireContext()).userProfile.name
             ))
         }
 
@@ -192,7 +196,8 @@ class TripConfigurationFragment : Fragment() {
                 userId = userId,
                 dateTime = (tripCode.secondLegArrivalTime + Times.HALF_HOUR).toDate(),
                 origin = homeBusStation.cord!!,
-                destination = tripForm.secondLegDropoffLocation!!.toGeoPoint()
+                destination = tripForm.secondLegDropoffLocation!!.toGeoPoint(),
+                userName = UserPrefs(requireContext()).userProfile.name
             ))
         }
    
