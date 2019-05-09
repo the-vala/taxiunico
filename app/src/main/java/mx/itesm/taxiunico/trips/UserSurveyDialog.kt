@@ -48,7 +48,7 @@ class UserSurveyDialog(
 
         // TODO(terminar de poner info de este layout)
         dialogView.findViewById<Button>(R.id.surveyConfirm).setOnClickListener {
-            if ( model.getConnectionState().value!!) {
+            if (model.getConnectionState().value!!) {
                 TripService().addUserSurveyAnswer(
                     tripId = tripId,
                     rating = ratingBar.rating
