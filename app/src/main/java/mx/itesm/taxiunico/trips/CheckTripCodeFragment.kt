@@ -23,7 +23,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.google.firebase.Timestamp
 import kotlinx.android.synthetic.main.fragment_check_trip_code.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
@@ -33,7 +32,6 @@ import mx.itesm.taxiunico.models.Codes
 import mx.itesm.taxiunico.services.CodeService
 import mx.itesm.taxiunico.services.Result
 import mx.itesm.taxiunico.util.Validator
-import java.util.*
 
 /**
  * Fragmento para verificar la existencia de un código de reservación
@@ -65,9 +63,10 @@ class CheckTripCodeFragment : Fragment() {
            if ( Validator.valReservationCode(reserveCode) ) {
                when(val result = codeService.getTravelData(editText.text.toString())) {
                    is Result.Success -> startTripConfiguration(result.result)
+                   is Result.Failure ->  Toast.makeText(context, "Código inexistente", Toast.LENGTH_SHORT).show()
                }
            } else {
-                Toast.makeText(context,"Código invalido", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,"Ingrese un código de 6 caracteres", Toast.LENGTH_SHORT).show()
            }
         }
     }
