@@ -32,6 +32,7 @@ import mx.itesm.taxiunico.MainActivity
 import mx.itesm.taxiunico.R
 import mx.itesm.taxiunico.services.AuthService
 import mx.itesm.taxiunico.models.UserProfile
+import mx.itesm.taxiunico.models.UserType
 import mx.itesm.taxiunico.prefs.UserPrefs
 import mx.itesm.taxiunico.services.UserService
 
@@ -69,6 +70,11 @@ class UserProfileFragment : Fragment() {
     }
 
     private fun render(userProfile: UserProfile) {
+        title.text =  when(userProfile.userType) {
+            UserType.DRIVER -> "Detalles del Conductor"
+            UserType.TRAVELER -> "Detalles del Usuario"
+        }
+
         nameInput.setText(userProfile.name)
         emailInput.setText(userProfile.email)
         phoneInput.setText(userProfile.phone)

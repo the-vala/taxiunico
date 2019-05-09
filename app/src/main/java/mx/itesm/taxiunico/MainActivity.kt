@@ -31,6 +31,7 @@ import mx.itesm.taxiunico.travels.TripsPagerFragment
 import mx.itesm.taxiunico.trips.CheckTripCodeFragment
 import android.os.PersistableBundle
 import android.content.IntentFilter
+import android.content.res.ColorStateList
 import android.net.ConnectivityManager
 import android.view.Gravity
 import com.google.android.material.snackbar.Snackbar
@@ -40,6 +41,7 @@ import mx.itesm.taxiunico.models.Viaje
 import mx.itesm.taxiunico.services.TripService
 import mx.itesm.taxiunico.util.ConnectivityReceiver
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
@@ -79,9 +81,16 @@ class MainActivity : AppCompatActivity(),
         when(authService.getUserType()) {
             UserType.TRAVELER -> {
                 nav.inflateMenu(R.menu.traveler_menu)
+                nav.setBackgroundColor(ContextCompat.getColor(this, R.color.taxiBlue))
                 checkPendingSurveys()
             }
-            UserType.DRIVER -> nav.inflateMenu(R.menu.driver_menu)
+            UserType.DRIVER -> {
+                nav.inflateMenu(R.menu.driver_menu)
+                nav.setBackgroundColor(ContextCompat.getColor(this, R.color.taxiBlack))
+                nav.itemTextColor = ContextCompat.getColorStateList(this, R.color.black_menu_color)
+                nav.itemIconTintList = (ContextCompat.getColorStateList(this, R.color.black_menu_color))
+
+            }
         }
 
         ConnectivityReceiver.connectivityListener = this
