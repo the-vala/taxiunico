@@ -5,6 +5,7 @@
                                                    android:layout_width="match_parent"
                                                    android:id="@+id/tripConfigurationMainFragment"
                                                    android:layout_height="match_parent"
+                                                   android:clickable="true"
                                                    android:background="@android:color/white" android:padding="16dp">
 
     <TextView

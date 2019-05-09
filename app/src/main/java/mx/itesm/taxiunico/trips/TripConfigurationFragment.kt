@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isInvisible
 import androidx.lifecycle.Observer
@@ -29,6 +30,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.Timestamp
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.parcel.Parcelize
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_trip_configuration.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
@@ -207,6 +209,7 @@ class TripConfigurationFragment : Fragment() {
         MainScope().launch {
             TripService().addTrips(trips)
             requireFragmentManager().popBackStack()
+            Toast.makeText(requireContext(), "Viajes creados exitosamente", Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -150,7 +150,7 @@ class MainActivity : AppCompatActivity(),
     private fun openDefaultFragment() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.mainContent, UserProfileFragment())
-            .commit()
+            .commitAllowingStateLoss()
     }
 
     private fun navigate(menuItem: MenuItem): Boolean {
@@ -166,7 +166,7 @@ class MainActivity : AppCompatActivity(),
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.mainContent, targetFragment)
-            .commit()
+            .commitAllowingStateLoss()
 
         return true
     }
