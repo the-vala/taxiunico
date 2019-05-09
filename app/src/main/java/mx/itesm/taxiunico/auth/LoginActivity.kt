@@ -19,6 +19,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.util.Patterns
 import mx.itesm.taxiunico.R
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -26,7 +27,6 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.*
-
 import mx.itesm.taxiunico.MainActivity
 import mx.itesm.taxiunico.services.AuthService
 import mx.itesm.taxiunico.services.Result
@@ -103,31 +103,34 @@ class LoginActivity : AppCompatActivity() {
         var valid = true
 
         val email = loginInputEmail.text.toString()
-        if (TextUtils.isEmpty(email)) {
+        if (isEmailValid(email)) {
+            loginInputEmail.error = null
+        } else {
             loginInputEmail.error = "Required."
             valid = false
-        } else {
-            loginInputEmail.error = null
         }
 
         val password = loginInputPass.text.toString()
-        if (TextUtils.isEmpty(password)) {
-            loginInputPass.error = "Required."
-            valid = false
-        }
-        else if (password.length < 6) {
-            loginInputPass.error = "At least 6 characters."
-            valid = false
-        }
-        else {
-            loginInputPass.error = null
+        when {
+            TextUtils.isEmpty(password) -> {
+                loginInputPass.error = "Required."
+                valid = false
+            }
+            password.length < 6 -> {
+                loginInputPass.error = "At least 6 characters."
+                valid = false
+            }
+            else -> loginInputPass.error = null
         }
 
         return valid
     }
 
+    private fun isEmailValid(email: String): Boolean {
+        return Patterns.EMAIL_ADDRESS.toRegex().matches(email)
+    }
+
     companion object {
         private const val TAG = "EmailPassword"
-        private const val USER = "currentUser"
     }
 }
