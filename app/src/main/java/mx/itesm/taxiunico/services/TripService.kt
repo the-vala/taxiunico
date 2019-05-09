@@ -22,6 +22,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.flowViaChannel
 import kotlinx.coroutines.tasks.await
+import mx.itesm.taxiunico.services.AuthService
 import mx.itesm.taxiunico.models.FreshTrip
 import mx.itesm.taxiunico.models.TripStatus
 import mx.itesm.taxiunico.models.Viaje

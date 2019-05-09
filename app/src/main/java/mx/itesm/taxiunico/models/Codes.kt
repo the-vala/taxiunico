@@ -16,7 +16,6 @@
 package mx.itesm.taxiunico.models
 
 import android.os.Parcelable
-import com.google.firebase.Timestamp
 import kotlinx.android.parcel.Parcelize
 import com.google.firebase.Timestamp
 

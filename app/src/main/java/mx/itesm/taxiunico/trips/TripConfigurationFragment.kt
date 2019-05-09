@@ -24,7 +24,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.model.LatLng
@@ -42,12 +41,10 @@ import mx.itesm.taxiunico.models.FreshTrip
 import mx.itesm.taxiunico.models.Station
 import mx.itesm.taxiunico.services.BusStationService
 import mx.itesm.taxiunico.services.TripService
-import mx.itesm.taxiunico.travels.TripsPagerFragment
 import mx.itesm.taxiunico.util.Event
 import mx.itesm.taxiunico.util.toGeoPoint
 import mx.itesm.taxiunico.util.toLatLng
 import mx.itesm.taxiunico.util.toSentenceCase
-import mx.itesm.taxiunico.util.*
 
 @Parcelize
 data class TripForm(
@@ -155,55 +152,49 @@ class TripConfigurationFragment : Fragment() {
         val trips = mutableListOf<FreshTrip>()
         val userId = AuthService(requireContext()).getUserUid()!!
 
-        val firstLegDepartureDate = arguments!!.getString(FIRST_LEG_DEPARTURE_DATE)
-        val secondLegDepartureDate = arguments!!.getString(SECOND_LEG_DEPARTURE_DATE, null)
-
         val validationResult = validateTripForm()
 
         if (!validationResult.valid) {
             Snackbar.make(requireView(), validationResult.message, Snackbar.LENGTH_SHORT).show()
             return
         }
-      
-        val trips = mutableListOf<FreshTrip>()
-            val userId = AuthService(requireContext()).getUserUid()!!
 
-            if (tripForm.needsFirstLegToTerminalTaxi) {
-                trips.add(FreshTrip(
-                    userId = userId,
-                    dateTime = (tripCode.firstLegDepartureTime - Times.HOUR).toDate(),
-                    origin = tripForm.firstLegPickupLocation!!.toGeoPoint(),
-                    destination = homeBusStation.cord!!
-                ))
-            }
+        if (tripForm.needsFirstLegToTerminalTaxi) {
+            trips.add(FreshTrip(
+                userId = userId,
+                dateTime = (tripCode.firstLegDepartureTime - Times.HOUR).toDate(),
+                origin = tripForm.firstLegPickupLocation!!.toGeoPoint(),
+                destination = homeBusStation.cord!!
+            ))
+        }
 
-            if (tripForm.needsFirstLegToDestinationTaxi) {
-                trips.add(FreshTrip(
-                    userId = userId,
-                    dateTime = (tripCode.firstLegArrivalTime + Times.HALF_HOUR).toDate(),
-                    origin = destinationBusStation.cord!!,
-                    destination = tripForm.firstLegDropoffLocation!!.toGeoPoint()
-                ))
-            }
-      
-            if (tripForm.needsSecondLegToTerminalTaxi) {
-                trips.add(FreshTrip(
-                    userId = userId,
-                    dateTime = (tripCode.secondLegDepartureTime - Times.HOUR).toDate(),
-                    origin = tripForm.secondLegPickupLocation!!.toGeoPoint(),
-                    destination = destinationBusStation.cord!!
-                ))
-            }
+        if (tripForm.needsFirstLegToDestinationTaxi) {
+            trips.add(FreshTrip(
+                userId = userId,
+                dateTime = (tripCode.firstLegArrivalTime + Times.HALF_HOUR).toDate(),
+                origin = destinationBusStation.cord!!,
+                destination = tripForm.firstLegDropoffLocation!!.toGeoPoint()
+            ))
+        }
+
+        if (tripForm.needsSecondLegToTerminalTaxi) {
+            trips.add(FreshTrip(
+                userId = userId,
+                dateTime = (tripCode.secondLegDepartureTime - Times.HOUR).toDate(),
+                origin = tripForm.secondLegPickupLocation!!.toGeoPoint(),
+                destination = destinationBusStation.cord!!
+            ))
+        }
 
 
-            if (tripForm.needsSecondLegToHomeTaxi) {
-                trips.add(FreshTrip(
-                    userId = userId,
-                    dateTime = (tripCode.secondLegArrivalTime + Times.HALF_HOUR).toDate(),
-                    origin = homeBusStation.cord!!,
-                    destination = tripForm.secondLegDropoffLocation!!.toGeoPoint()
-                ))
-            }
+        if (tripForm.needsSecondLegToHomeTaxi) {
+            trips.add(FreshTrip(
+                userId = userId,
+                dateTime = (tripCode.secondLegArrivalTime + Times.HALF_HOUR).toDate(),
+                origin = homeBusStation.cord!!,
+                destination = tripForm.secondLegDropoffLocation!!.toGeoPoint()
+            ))
+        }
    
         MainScope().launch {
             TripService().addTrips(trips)
