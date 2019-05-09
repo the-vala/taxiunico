@@ -137,9 +137,9 @@ class MainActivity : AppCompatActivity(),
     private fun showConnectionMessage(isConnected: Boolean) {
         if (!isConnected) {
             val message = "No hay conexion."
-            mSnackBar = Snackbar.make(findViewById(R.id.snackbar_container), message, Snackbar.LENGTH_LONG)
-            mSnackBar?.duration = Snackbar.LENGTH_INDEFINITE
-            val view = mSnackBar!!.view
+            snackBar = Snackbar.make(findViewById(R.id.snackbar_container), message, Snackbar.LENGTH_LONG)
+            snackBar?.duration = Snackbar.LENGTH_INDEFINITE
+            val view = snackBar!!.view
             val params = view.layoutParams as FrameLayout.LayoutParams
             params.gravity = Gravity.TOP
             view.layoutParams = params
