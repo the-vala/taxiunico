@@ -94,7 +94,7 @@ class PendingTripsFragment : Fragment() {
                     Toast.makeText(requireContext(),"No hay conexion.",Toast.LENGTH_SHORT).show()
                 } else {
                     MainScope().launch {
-                        tripService.getRealTimeDriverHistory().collect { adapter.setData(it) }
+                    tripService.getRealTimeDriverHistory("TODO").collect { adapter.setData(it) }
                     }
                 }
             }

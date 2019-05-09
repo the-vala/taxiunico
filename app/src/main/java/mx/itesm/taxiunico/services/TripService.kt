@@ -105,9 +105,10 @@ class TripService {
      * cada vez que haya actualizaciones a esta lista.
      */
     @FlowPreview
-    fun getRealTimeDriverHistory() = flowViaChannel<MutableList<Pair<String, Viaje>> > { channel ->
+    fun getRealTimeDriverHistory(cityHub: String) = flowViaChannel<MutableList<Pair<String, Viaje>> > { channel ->
         collection
             .whereEqualTo(Viaje::status.name, TripStatus.PENDING)
+            .whereEqualTo(Viaje::relatedCityId.name, cityHub)
             .orderBy(Viaje::dateTime.name)
             .addSnapshotListener { querySnapshot, _ ->
                 querySnapshot?.documents?.let { docs ->
