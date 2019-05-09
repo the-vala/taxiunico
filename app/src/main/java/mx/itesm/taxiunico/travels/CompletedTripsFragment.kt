@@ -82,8 +82,9 @@ class CompletedTripsFragment : Fragment() {
         if (!connectionVM.getConnectionState().value!!) {
             Toast.makeText(requireContext(),"No hay conexion.", Toast.LENGTH_SHORT).show()
         } else {
-          MainScope().launch {
-            tripService.getRealTimeCompletedHistory(auth.uid!!).collect { adapter.setData(it) }
-          }
+            MainScope().launch {
+                tripService.getRealTimeCompletedHistory(auth.uid!!).collect { adapter.setData(it) }
+            }
+        }
     }
 }

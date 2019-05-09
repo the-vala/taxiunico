@@ -31,5 +31,6 @@ data class UserProfile(
     var country: String = "",
     var email: String = "",
     var phone: String = "",
-    val userType: UserType = UserType.TRAVELER
+    val userType: UserType = UserType.TRAVELER,
+    val cityHub: String = ""
 )
