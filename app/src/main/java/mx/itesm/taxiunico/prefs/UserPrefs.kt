@@ -79,7 +79,7 @@ class UserPrefs(
         private const val USER_COUNTRY_KEY = "user.country.key"
         private const val USER_EMAIL_KEY = "user.email.key"
         private const val USER_PHONE_KEY = "user.phone.key"
-        private const val USER_CITY_HUB_KEY = "user.phone.key"
+        private const val USER_CITY_HUB_KEY = "user.city.key"
         private const val USER_TYPE_KEY = "user.type.key"
 
     }
