@@ -44,7 +44,6 @@ import androidx.lifecycle.ViewModelProviders
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
 import mx.itesm.taxiunico.Network.ConnectionViewModel
-import mx.itesm.taxiunico.models.TripStatus
 import mx.itesm.taxiunico.models.Viaje
 import mx.itesm.taxiunico.prefs.UserPrefs
 import mx.itesm.taxiunico.services.TripService
@@ -100,7 +99,8 @@ class PendingTripsFragment : Fragment() {
                     Toast.makeText(requireContext(),"No hay conexion.",Toast.LENGTH_SHORT).show()
                 } else {
                     MainScope().launch {
-                        tripService.getRealTimeDriverHistory().collect { adapter.setData(it) }
+                        val cityHub = UserPrefs(requireContext()).userProfile.cityHub
+                        tripService.getRealTimeDriverHistory(cityHub).collect { adapter.setData(it) }
                     }
                 }
             }

@@ -50,11 +50,12 @@ class UserPrefs(
      */
     var userProfile: UserProfile
         get() = UserProfile(
-                name = prefs.getString(USER_NAME_KEY, ""),
-                country = prefs.getString(USER_COUNTRY_KEY, ""),
-                email = prefs.getString(USER_EMAIL_KEY, ""),
-                phone = prefs.getString(USER_PHONE_KEY, ""),
-                userType = UserType.valueOf(prefs.getString(USER_TYPE_KEY, UserType.TRAVELER.toString()))
+            name = prefs.getString(USER_NAME_KEY, ""),
+            country = prefs.getString(USER_COUNTRY_KEY, ""),
+            email = prefs.getString(USER_EMAIL_KEY, ""),
+            phone = prefs.getString(USER_PHONE_KEY, ""),
+            cityHub = prefs.getString(USER_CITY_HUB_KEY, ""),
+            userType = UserType.valueOf(prefs.getString(USER_TYPE_KEY, UserType.TRAVELER.toString()))
         )
 
         /**
@@ -67,7 +68,7 @@ class UserPrefs(
                 putString(USER_EMAIL_KEY, value.email)
                 putString(USER_PHONE_KEY, value.phone)
                 putString(USER_TYPE_KEY, value.userType.toString())
-
+                putString(USER_CITY_HUB_KEY, value.cityHub)
             }.apply()
         }
 
@@ -78,6 +79,7 @@ class UserPrefs(
         private const val USER_COUNTRY_KEY = "user.country.key"
         private const val USER_EMAIL_KEY = "user.email.key"
         private const val USER_PHONE_KEY = "user.phone.key"
+        private const val USER_CITY_HUB_KEY = "user.phone.key"
         private const val USER_TYPE_KEY = "user.type.key"
 
     }

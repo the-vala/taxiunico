@@ -15,7 +15,6 @@
  */
 package mx.itesm.taxiunico.trips
 
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.fragment.app.Fragment
@@ -162,6 +161,7 @@ class TripConfigurationFragment : Fragment() {
 
         if (tripForm.needsFirstLegToTerminalTaxi) {
             trips.add(FreshTrip(
+                relatedCityId = homeBusStation.cityId,
                 userId = userId,
                 dateTime = (tripCode.firstLegDepartureTime - Times.HOUR).toDate(),
                 origin = tripForm.firstLegPickupLocation!!.toGeoPoint(),
@@ -172,6 +172,7 @@ class TripConfigurationFragment : Fragment() {
 
         if (tripForm.needsFirstLegToDestinationTaxi) {
             trips.add(FreshTrip(
+                relatedCityId = destinationBusStation.cityId,
                 userId = userId,
                 dateTime = (tripCode.firstLegArrivalTime + Times.HALF_HOUR).toDate(),
                 origin = destinationBusStation.cord!!,
@@ -182,6 +183,7 @@ class TripConfigurationFragment : Fragment() {
 
         if (tripForm.needsSecondLegToTerminalTaxi) {
             trips.add(FreshTrip(
+                relatedCityId = destinationBusStation.cityId,
                 userId = userId,
                 dateTime = (tripCode.secondLegDepartureTime - Times.HOUR).toDate(),
                 origin = tripForm.secondLegPickupLocation!!.toGeoPoint(),
@@ -193,6 +195,7 @@ class TripConfigurationFragment : Fragment() {
 
         if (tripForm.needsSecondLegToHomeTaxi) {
             trips.add(FreshTrip(
+                relatedCityId = homeBusStation.cityId,
                 userId = userId,
                 dateTime = (tripCode.secondLegArrivalTime + Times.HALF_HOUR).toDate(),
                 origin = homeBusStation.cord!!,

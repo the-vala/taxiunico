@@ -34,6 +34,7 @@ enum class TripStatus {
  * Modelo para definir viaje recién solicitado y sin información completa
  */
 data class FreshTrip(
+    var relatedCityId: String,
     val userId: String,
     var dateTime: Date,
     var origin: GeoPoint,
@@ -46,6 +47,7 @@ data class FreshTrip(
  * Modelo para definir un viaje iniciado o terminado con información mucho mas robusta
  */
 data class Viaje(
+    var relatedCityId: String = "",
     var userId: String = "",
     var userName: String = "",
     var driverId: String = "",
