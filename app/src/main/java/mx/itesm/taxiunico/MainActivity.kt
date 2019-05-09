@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity(),
      * Función que recibe el id del viaje sin encuesta mas reciente y muestra dicha encuesta al usuario
      */
     private fun showUserSurvey(tripId: String, viaje: Viaje) {
-        UserSurveyDialog(this).show(tripId, viaje)
+        UserSurveyDialog(this@MainActivity).show(tripId, viaje)
     }
 
     /**
