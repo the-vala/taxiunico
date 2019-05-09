@@ -26,6 +26,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.R
+import mx.itesm.taxiunico.models.Codes
 import mx.itesm.taxiunico.services.CodeService
 import mx.itesm.taxiunico.services.Result
 import mx.itesm.taxiunico.util.Validator
@@ -61,12 +62,7 @@ class CheckTripCodeFragment : Fragment() {
                val result = codeService.getTravelData(editText.text.toString())
                when(result) {
                    is Result.Success ->
-                       startTripConfiguration(
-                           result.result.origin,
-                           result.result.destination,
-                           result.result.isRound,
-                           result.result.fRegreso,
-                           result.result.fSalida)
+                       startTripConfiguration(result.result)
                }
            } else {
                 Toast.makeText(context,"Código inválido", Toast.LENGTH_SHORT).show()
@@ -77,22 +73,11 @@ class CheckTripCodeFragment : Fragment() {
     /**
      * Función para establecer los parametros del viaje
      */
-    private fun startTripConfiguration(
-        departureCityId: String,
-        destinationCityId: String,
-        isRoundTrip: Boolean,
-        arrivalDate: String,
-        departureDate: String
-    ) {
+    private fun startTripConfiguration(code: Codes) {
         requireFragmentManager().beginTransaction()
             .replace(
                 android.R.id.content,
-                TripConfigurationFragment.newInstance(
-                    homeCityId = departureCityId,
-                    destinationCityId = destinationCityId,
-                    isRoundTrip = isRoundTrip,
-                    firstLegDepartureDate = departureDate,
-                    secondLegDepartureDate = arrivalDate)
+                TripConfigurationFragment.newInstance(code)
             )
             .addToBackStack(null)
             .commitAllowingStateLoss()
