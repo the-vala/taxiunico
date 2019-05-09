@@ -41,6 +41,7 @@ import android.content.Intent
 import android.net.Uri
 import android.widget.RatingBar
 import androidx.lifecycle.ViewModelProviders
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
 import mx.itesm.taxiunico.Network.ConnectionViewModel
 import mx.itesm.taxiunico.models.TripStatus
@@ -70,10 +71,11 @@ class PendingTripsFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_pending_trips, container, false)
     }
-
+  
     /**
      * Función que carga los viajes de firebase y los muestra en forma de lista
      */
+    @FlowPreview
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         authService = AuthService(requireContext())
         tripService = TripService()
@@ -96,26 +98,12 @@ class PendingTripsFragment : Fragment() {
                     }
                 }
             }
-            UserType.TRAVELER -> adapter.onItemClick = { data -> createCancelTripDialog(data) }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        if (authService.getUserType() == UserType.TRAVELER) {
-            adapter.onItemClick = { data -> createCancelTripDialog(data) }
-        }
-    }
-
-    /**
-     * Función que carga los viajes de firebase y los muestra en forma de lista
-     */
-    private fun updateData() {
-        MainScope().launch {
-            var viajes = TripService().getTravelHistory(auth.uid!!)
-            viajes = viajes.filter{ it.second.status == TripStatus.PENDING }.toMutableList()
-            adapter.setData(viajes)
+            UserType.TRAVELER -> {
+                adapter.onItemClick = { data -> createCancelTripDialog(data) }
+                MainScope().launch {
+                    tripService.getRealTimeTravelerPendingHistory(auth.uid!!).collect { adapter.setData(it) }
+                }
+            }
         }
     }
 
@@ -229,11 +217,6 @@ class PendingTripsFragment : Fragment() {
                 requireContext(),
                 "Cancelando viaje", Toast.LENGTH_SHORT
             ).show()
-
-            MainScope().launch {
-                tripService.cancelPendingTrip(data.first)
-                updateData()
-            }
         }
 
         builder.setNegativeButton("No") { _, _ ->

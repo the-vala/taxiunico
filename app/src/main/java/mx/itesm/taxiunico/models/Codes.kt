@@ -15,14 +15,18 @@
  */
 package mx.itesm.taxiunico.models
 
+import com.google.firebase.Timestamp
+
 /**
  * Modelo de Codigo de reservación con información obtenida al momento de hacer la compra
  */
  data class Codes (
     val destination: String = "",
-    val fRegreso: String = "",
-    val fSalida: String = "",
     @JvmField var isRound: Boolean = false,
-    val origin: String = ""
+    val origin: String = "",
+    val firstLegDepartureTime: Timestamp = Timestamp.now(),
+    val firstLegArrivalTime: Timestamp = Timestamp.now(),
+    val secondLegDepartureTime: Timestamp = Timestamp.now(),
+    val secondLegArrivalTime: Timestamp = Timestamp.now()
  )
 

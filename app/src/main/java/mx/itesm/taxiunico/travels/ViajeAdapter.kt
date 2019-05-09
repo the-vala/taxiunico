@@ -27,6 +27,7 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.firebase.storage.FirebaseStorage
 import mx.itesm.taxiunico.R
 import mx.itesm.taxiunico.services.AuthService
@@ -126,13 +127,17 @@ class ViajeAdapter(private val list:MutableList<Pair<String, Viaje>>, private va
             }
 
             if(data.imageURL.isNotEmpty()) {
+
                 storage.reference.child(data.imageURL).downloadUrl.addOnSuccessListener {
                     val imageView = itemView.findViewById<ImageView>(R.id.mapa)
 
                     Glide.with(view)
                         .load(it.toString())
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                         .placeholder(ColorDrawable(Color.LTGRAY))
                         .into(imageView)
+                }.addOnFailureListener {
+
                 }
 
             }
