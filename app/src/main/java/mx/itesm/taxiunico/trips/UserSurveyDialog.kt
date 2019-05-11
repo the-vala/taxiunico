@@ -46,7 +46,6 @@ class UserSurveyDialog(
             rating = INITIAL_RATING
         }
 
-        // TODO(terminar de poner info de este layout)
         dialogView.findViewById<Button>(R.id.surveyConfirm).setOnClickListener {
             if (model.getConnectionState().value!!) {
                 TripService().addUserSurveyAnswer(
@@ -55,7 +54,7 @@ class UserSurveyDialog(
                 )
                 dialog.dismiss()
             } else {
-                Toast.makeText(context, "No hay conexion.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "No hay conexión", Toast.LENGTH_SHORT).show()
             }
 
         }
