@@ -115,7 +115,7 @@ class TripConfigurationFragment : Fragment() {
 
         tripCode = arguments!!.getParcelable<Codes>(CODE_ID)!!
 
-        if (tripCode.isRound) {
+        if (!tripCode.isRound) {
             linearLayout2.visibility = View.GONE
         }
 
