@@ -22,25 +22,31 @@ import android.util.Log
 import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_signup.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.MainActivity
+import mx.itesm.taxiunico.Network.ConnectionViewModel
 import mx.itesm.taxiunico.R
 import mx.itesm.taxiunico.models.UserProfile
 import mx.itesm.taxiunico.models.UserType
 import mx.itesm.taxiunico.services.UserService
 
-class SignupActivity : AppCompatActivity() {
+class SignupActivity : BaseActivity() {
 
     private lateinit var auth: FirebaseAuth
     private val userService = UserService()
+    private lateinit var connectionVM: ConnectionViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
+
+        connectionVM = ViewModelProviders.of(this).get(ConnectionViewModel::class.java)
 
         FirebaseApp.initializeApp(this)
         auth = FirebaseAuth.getInstance()
@@ -61,6 +67,12 @@ class SignupActivity : AppCompatActivity() {
      */
     private fun createAccount(email: String, password: String) {
         Log.d(TAG, "createAccount:$email")
+
+        if (!connectionVM.getConnectionState().value!!) {
+            Toast.makeText(this, "No hay conexión", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         if (!validateForm()) {
             return
         }

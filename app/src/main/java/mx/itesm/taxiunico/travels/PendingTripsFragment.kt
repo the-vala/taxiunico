@@ -107,7 +107,7 @@ class PendingTripsFragment : Fragment() {
             UserType.TRAVELER -> {
                 adapter.onItemClick = { data -> createCancelTripDialog(data) }
                 if (!connectionVM.getConnectionState().value!!) {
-                    Toast.makeText(requireContext(),"No hay conexion.",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),"No hay conexión",Toast.LENGTH_SHORT).show()
                 } else {
                     MainScope().launch {
                         tripService.getRealTimeTravelerPendingHistory(auth.uid!!).collect { adapter.setData(it) }
@@ -243,7 +243,7 @@ class PendingTripsFragment : Fragment() {
 
             builder.show()
         } else {
-            Toast.makeText(requireContext(),"No hay conexion.",Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(),"No hay conexión",Toast.LENGTH_SHORT).show()
         }
     }
 }

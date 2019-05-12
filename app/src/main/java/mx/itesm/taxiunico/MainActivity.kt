@@ -46,25 +46,20 @@ import androidx.lifecycle.ViewModelProviders
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
 import mx.itesm.taxiunico.Network.ConnectionViewModel
+import mx.itesm.taxiunico.auth.BaseActivity
 import mx.itesm.taxiunico.trips.InProgressTripFragment
 import mx.itesm.taxiunico.trips.UserSurveyDialog
 
 
 @SuppressLint("Registered")
-class MainActivity : AppCompatActivity(),
-    ConnectivityReceiver.ConnectivityListener {
-
+class MainActivity : BaseActivity() {
     private lateinit var authService: AuthService
     private var saveState: Int = 0
-    private var snackBar: Snackbar? = null
-    private var receiver: BroadcastReceiver? = null
-    private lateinit var connectionVM: ConnectionViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        connectionVM = ViewModelProviders.of(this).get(ConnectionViewModel::class.java)
         authService = AuthService(this)
 
         if (authService.isUserAuthenticated()) {
@@ -144,6 +139,7 @@ class MainActivity : AppCompatActivity(),
             .addToBackStack(tag)
             .commitAllowingStateLoss()
     }
+
     /**
      * Función que abre la vista default al iniciar la aplicación
      */
@@ -171,38 +167,12 @@ class MainActivity : AppCompatActivity(),
         return true
     }
 
-    @SuppressLint("WrongConstant")
-    private fun showConnectionMessage(isConnected: Boolean) {
-        if (!isConnected) {
-            val message = "No hay conexion."
-            snackBar = Snackbar.make(findViewById(R.id.snackbar_container), message, Snackbar.LENGTH_LONG)
-            snackBar?.duration = Snackbar.LENGTH_INDEFINITE
-            val view = snackBar!!.view
-            val params = view.layoutParams as FrameLayout.LayoutParams
-            params.gravity = Gravity.TOP
-            view.layoutParams = params
-            snackBar?.show()
-        } else {
-            snackBar?.dismiss()
-        }
-    }
-
     /**
      * Función que revisa el estado de la conexión y carga la opción del menu seleccionada al resumir la actividad
      */
     override fun onResume() {
         super.onResume()
-
-        receiver = ConnectivityReceiver()
-        registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
-
         nav.selectedItemId = saveState
-    }
-
-    override fun onPause() {
-        super.onPause()
-
-        unregisterReceiver(receiver)
     }
 
     /**
@@ -212,13 +182,4 @@ class MainActivity : AppCompatActivity(),
         super.onSaveInstanceState(outState, outPersistentState)
         saveState = nav.selectedItemId
     }
-    
-    /**
-     * Función que detecta si la red se conectó o desconectó y muestra un mensaje segón sea el caso
-     */
-    override fun onNetworkChanged(isConnected: Boolean) {
-        showConnectionMessage(isConnected)
-        connectionVM.setConnectionState(isConnected)
-    }
-
 }

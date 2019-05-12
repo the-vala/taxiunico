@@ -23,22 +23,27 @@ import android.util.Patterns
 import mx.itesm.taxiunico.R
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.*
 import mx.itesm.taxiunico.MainActivity
+import mx.itesm.taxiunico.Network.ConnectionViewModel
 import mx.itesm.taxiunico.services.AuthService
 import mx.itesm.taxiunico.services.Result
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var authService: AuthService
+    private lateinit var connectionVM: ConnectionViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        connectionVM = ViewModelProviders.of(this).get(ConnectionViewModel::class.java)
 
         authService = AuthService(this)
 
@@ -81,6 +86,12 @@ class LoginActivity : AppCompatActivity() {
      */
     private fun signIn(email: String, password: String) {
         Log.d(TAG, "signIn:$email")
+
+        if (!connectionVM.getConnectionState().value!!) {
+            Toast.makeText(this, "No hay conexión", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         if (!validateForm()) {
             return
         }
