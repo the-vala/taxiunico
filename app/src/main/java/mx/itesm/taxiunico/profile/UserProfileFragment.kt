@@ -64,7 +64,10 @@ class UserProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         authService = AuthService(requireContext())
+
         userProfile = authService.getUserProfile()
+
+        pullNewUserProfileChanges()
 
         render(userProfile)
 
@@ -86,6 +89,7 @@ class UserProfileFragment : Fragment() {
         nameInput.setText(userProfile.name)
         emailInput.setText(userProfile.email)
         phoneInput.setText(userProfile.phone)
+        score.setText(getString(R.string.calificacion, userProfile.surveyScore))
     }
 
     /**
@@ -95,18 +99,30 @@ class UserProfileFragment : Fragment() {
         if (validateForm() && model.getConnectionState().value!!) {
             Toast.makeText(requireContext(), "Guardando", Toast.LENGTH_SHORT).show()
 
+            val newProfile = UserProfile(
+                name = nameInput.text.toString(),
+                email = emailInput.text.toString(),
+                phone = phoneInput.text.toString()
+            )
+
+            UserPrefs(requireContext()).userProfile = newProfile
+
             MainScope().launch {
-                userService.updateProfile(
-                    authService.getUserUid()!!, UserProfile(
-                        name = nameInput.text.toString(),
-                        email = emailInput.text.toString(),
-                        phone = phoneInput.text.toString()
-                    )
-                )
+                userService.updateProfile(authService.getUserUid()!!, newProfile)
                 Toast.makeText(requireContext(), "Perfil Guardado", Toast.LENGTH_SHORT).show()
             }
         } else {
             Toast.makeText(context, "No hay conexión", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    private fun pullNewUserProfileChanges() {
+        MainScope().launch {
+            userService.getProfile(authService.getUserUid()!!)?.let {
+                UserPrefs(requireContext()).userProfile = it
+                render(it)
+            }
         }
     }
 

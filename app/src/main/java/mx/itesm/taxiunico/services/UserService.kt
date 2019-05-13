@@ -24,12 +24,13 @@ import mx.itesm.taxiunico.models.UserProfile
  */
 class UserService {
     private val db = FirebaseFirestore.getInstance()
+    private val collection = db.collection(USER_COLLECTION_KEY)
 
     /**
      * Función que recupera el perfil del usuario de la base de datos basado en el ID del usuario
      */
     suspend fun getProfile(userId: String): UserProfile? {
-        val res = db.collection(USER_COLLECTION_KEY).document(userId).get().await()
+        val res = collection.document(userId).get().await()
         val user = res.toObject(UserProfile::class.java)
         return user
     }
@@ -39,6 +40,21 @@ class UserService {
      */
     suspend fun updateProfile(userId: String, userProfile: UserProfile) {
         db.collection(USER_COLLECTION_KEY).document(userId).set(userProfile).await()
+    }
+
+
+    fun updateScore(userId: String, score: Float) {
+        db.runTransaction { transaction ->
+            val user = transaction.get(collection.document(userId)).toObject(UserProfile::class.java)!!
+
+            val newRating = ((user.surveyScore * user.tripCount) + score) / (user.tripCount + 1.0)
+
+            // Update restaurant
+            transaction.set(collection.document(userId), user.copy(
+                surveyScore = newRating,
+                tripCount = user.tripCount + 1
+            ))
+        }
     }
 
     companion object {

@@ -142,16 +142,6 @@ class ViajeAdapter(private val list:MutableList<Pair<String, Viaje>>, private va
                     .load("https://firebasestorage.googleapis.com/v0/b/taxi-unico-11f36.appspot.com/o/${data.imageURL}?alt=media")
                     .placeholder(ColorDrawable(Color.LTGRAY))
                     .into(imageView)
-
-//                storage.reference.child(data.imageURL).downloadUrl.addOnSuccessListener {
-//                    val imageView = itemView.findViewById<ImageView>(R.id.mapa)
-//
-//                    Glide.with(view)
-//                        .load(it.toString())
-//                        .placeholder(ColorDrawable(Color.LTGRAY))
-//                        .into(imageView)
-//                }
-
             }
         }
     }
