@@ -79,22 +79,25 @@ class CompletedTripsFragment : Fragment() {
     @FlowPreview
     override fun onResume() {
         super.onResume()
-
-        if (!connectionVM.getConnectionState().value!!) {
-            Toast.makeText(requireContext(), "No hay conexion.", Toast.LENGTH_SHORT).show()
-        } else {
             when(authService.getUserType()) {
                 UserType.DRIVER -> {
-                    MainScope().launch {
-                        tripService.getRealTimeDriverCompletedHistory(auth.uid!!).collect { adapter.setData(it) }
+                    if (!connectionVM.getConnectionState().value!!) {
+                        Toast.makeText(requireContext(),"No hay conexion.",Toast.LENGTH_SHORT).show()
+                    } else {
+                        MainScope().launch {
+                            tripService.getRealTimeDriverCompletedHistory(auth.uid!!).collect { adapter.setData(it) }
+                        }
                     }
                 }
                 UserType.TRAVELER -> {
-                    MainScope().launch {
-                        tripService.getRealTimeTravelerCompletedHistory(auth.uid!!).collect { adapter.setData(it) }
+                    if (!connectionVM.getConnectionState().value!!) {
+                        Toast.makeText(requireContext(),"No hay conexion.",Toast.LENGTH_SHORT).show()
+                    } else {
+                        MainScope().launch {
+                            tripService.getRealTimeTravelerCompletedHistory(auth.uid!!).collect { adapter.setData(it) }
+                        }
                     }
                 }
             }
         }
-    }
 }
