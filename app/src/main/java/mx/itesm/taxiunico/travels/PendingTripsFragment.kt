@@ -197,7 +197,7 @@ class PendingTripsFragment : Fragment() {
         builder.setOnDismissListener {
             fragmentManager!!.beginTransaction()
                 .replace(R.id.mainContent, TripsPagerFragment())
-                .commit()
+                .commitAllowingStateLoss()
         }
         val dialog = builder.show()
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

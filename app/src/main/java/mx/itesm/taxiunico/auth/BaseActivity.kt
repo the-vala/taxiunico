@@ -45,8 +45,7 @@ open class BaseActivity: AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         connectionVM = ViewModelProviders.of(this).get(ConnectionViewModel::class.java)
-        receiver = ConnectivityReceiver()
-        registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+
     }
 
     /**
@@ -74,6 +73,8 @@ open class BaseActivity: AppCompatActivity(),
     override fun onResume() {
         super.onResume()
         ConnectivityReceiver.connectivityListener = this
+        receiver = ConnectivityReceiver()
+        registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
     }
 
     /**
