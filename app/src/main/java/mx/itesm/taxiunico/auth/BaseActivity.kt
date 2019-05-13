@@ -21,6 +21,7 @@ import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.util.Log
 import android.view.Gravity
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -45,8 +46,6 @@ open class BaseActivity: AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         connectionVM = ViewModelProviders.of(this).get(ConnectionViewModel::class.java)
-        receiver = ConnectivityReceiver()
-        registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
     }
 
     /**
@@ -73,6 +72,10 @@ open class BaseActivity: AppCompatActivity(),
      * */
     override fun onResume() {
         super.onResume()
+
+        receiver = ConnectivityReceiver()
+        registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+
         ConnectivityReceiver.connectivityListener = this
     }
 
@@ -81,7 +84,12 @@ open class BaseActivity: AppCompatActivity(),
      * */
     override fun onPause() {
         super.onPause()
-        unregisterReceiver(receiver)
+
+        try {
+            unregisterReceiver(receiver)
+        } catch (err: Throwable) {
+            Log.e("BaseActivity", err.stackTrace.toString())
+        }
     }
 
     /**
