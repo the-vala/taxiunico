@@ -20,6 +20,16 @@ Ariel Méndez A01020690
   ```shell
   ./gradlew clean app:assembleArmDebug
   ```
+##  Defining key in build.gradle
+Find the .gradle folder in home directory.
+Windows: C:\Users\<Your Username>\.gradle
+Mac: /Users/<Your Username>/.gradle
+Linux: /home/<Your Username>/.gradle
+
+Inside it there would be a file gradle.properties, create it if there isn’t any.
+
+After that, add your key to the file as a property. Example:
+MyAwesomeApp_ApiKey="my-awesome-api-key"
 
 ## License
 TaxiUnico Android esta distribuido bajo la licencia Apache 2.0 [license](LICENSE).
