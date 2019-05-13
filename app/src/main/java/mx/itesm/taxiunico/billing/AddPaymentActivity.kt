@@ -28,13 +28,14 @@ import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.row_payment_form_cash.*
 import mx.itesm.taxiunico.Network.ConnectionViewModel
 import mx.itesm.taxiunico.R
+import mx.itesm.taxiunico.auth.BaseActivity
 import mx.itesm.taxiunico.auth.LoginActivity
 import mx.itesm.taxiunico.services.PaymentService
 
 /**
  * Actividad para agregar una nueva forma de pago
  */
-class AddPaymentActivity : AppCompatActivity() {
+class AddPaymentActivity : BaseActivity() {
     private lateinit var connectionVM: ConnectionViewModel
     val paymentService = PaymentService()
     val auth = FirebaseAuth.getInstance()
