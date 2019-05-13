@@ -125,7 +125,7 @@ class UserProfileFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        job.cancel()
+        coroutineContext[Job]?.cancel()
     }
 
 

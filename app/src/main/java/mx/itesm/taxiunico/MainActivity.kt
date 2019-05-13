@@ -86,6 +86,8 @@ class MainActivity : BaseActivity() {
 
         ConnectivityReceiver.connectivityListener = this
         nav.setOnNavigationItemSelectedListener { navigate(it) }
+
+        coroutineContext[Job]?.cancel()
     }
 
     /**
@@ -166,7 +168,7 @@ class MainActivity : BaseActivity() {
 
     override fun onPause() {
         super.onPause()
-        job.cancel()
+        coroutineContext[Job]?.cancel()
     }
 
     /**
