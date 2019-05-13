@@ -27,8 +27,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_user_profile.*
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import mx.itesm.taxiunico.MainActivity
 import mx.itesm.taxiunico.Network.ConnectionViewModel
 import mx.itesm.taxiunico.R
@@ -37,6 +36,7 @@ import mx.itesm.taxiunico.models.UserType
 import mx.itesm.taxiunico.prefs.UserPrefs
 import mx.itesm.taxiunico.services.AuthService
 import mx.itesm.taxiunico.services.UserService
+import kotlin.coroutines.CoroutineContext
 
 /**
  * Fragmento del perfil del usuario
@@ -48,6 +48,10 @@ class UserProfileFragment : Fragment() {
 
     private lateinit var userProfile: UserProfile
     private lateinit var model: ConnectionViewModel
+    private var job = Job()
+
+    val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,7 +114,7 @@ class UserProfileFragment : Fragment() {
 
             UserPrefs(requireContext()).userProfile = newProfile
 
-            MainScope().launch {
+            CoroutineScope(coroutineContext).launch {
                 userService.updateProfile(authService.getUserUid()!!, newProfile)
                 Toast.makeText(requireContext(), "Perfil Guardado", Toast.LENGTH_SHORT).show()
             }
@@ -119,12 +123,17 @@ class UserProfileFragment : Fragment() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        job.cancel()
+    }
+
 
     /**
      * Baja los cambios mas recientes del usuario y los guarda en userprefs.
      */
     private fun pullNewUserProfileChanges() {
-        MainScope().launch {
+        CoroutineScope(coroutineContext).launch {
             userService.getProfile(authService.getUserUid()!!)?.let {
                 UserPrefs(requireContext()).userProfile = it
                 render(it)

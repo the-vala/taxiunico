@@ -16,12 +16,10 @@
 package mx.itesm.taxiunico
 
 import android.annotation.SuppressLint
-import android.content.BroadcastReceiver
 import android.content.Intent
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import mx.itesm.taxiunico.services.AuthService
 import mx.itesm.taxiunico.auth.LoginActivity
 import mx.itesm.taxiunico.billing.PaymentFormsFragment
@@ -30,31 +28,28 @@ import mx.itesm.taxiunico.profile.UserProfileFragment
 import mx.itesm.taxiunico.travels.TripsPagerFragment
 import mx.itesm.taxiunico.trips.CheckTripCodeFragment
 import android.os.PersistableBundle
-import android.content.IntentFilter
-import android.net.ConnectivityManager
-import android.view.Gravity
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
 import mx.itesm.taxiunico.models.Viaje
 import mx.itesm.taxiunico.services.TripService
 import mx.itesm.taxiunico.util.ConnectivityReceiver
-import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.ViewModelProviders
-import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
-import mx.itesm.taxiunico.Network.ConnectionViewModel
+import kotlinx.coroutines.flow.takeWhile
 import mx.itesm.taxiunico.auth.BaseActivity
 import mx.itesm.taxiunico.trips.InProgressTripFragment
 import mx.itesm.taxiunico.trips.UserSurveyDialog
+import kotlin.coroutines.CoroutineContext
 
 
 @SuppressLint("Registered")
 class MainActivity : BaseActivity() {
     private lateinit var authService: AuthService
     private var saveState: Int = 0
+
+    private var job = Job()
+    val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,14 +93,16 @@ class MainActivity : BaseActivity() {
      * la encuesta de la mas reciente al abrir la app
      */
     @FlowPreview
-    private fun checkPendingSurveys() = MainScope().launch {
-        TripService().getPendingSurveyTrip(this@MainActivity).collect {
+    private fun checkPendingSurveys() = CoroutineScope(coroutineContext).launch {
+        TripService().getPendingSurveyTrip(this@MainActivity).takeWhile {
+            authService.getUserType() == UserType.TRAVELER
+        }.collect {
             showUserSurvey(it.first, it.second)
         }
     }
 
     @FlowPreview
-    private fun checkInProgressTrip() = MainScope().launch {
+    private fun checkInProgressTrip() = CoroutineScope(coroutineContext).launch {
         TripService().getInProgressTrip(this@MainActivity).collect {
             showCurrentTrip(it.first, it.second)
         }
@@ -165,6 +162,11 @@ class MainActivity : BaseActivity() {
             .commitAllowingStateLoss()
 
         return true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        job.cancel()
     }
 
     /**
