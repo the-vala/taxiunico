@@ -128,13 +128,13 @@ class TripConfigurationFragment : Fragment() {
 
     private fun validateTripForm(): ValidationResult = when {
         tripForm.needsFirstLegToTerminalTaxi && tripForm.firstLegPickupLocation == null ->
-            ValidationResult(false, "Especifica una ubicacion para xxxx")
+            ValidationResult(false, "Especifica ubicacion para viaje de ida a terminal")
         tripForm.needsFirstLegToDestinationTaxi && tripForm.firstLegDropoffLocation == null ->
-            ValidationResult(false, "Especifica una ubicacion para xxxx")
+            ValidationResult(false, "Especifica ubicacion para viaje de ida a destino final")
         tripForm.needsSecondLegToTerminalTaxi && tripForm.secondLegPickupLocation == null ->
-            ValidationResult(false, "Especifica una ubicacion para xxxx")
+            ValidationResult(false, "Especifica ubicacion para viaje de vuelta a terminal")
         tripForm.needsSecondLegToHomeTaxi && tripForm.secondLegDropoffLocation == null ->
-            ValidationResult(false, "Especifica una ubicacion para xxxx")
+            ValidationResult(false, "Especifica ubicacion para viaje de vuelta a destino final")
         else -> ValidationResult(true)
     }
 
