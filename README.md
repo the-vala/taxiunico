@@ -20,6 +20,8 @@ Ariel Méndez A01020690
   ```shell
   ./gradlew clean app:assembleArmDebug
   ```
+3. Define your Google Api key (follow next instructions).
+
 ##  Defining Google Api Key key in build.gradle
 Find the .gradle folder in home directory.
 
