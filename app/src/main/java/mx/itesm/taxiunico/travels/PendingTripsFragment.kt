@@ -212,7 +212,7 @@ class PendingTripsFragment : Fragment() {
         confirm.setOnClickListener {
             val ratingBar = dialogView.findViewById<RatingBar>(R.id.ratingBar)
             dialog.dismiss()
-            tripService.updateCompletedTrip(data.first, ratingBar.rating)
+            tripService.updateCompletedTrip(data.first, ratingBar.rating, data.second.userId)
             Toast.makeText(requireContext(), "Rating: ${ratingBar.rating}", Toast.LENGTH_SHORT).show()
         }
     }

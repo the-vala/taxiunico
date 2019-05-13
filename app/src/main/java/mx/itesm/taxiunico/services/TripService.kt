@@ -158,7 +158,8 @@ class TripService {
     /**
      * Asigna la calificacion que da el pasajero al conductor del viaje [tripId].
      */
-    fun addUserSurveyAnswer(tripId: String, rating: Float) {
+    fun addUserSurveyAnswer(tripId: String, rating: Float, driverId: String) {
+        UserService().updateScore(driverId, rating)
         collection.document(tripId)
             .update(
                 Viaje::driverRating.name, rating,
@@ -170,7 +171,8 @@ class TripService {
     /**
      * Marca el viaje [tripId] como completado y le asigna una calificacion al pasajero..
      */
-    fun updateCompletedTrip(tripId: String, rating: Float) {
+    fun updateCompletedTrip(tripId: String, rating: Float, userId: String) {
+        UserService().updateScore(userId, rating)
         collection.document(tripId)
             .update(
                 Viaje::completionDateTime.name, Timestamp.now(),

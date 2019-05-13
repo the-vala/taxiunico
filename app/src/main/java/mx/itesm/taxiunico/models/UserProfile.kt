@@ -32,5 +32,7 @@ data class UserProfile(
     var email: String = "",
     var phone: String = "",
     val userType: UserType = UserType.TRAVELER,
-    val cityHub: String = ""
+    val cityHub: String = "",
+    val surveyScore: Double = 0.0,
+    var tripCount: Int = 0
 )

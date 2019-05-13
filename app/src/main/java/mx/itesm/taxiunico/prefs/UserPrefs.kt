@@ -30,7 +30,7 @@ class UserPrefs(
     private val prefs = context.applicationContext.getSharedPreferences(FILE_KEY, Context.MODE_PRIVATE)
 
     /**
-     * Función que vacóa las preferencias del usuario
+     * Función que vacía las preferencias del usuario
      */
     fun clear() {
         prefs.edit().clear().apply()
@@ -55,6 +55,7 @@ class UserPrefs(
             email = prefs.getString(USER_EMAIL_KEY, ""),
             phone = prefs.getString(USER_PHONE_KEY, ""),
             cityHub = prefs.getString(USER_CITY_HUB_KEY, ""),
+            surveyScore = prefs.getFloat(SCORE_KEY, 0.0F).toDouble(),
             userType = UserType.valueOf(prefs.getString(USER_TYPE_KEY, UserType.TRAVELER.toString()))
         )
 
@@ -69,6 +70,7 @@ class UserPrefs(
                 putString(USER_PHONE_KEY, value.phone)
                 putString(USER_TYPE_KEY, value.userType.toString())
                 putString(USER_CITY_HUB_KEY, value.cityHub)
+                putFloat(SCORE_KEY, value.surveyScore.toFloat())
             }.apply()
         }
 
@@ -81,6 +83,6 @@ class UserPrefs(
         private const val USER_PHONE_KEY = "user.phone.key"
         private const val USER_CITY_HUB_KEY = "user.city.key"
         private const val USER_TYPE_KEY = "user.type.key"
-
+        private const val SCORE_KEY = "score.key"
     }
 }

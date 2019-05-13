@@ -64,7 +64,10 @@ class UserProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         authService = AuthService(requireContext())
+
         userProfile = authService.getUserProfile()
+
+        pullNewUserProfileChanges()
 
         render(userProfile)
 
@@ -77,6 +80,9 @@ class UserProfileFragment : Fragment() {
         }
     }
 
+    /**
+     * Refresca los datos de la vista
+     */
     private fun render(userProfile: UserProfile) {
         title.text =  when(userProfile.userType) {
             UserType.DRIVER -> "Detalles del Conductor"
@@ -86,6 +92,7 @@ class UserProfileFragment : Fragment() {
         nameInput.setText(userProfile.name)
         emailInput.setText(userProfile.email)
         phoneInput.setText(userProfile.phone)
+        score.setText(getString(R.string.calificacion, userProfile.surveyScore))
     }
 
     /**
@@ -95,14 +102,16 @@ class UserProfileFragment : Fragment() {
         if (validateForm() && model.getConnectionState().value!!) {
             Toast.makeText(requireContext(), "Guardando", Toast.LENGTH_SHORT).show()
 
+            val newProfile = UserProfile(
+                name = nameInput.text.toString(),
+                email = emailInput.text.toString(),
+                phone = phoneInput.text.toString()
+            )
+
+            UserPrefs(requireContext()).userProfile = newProfile
+
             MainScope().launch {
-                userService.updateProfile(
-                    authService.getUserUid()!!, UserProfile(
-                        name = nameInput.text.toString(),
-                        email = emailInput.text.toString(),
-                        phone = phoneInput.text.toString()
-                    )
-                )
+                userService.updateProfile(authService.getUserUid()!!, newProfile)
                 Toast.makeText(requireContext(), "Perfil Guardado", Toast.LENGTH_SHORT).show()
             }
         } else {
@@ -110,6 +119,22 @@ class UserProfileFragment : Fragment() {
         }
     }
 
+
+    /**
+     * Baja los cambios mas recientes del usuario y los guarda en userprefs.
+     */
+    private fun pullNewUserProfileChanges() {
+        MainScope().launch {
+            userService.getProfile(authService.getUserUid()!!)?.let {
+                UserPrefs(requireContext()).userProfile = it
+                render(it)
+            }
+        }
+    }
+
+    /**
+     * Revisa si los datos introducidos en la forma son validos
+     */
     private fun validateForm(): Boolean {
         var valid = true
 
@@ -140,9 +165,17 @@ class UserProfileFragment : Fragment() {
         return valid
     }
 
+    /**
+     * Revisa si un email tiene un formato válido
+     */
     private fun isEmailValid(email: String): Boolean {
         return Patterns.EMAIL_ADDRESS.toRegex().matches(email)
     }
+
+
+    /**
+     * Revisa si un telefono tiene un formato válido
+     */
     private fun isPhoneValid(phone: String): Boolean {
         return Patterns.PHONE.toRegex().matches(phone)
     }

@@ -50,7 +50,8 @@ class UserSurveyDialog(
             if (model.getConnectionState().value!!) {
                 TripService().addUserSurveyAnswer(
                     tripId = tripId,
-                    rating = ratingBar.rating
+                    rating = ratingBar.rating,
+                    driverId = viaje.driverId
                 )
                 dialog.dismiss()
             } else {
