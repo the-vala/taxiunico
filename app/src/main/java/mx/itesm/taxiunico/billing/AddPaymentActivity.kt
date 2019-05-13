@@ -73,7 +73,7 @@ class AddPaymentActivity : BaseActivity() {
             cardNum.error = null
         }
 
-        if (TextUtils.isEmpty(cvc) || cardNumText.length != 3 || !isPhoneValid(cvc)) {
+        if (TextUtils.isEmpty(cvc) || cvc.length != 3 || !isPhoneValid(cvc)) {
             cvcText.error = "Número inválido"
             valid = false
         } else {
