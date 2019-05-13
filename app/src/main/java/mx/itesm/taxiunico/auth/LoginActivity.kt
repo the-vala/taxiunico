@@ -62,8 +62,14 @@ class LoginActivity : BaseActivity() {
         loginContraseñaBtn.setOnClickListener {
             var valid = true
             val email = loginInputEmail.text.toString()
-            if (TextUtils.isEmpty(email)) {
+            if (!connectionVM.getConnectionState().value!!) {
+                Toast.makeText(this, "No hay conexión", Toast.LENGTH_SHORT).show()
+                valid = false
+            } else if (TextUtils.isEmpty(email)) {
                 loginInputEmail.error = "Required."
+                valid = false
+            } else if (!isEmailValid(email)) {
+                loginInputEmail.error = "Not valid"
                 valid = false
             } else {
                 loginInputEmail.error = null

@@ -57,15 +57,17 @@
 
             <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
+                    android:id="@+id/cvcText"
                     android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" android:id="@+id/phone" android:hint="@string/country">
+                android:layout_height="match_parent" android:id="@+id/country" android:hint="@string/country">
 
             <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:id="@+id/countryText"/>
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
@@ -73,7 +75,7 @@
             android:text="@string/add_card"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/button" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="24dp"
+            android:id="@+id/buttonPayForm" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="24dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="24dp"
             android:background="@drawable/rounded_button" android:backgroundTint="@color/taxiYellow"
             app:layout_constraintHorizontal_bias="0.5"
