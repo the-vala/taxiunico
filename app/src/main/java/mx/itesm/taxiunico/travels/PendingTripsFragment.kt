@@ -167,26 +167,35 @@ class PendingTripsFragment : Fragment() {
         val confirm = dialogView.findViewById<Button>(R.id.confirm)
         val driverName = UserPrefs(requireContext()).userProfile.name
         confirm.setOnClickListener {
-            tripService.startTrip(
-                driverId=authService.getUserUid(),
-                driverName = driverName,
-                tripId=data.first
-            )
+            var valid = true
 
-            dialog.dismiss()
-            Toast.makeText(requireContext(), "Iniciando viaje", Toast.LENGTH_SHORT).show()
+            if (!connectionVM.getConnectionState().value!!) {
+                Toast.makeText(requireContext(), "No hay conexión", Toast.LENGTH_SHORT).show()
+                valid = false
+            }
 
-            //Create trip finished dialog
-            createCompletedTripDialog(data)
+            if (valid) {
+                tripService.startTrip(
+                    driverId=authService.getUserUid(),
+                    driverName = driverName,
+                    tripId=data.first
+                )
 
-            //Open google maps gps
-            val gmmIntentUri = Uri.parse("https://www.google.com/maps/dir/?api=1" +
-                    "&origin=${viaje.origin.latitude},${viaje.origin.longitude}" +
-                    "&destination=${viaje.destination.latitude},${viaje.destination.longitude}" +
-                    "&travelmode=driving&dir_action=navigate")
-            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-            mapIntent.setPackage("com.google.android.apps.maps")
-            startActivity(mapIntent)
+                dialog.dismiss()
+                Toast.makeText(requireContext(), "Iniciando viaje", Toast.LENGTH_SHORT).show()
+
+                //Create trip finished dialog
+                createCompletedTripDialog(data)
+
+                //Open google maps gps
+                val gmmIntentUri = Uri.parse("https://www.google.com/maps/dir/?api=1" +
+                        "&origin=${viaje.origin.latitude},${viaje.origin.longitude}" +
+                        "&destination=${viaje.destination.latitude},${viaje.destination.longitude}" +
+                        "&travelmode=driving&dir_action=navigate")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                startActivity(mapIntent)
+            }
         }
     }
 
