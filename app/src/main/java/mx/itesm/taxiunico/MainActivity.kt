@@ -28,14 +28,17 @@ import mx.itesm.taxiunico.profile.UserProfileFragment
 import mx.itesm.taxiunico.travels.TripsPagerFragment
 import mx.itesm.taxiunico.trips.CheckTripCodeFragment
 import android.os.PersistableBundle
+import android.util.Log
 import mx.itesm.taxiunico.models.Viaje
 import mx.itesm.taxiunico.services.TripService
 import mx.itesm.taxiunico.util.ConnectivityReceiver
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.takeWhile
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.consume
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.flow.*
 import mx.itesm.taxiunico.auth.BaseActivity
 import mx.itesm.taxiunico.trips.InProgressTripFragment
 import mx.itesm.taxiunico.trips.UserSurveyDialog
@@ -50,6 +53,10 @@ class MainActivity : BaseActivity() {
     private var job = Job()
     val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
+
+    private var surveyChannel: Channel<Pair<String, Viaje>>? = null
+    private var inProgressTrip: Channel<Pair<String, Viaje>>? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,22 +95,23 @@ class MainActivity : BaseActivity() {
         nav.setOnNavigationItemSelectedListener { navigate(it) }
     }
 
+
     /**
      * Función que revisa si existen viajes con encuestas pendientes. Si existe, le pide al usuario contestar
      * la encuesta de la mas reciente al abrir la app
      */
-    @FlowPreview
+    @ExperimentalCoroutinesApi
     private fun checkPendingSurveys() = CoroutineScope(coroutineContext).launch {
-        TripService().getPendingSurveyTrip(this@MainActivity).takeWhile {
-            authService.getUserType() == UserType.TRAVELER
-        }.collect {
+        surveyChannel = TripService().getPendingSurveyTrip(this@MainActivity)
+        surveyChannel?.consumeEach {
             showUserSurvey(it.first, it.second)
         }
     }
 
-    @FlowPreview
+    @ExperimentalCoroutinesApi
     private fun checkInProgressTrip() = CoroutineScope(coroutineContext).launch {
-        TripService().getInProgressTrip(this@MainActivity).collect {
+        inProgressTrip = TripService().getInProgressTrip(this@MainActivity)
+        inProgressTrip?.consumeEach {
             showCurrentTrip(it.first, it.second)
         }
     }
@@ -166,8 +174,12 @@ class MainActivity : BaseActivity() {
 
     override fun onPause() {
         super.onPause()
+
         coroutineContext[Job]?.cancel()
+        surveyChannel?.close()
+        inProgressTrip?.close()
     }
+
 
     /**
      * Función que revisa el estado de la conexión y carga la opción del menu seleccionada al resumir la actividad
@@ -181,6 +193,7 @@ class MainActivity : BaseActivity() {
      * Función que guarda la opción seleccionada del menu en el companión object al interrumpir la actividad
      */
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+
         super.onSaveInstanceState(outState, outPersistentState)
         saveState = nav.selectedItemId
     }

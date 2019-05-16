@@ -19,7 +19,9 @@ import android.content.Context
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.flowViaChannel
 import kotlinx.coroutines.tasks.await
@@ -52,10 +54,12 @@ class TripService {
     /**
      * Emite un viaje que esté en curso.
      */
-    @FlowPreview
-    fun getInProgressTrip(context: Context) = flowViaChannel<Pair<String, Viaje>> { channel ->
+    @ExperimentalCoroutinesApi
+    fun getInProgressTrip(context: Context): Channel<Pair<String, Viaje>> {
+        val channel = Channel<Pair<String, Viaje>>()
+
         val uid = AuthService(context).getUserUid()
-        collection
+        val listener = collection
             .whereEqualTo(Viaje::userId.name, uid)
             .whereEqualTo(Viaje::status.name, TripStatus.IN_PROGRESS)
             .addSnapshotListener { querySnapshot, _ ->
@@ -63,16 +67,23 @@ class TripService {
                     channel.sendBlocking(it)
                 }
             }
-    }
 
+        channel.invokeOnClose {
+            listener.remove()
+        }
+
+        return channel
+    }
 
     /**
      * Emite un viaje que tenga una encuesta pendiente.
      */
-    @FlowPreview
-    fun getPendingSurveyTrip(context: Context) = flowViaChannel<Pair<String, Viaje>> { channel ->
+    @ExperimentalCoroutinesApi
+    fun getPendingSurveyTrip(context: Context): Channel<Pair<String, Viaje>> {
+        val channel = Channel<Pair<String, Viaje>>()
         val uid = AuthService(context).getUserUid()
-        collection
+
+        val listener = collection
             .whereEqualTo(Viaje::userId.name, uid)
             .whereEqualTo(Viaje::pendingSurvey.name, true)
             .addSnapshotListener { querySnapshot, _ ->
@@ -80,7 +91,14 @@ class TripService {
                     channel.sendBlocking(it)
                 }
             }
+
+        channel.invokeOnClose {
+            listener.remove()
+        }
+
+        return channel
     }
+
 
     /**
      * Función que regresa la lista de viajes del usuario
