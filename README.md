@@ -51,6 +51,32 @@ Google_ApiKey ="my-awesome-api-key"
 * Versión: 0.2 - Fecha de última actualización: 26/04/2019
 * Versión: 0.3 - Fecha de última actualización: 14/05/2019
 
+#### Cambios de cada version
+##### V0.1
+1. Agregar integración con Firebase.
+2. Agregar ventana para agregar un metodo de pago.
+3. Agregar ventana de perfil de usuario.
+4. Agregar ventana de encuesta de satisfación. 
+5. Agregar ventana de registro e iniciar sesión.
+6. Agregar metodo de recuperar contraseña.
+##### V0.2
+1. Agregar encuesta para los conductores y solicitar encuesta para los viajeros.
+2. Agregar funcionalidad basica para solicitar viajes.
+3. Agregar historial de viajes.
+4. Agregar la persistencia de usuarios.
+5. Migrar artefactos a androidX
+6. Agregar mecanismo para diferenciar viajero/conductor.
+7. Migracion a co-rutinas
+8. Agregar licencia copyright a todas las clases.
+##### V0.3
+1. Agregar validación para código reservación.
+2. Escoder la llave de Google.
+3. Agregar validciónes de conexión.
+4. Agregar funcionalidad para cancelar el viaje.
+5. Agregar comentarios y documentación en codigo.
+6. Agregar funcionalidad para recibir encuestas en tiempo real.
+7. Agregar comenzar viaje de parte del conductor.
+8. Agregar notificación al usuario de viaje iniciado.
 
 ### Desarrolladores:
 
