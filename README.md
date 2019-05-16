@@ -44,13 +44,10 @@ Después agrega tu Google Api key como una propiedad. Example:
 
 Google_ApiKey ="my-awesome-api-key"
 
-
-
 ### Versión
-* Versión: 1.0 - Fecha de última actualización: 24/04/2019
-* Versión: 2.0 - Fecha de última actualización: 26/04/2019
-* Versión: 3.0 - Fecha de última actualización: 14/05/2019
-
+* Versión: 0.1 - Fecha de última actualización: 24/04/2019
+* Versión: 0.2 - Fecha de última actualización: 26/04/2019
+* Versión: 0.3 - Fecha de última actualización: 14/05/2019
 
 ### Desarrolladores:
 
