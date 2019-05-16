@@ -32,7 +32,7 @@ Aplicación móvil que permitirá al	usuario	conectar por medio de una	aplicaci�
 3. Define tu Google Api key (sigue las siguientes instrucciones).
 
 ### Define tu Google Api Key en build.gradle
-Find the .gradle folder in home directory.
+Encuentra el folder .gradle en el directorio home.
 
 * Windows: C:\Users\<Your Username>\.gradle
 * Mac: /Users/<Your Username>/.gradle
@@ -43,8 +43,6 @@ Dentro de ese archive debe de estar gradle.properties, créalo si no existe.
 Después agrega tu Google Api key como una propiedad. Example:
 
 Google_ApiKey ="my-awesome-api-key"
-
-
 
 ### Versión
 * Versión: 1.0 - Fecha de última actualización: 24/04/2019
