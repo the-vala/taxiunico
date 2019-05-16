@@ -78,6 +78,8 @@ Campus: Campus Monterrey
 4. Agregar funcionalidad para cancelar el viaje.
 5. Agregar comentarios y documentación en codigo.
 6. Agregar funcionalidad para recibir encuestas en tiempo real.
+7. Agregar comenzar viaje de parte del conductor.
+8. Agregar notificación al usuario de viaje iniciado.
 
 ### License
 
